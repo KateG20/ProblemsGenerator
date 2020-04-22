@@ -56,17 +56,18 @@ namespace ProblemGenerator
 
         public static void TwoHeaps(int add, int mult, int toWin)
         {
-            string path = "../../result.txt";
-            File.WriteAllText(path, string.Empty);
+            //string path = "../../result.txt";
+            //File.WriteAllText(path, string.Empty);
 
+            // Методы, принимающие на вход четыре варианты развития событий 
+            // после разных ходов, и возвращающие соответствие своему названию
             bool IsWin1(string[] cells)
             {
-                int k = 0;
                 for (int i = 0; i < cells.Length; i++)
                 {
-                    if (cells[i] == "!") { k++; break; }
+                    if (cells[i] == "!") return true;
                 }
-                return k != 0;
+                return false;
             }
 
             bool IsLoss1(string[] cells)
@@ -81,12 +82,11 @@ namespace ProblemGenerator
 
             bool IsWin2(string[] cells)
             {
-                int k = 0;
                 for (int i = 0; i < cells.Length; i++)
                 {
-                    if (cells[i] == "-1") { k++; break; }
+                    if (cells[i] == "-1") return true;
                 }
-                return k != 0;
+                return false;
             }
 
             bool IsLoss2(string[] cells)
@@ -101,18 +101,33 @@ namespace ProblemGenerator
 
             bool IsWin(string[] cells)
             {
-                int k = 0;
                 for (int i = 0; i < cells.Length; i++)
                 {
-                    if (cells[i] == "-") { k++; break; } // было cells[i, 0]
+                    if (cells[i] == "-") return true;
                 }
-                return k != 0;
+                return false;
             }
+
+            //////// Это я пытаюсь сделать так, чтобы в каждой клетке было указано 
+            //////// количество ходов для выигрыша; доделаю потом
+            //int IsWin0(string[] cells)
+            //{
+            //    int minStep = 100, step;
+            //    for (int i = 0; i < cells.Length; i++)
+            //    {
+            //        if (cells[i][0] == '-')
+            //        {
+            //            step = int.Parse(cells[i].Substring(1)) + 1;
+            //            if (step < minStep) minStep = step;
+            //        }
+            //    }
+            //    return minStep;
+            //}
 
             string GetValue(int row, int col, string[,] tbl)
             {
-                //int row = int.Parse(rowS); int col = int.Parse(colS);
-                if (row + col + 2 >= toWin) // +2 из-за нумерации с нуля?
+                // Если сумма камней >= нужной, это выигрышная клетка
+                if (row + col >= toWin)
                 {
                     if (row < toWin && col < toWin)
                     {
@@ -120,174 +135,48 @@ namespace ProblemGenerator
                     }
                     return "!";
                 }
-                else
+                else if (tbl[row, col] is null)
                 {
-                    if (tbl[row, col] == "?")
-                    {
-                        var one_move_cells = new string[] {
-                            GetValue(row + add, col, tbl), GetValue(row, col + add, tbl),
-                            GetValue(row * mult, col, tbl), GetValue(row, col * mult, tbl) };
-                        if (IsWin1(one_move_cells)) { tbl[row, col] = "+1"; }
-                        else if (IsLoss1(one_move_cells)) { tbl[row, col] = "-1"; }
-                        else if (IsWin2(one_move_cells)) { tbl[row, col] = "+2"; }
-                        else if (IsLoss2(one_move_cells)) { tbl[row, col] = "-2"; }
-                        else if (IsWin(one_move_cells)) { tbl[row, col] = "+"; }
-                        else tbl[row, col] = "-";
-                    }
+                    // Смотрим на четыре возможных варианта развития событий из 
+                    // этого хода (рекурсией)
+                    var cellsAfterMove = new string[] {
+                        GetValue(row + add, col, tbl), GetValue(row, col + add, tbl),
+                        GetValue(row * mult, col, tbl), GetValue(row, col * mult, tbl) };
+                    // По этим четырем вариантам решаем, эта клеточка выигрышная или
+                    // проигрышная
+                    if (IsWin1(cellsAfterMove)) { tbl[row, col] = "+1"; }
+                    else if (IsLoss1(cellsAfterMove)) { tbl[row, col] = "-1"; }
+                    else if (IsWin2(cellsAfterMove)) { tbl[row, col] = "+2"; }
+                    else if (IsLoss2(cellsAfterMove)) { tbl[row, col] = "-2"; }
+                    else if (IsWin(cellsAfterMove)) { tbl[row, col] = "+"; }
+                    //int ifWin = IsWin0(cellsAfterMove);
+                    //if (ifWin != 100) tbl[row, col] = "+" + ifWin.ToString();
+                    else tbl[row, col] = "-";
                 }
                 return tbl[row, col];
             }
 
-            //    function select(rr, cc)
-            //    {
-            //        //alert(r);
-            //        //alert(c);
-            //        var tb = document.getElementById("table");
-            //        for (r = 0; r < tb.rows.length; r++)
-            //        {
-            //            for (c = 0; c < tb.rows[r].cells.length; c++)
-            //            {
-            //                tb.rows[r].cells[c].classList.remove("Selected");
-            //            }
-            //        }
+            // Создаем пустую таблицу
+            string[,] table = new string[toWin, toWin];
 
-            //        tb.rows[rr].cells[cc].classList.add("Selected");
-            //        var heap_1 = tb.rows[0].cells[cc].innerText;
-            //        var heap_2 = tb.rows[rr].cells[0].innerText;
-
-            //        r = Number(rr) + Number(p);
-            //        if (r > tb.rows.length - 1)
-            //        {
-            //            r = tb.rows.length - 1;
-            //        }
-            //        c = cc;
-            //        tb.rows[r].cells[c].classList.add("Selected");
-
-            //        r = rr;
-            //        c = Number(cc) + Number(p);
-            //        if (c > tb.rows[r].cells.length - 1)
-            //        {
-            //            c = tb.rows[r].cells.length - 1;
-            //        }
-            //        tb.rows[r].cells[c].classList.add("Selected");
-
-            //        var new_c;
-            //        for (c = cc; c < tb.rows[0].cells.length; c++)
-            //        {
-            //            new_c = c;
-            //            if (tb.rows[0].cells[c].innerText == heap_1 * m)
-            //            {
-            //                break;
-            //            }
-            //        }
-            //        tb.rows[r].cells[new_c].classList.add("Selected");
-
-            //        var new_r;
-            //        for (r = rr; r < tb.rows.length; r++)
-            //        {
-            //            new_r = r;
-            //            if (tb.rows[r].cells[0].innerText == heap_2 * m)
-            //            {
-            //                break;
-            //            }
-            //        }
-            //        tb.rows[new_r].cells[cc].classList.add("Selected");
-
-            //    }
-
-
-            //    function solve(this_form)
-            //    {
-
-            //        p = this_form.p.value;
-            //        m = this_form.m.value;
-            //        start_r = this_form.start_r.value;
-            //        start_c = this_form.start_c.value;
-            //        vi = this_form.victory.value;
-            //        end_r = vi - start_c + 1;
-            //        end_c = vi - start_r + 1;
-            //        V = this_form.V.value;
-            //        P = this_form.P.value;
-
-
-            string[,] table = new string[toWin-1, toWin-1];
-
-            for (int r = 0; r < toWin-1; r++)
+            // Определяем значение для каждой клетки
+            for (int r = 1; r < toWin; r++)
             {
-                for (int c = 0; c < toWin-1; c++)
+                for (int c = 1; c < toWin; c++)
                 {
-                    table[r, c] = "?";
+                    GetValue(r, c, table);
                 }
             }
 
-            //for (int r = 0; r < toWin; r++)
+            //for (int i = 1; i < toWin; i++)
             //{
-            //    for (int c = 0; c < toWin; c++)
+            //    for (int j = 1; j < toWin; j++)
             //    {
-            //        GetValue(r, c, table);
+            //        File.AppendAllText("../../result.txt", table[i, j] + " ");
             //    }
+            //    File.AppendAllText("../../result.txt", Environment.NewLine);
             //}
-
-            //MessageBox.Show($"{table.Length}");
-
-            for (int i = 0; i < toWin - 1; i++)
-            {
-                for (int j = 0; j < toWin - 1; j++)
-                {
-                    File.AppendAllText(path, table[i, j] + " ");
-                }
-                File.AppendAllText(path, Environment.NewLine);
-            }
-
-            //for (r = start_r; r < end_r; r++)
-            //{
-            //    for (c = start_c; c < end_c; c++)
-            //    {
-            //        res[r][c] = "?";
-            //    }
-            //}
-
-            //        var print = document.getElementById("res");
-            //        var output = "";
-            //        output += '<table id = "table">';
-            //        output += '<TH>';
-
-            //        for (c = start_c; c < end_c; c++)
-            //        {
-            //            output += '<TD>';
-            //            output += c;
-            //            output += '</TD>';
-            //            output += '</TH>';
-            //        }
-
-            //        for (r = start_r; r < end_r; r++)
-            //        {
-            //            output += '<TR>';
-            //            output += '<TD>';
-            //            output += r;
-            //            output += '</TD>';
-            //            for (c = start_c; c < end_c; c++)
-            //            {
-            //                var cl = "";
-            //                if (res[r][c][0] == V)
-            //                {
-            //                    cl = "V";
-            //                }
-
-            //                output += '<TD class = "' + cl + '"';
-            //                output += ' onclick="select(this.parentNode.rowIndex,this.cellIndex)">'
-
-
-
-            //        output += res[r][c];
-            //                output += '</TD>';
-            //            }
-            //            output += '</TR>';
-            //        }
-            //        output += '</table>';
-            //        print.innerHTML = output;
-
-            //    }
+            //MessageBox.Show(table.Length.ToString());
         }
     }
 }
