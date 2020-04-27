@@ -26,19 +26,19 @@ namespace ProblemGenerator
                 errorLabel.Visible = true;
                 return;
             }
-            //Generator.problemsNumber = num;
+            Generator.ProblemsNum = num;
             errorLabel.Visible = false;
         }
 
         private void DifComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Generator.storagePath = difComboBox.Text == "одна куча камней" ? "../../storage1.txt" : "../../storage2.txt";
+            Generator.ProblemType = difComboBox.SelectedIndex;
         }
 
         private void GenButton_Click(object sender, EventArgs e)
         {
-            //Generator.GenerateProblems();
-            Generator.Generate();
+            MessageBox.Show(Generator.Generate());
             Close();
         } 
 

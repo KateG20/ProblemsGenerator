@@ -17,9 +17,9 @@ namespace ProblemGenerator
         /// <param name="winMin">Минимальное количество камней для выигрыша</param>
         /// <param name="winMax">Максимальное количество камней для выигрыша</param>
         /// <returns>пока не знаю</returns>
-        public static string OneHeap(Generator.Adder[] actions, int winMin, int winMax)
+        public static string[] OneHeap(Generator.Adder[] actions, int winMin, int winMax)
         {
-            int[] table = new int[winMin];
+            string[] table = new string[winMin];
             // Для каждого количества камней, для каждого действия
             for (int i = winMin - 1; i > 0; i--)
             {
@@ -28,33 +28,35 @@ namespace ProblemGenerator
                     // Если ходом мы попадаем в зону выигрыша, то в этой клетке 1
                     if ((action(i) >= winMin) && (action(i) <= winMax))
                     {
-                        table[i] = 1;
+                        table[i] = "+1";
                         break;
                     }
                     else
                     {
                         // Если следующим ходом мы не попадаем в зону выигрыша, 
                         // то этим попадаем вторым (???)
-                        if (action(i) <= winMin && table[action(i)] < 0)
+                        if (action(i) <= winMin && table[action(i)][0] == '-')
                         {
-                            table[i] = 1; //a[action(i)] * (-1) + 1;
+                            table[i] = "+" + table[action(i)].Substring(1); //a[action(i)] * (-1) + 1;
                             break;
                         }
                     }
                     // Если никак не попадаем, то это зона проигрыша
-                    table[i] = -1;
+                    table[i] = "-1";
                 }
             }
 
-            string res = "";
-            for (int i = 0; i < table.Length; i++)
-            {
-                res += $"{i}: {table[i]}\n";
-            }
-            return res;
+            //MessageBox.Show(string.Join(", ", table));
+            return table;
+            //string res = "";
+            //for (int i = 0; i < table.Length; i++)
+            //{
+            //    res += $"{i}: {table[i]}\n";
+            //}
+            //return res;
         }
 
-        public static void TwoHeaps(int add, int mult, int toWin)
+        public static string[,] TwoHeaps(int add, int mult, int toWin)
         {
             //string path = "../../result.txt";
             //File.WriteAllText(path, string.Empty);
@@ -167,6 +169,8 @@ namespace ProblemGenerator
                     GetValue(r, c, table);
                 }
             }
+
+            return table;
 
             //for (int i = 1; i < toWin; i++)
             //{
