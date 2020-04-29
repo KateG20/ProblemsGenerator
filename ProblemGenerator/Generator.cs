@@ -12,13 +12,39 @@ namespace ProblemGenerator
     {
         static Random rand = new Random();
         public delegate int Adder(int x);
+        public delegate string[] GenerateType();
 
         public static int ProblemType { get; set; }
         public static int ProblemsNum { get; set; }
 
-        public static string Generate()
+        /// <summary>
+        /// Генерирует заданное пользователем количество задач заданного типа
+        /// </summary>
+        /// <returns>Двумерный массив - на первой строке условия, на второй - ответы</returns>
+        public static string[,] Generate()
         {
-            return GenOneHeap();
+            GenerateType GenerateMethod;
+            if (ProblemType == 0) GenerateMethod = GenOneHeap;
+            else if (ProblemType == 1) GenerateMethod = GenTwoHeaps;
+            else GenerateMethod = GenTwoWords;
+
+            string[,] problems = new string[2, ProblemsNum];
+            for (int i = 0; i < ProblemsNum; i++)
+            {
+                problems[0, i] = $"Задача {i + 1}<br>" + GenerateMethod()[0];
+                problems[1, i] = GenerateMethod()[1];
+            }
+            return problems;
+
+            //string[] tasks = new string[ProblemsNum];
+            //string[] answers = new string[ProblemsNum];
+            //for (int i = 0; i < ProblemsNum; i++)
+            //{
+            //    tasks[i] = $"Задача {i+1}<br>" + GenerateMethod()[0];
+            //    answers[i] = GenerateMethod()[1];
+            //}
+
+
             //Tables.TwoHeaps(2, 3, 48);
 
             //Adder add = (x) => x + rand.Next(1, 4);
@@ -27,7 +53,12 @@ namespace ProblemGenerator
             //Adder mult = (x) => x * 2;
         }
 
-        static string GenOneHeap()
+
+        /// <summary>
+        /// Геренирует задачу и ответ типа "одна куча камней"
+        /// </summary>
+        /// <returns>Массив из двух строк - условие и ответ</returns>
+        static string[] GenOneHeap()
         {
             // Количество действий
             int numOfActions = rand.Next(2, 5);
@@ -57,7 +88,7 @@ namespace ProblemGenerator
 
             string[] table;
             // Верхнее ограничение для выигрыша, если оно есть.
-            int upperBound = toWin * toMult - rand.Next(8, 14);
+            int upperBound = (toWin - toAdd.Max()) * toMult - rand.Next(8, 14);
             int isUpperBounded = 1;// rand.Next(2);
             string additionalString = "";
 
@@ -66,8 +97,8 @@ namespace ProblemGenerator
             if (isUpperBounded == 1)
             {
                 table = Tables.OneHeap(actions, toWin, upperBound);
-                additionalString = $"Если при этом в куче оказалось не более {upperBound} камней, " +
-                "то победителем считается игрок, сделавший последний ход. В противном случае победителем " +
+                additionalString = $"Если при этом в куче оказалось<br>не более {upperBound} камней, " +
+                "то победителем считается игрок, сделавший последний ход. В противном случае победителем<br>" +
                 "становится его противник. ";
             }
             else table = Tables.OneHeap(actions, toWin, 100000);
@@ -88,15 +119,20 @@ namespace ProblemGenerator
             // Создаем два списка с неколькими проигрышными и выигрышными клетками.
             List<int> fastLoses = new List<int>();
             List<int> fastWins = new List<int>();
+
+            // Список клеток, из которых можно выиграть первым ходом.
             List<int> oneMoveWins = new List<int>();
+
             foreach (var term in toAdd)
             {
                 for (int i = toWin - 1; i >= toWin - term; i--)
                 {
-                    oneMoveWins.Add(i);
+                    if (!oneMoveWins.Contains(i)) 
+                        oneMoveWins.Add(i);
                 }
             }
-            MessageBox.Show(string.Join(" ", oneMoveWins));
+            //MessageBox.Show(string.Join(" ", oneMoveWins));
+
             // Количество выигрышных клеток подряд.
             //int currWins = 0;
 
@@ -212,33 +248,55 @@ namespace ProblemGenerator
                     }
                 }
             }
-            //return $"{quest3Win}, {quest3Lose}, {quest2Win}, {quest2Lose}"; 
+            
+            // Выбираем рандомом, чтобы в третьем вопросе выводил клетку - или +
             string quest3;
             if (rand.Next(2) == 1) quest3 = quest3Win;
             else quest3 = quest3Lose;
 
+            // Шаблон текста
             string text = "Два игрока, Петя и Ваня, играют в следующую игру. Перед игроками лежит куча " +
-                "камней. Игроки ходят по очереди, первый ход делает Петя. За один ход игрок может:\n" +
-                "- добавить в кучу любое допустимое количество камней: {0}, или\n" +
-                "- увеличить количество камней в куче в {1} раза.\n" +
+                "камней. Игроки ходят по очереди,<br>первый ход делает Петя. За один ход игрок может:<br>" +
+                "- добавить в кучу любое допустимое количество камней: {0}, или<br>" +
+                "- увеличить количество камней в куче в {1} раза.<br>" +
                 "Игра завершается в тот момент, когда количество камней в куче становится не менее {2}. " +
-                "{3}В начальный момент в куче было S камней, 1 ≤ S ≤ {4}.\n" +
-                "Задание 1.\n" +
+                "{3}В начальный момент в куче было S камней, 1 ≤ S ≤ {4}.<br>" +
+                "Задание 1.<br>" +
                 "а) При каких значениях числа S Петя может выиграть в один ход? Укажите все такие " +
-                "значения и соответствующие ходы Пети.\n" +
+                "значения и соответствующие ходы Пети.<br>" +
                 "б) У кого из игроков есть выигрышная стратегия при S = {5}? Опишите " +
-                "выигрышные стратегии для этих случаев.\n" +
+                "выигрышные стратегии для этих случаев.<br>" +
                 "Задание 2. У кого из игроков есть выигрышная стратегия при S = {6}? " +
-                "Опишите соответствующие выигрышные стратегии.\n" +
+                "Опишите соответствующие выигрышные стратегии.<br>" +
                 "Задание 3. У кого из игроков есть выигрышная стратегия при S = {7}? Постройте дерево " +
-                "всех партий, возможных при этой выигрышной стратегии (в виде рисунка или таблицы). " +
-                "На рёбрах дерева указывайте, кто делает ход, в узлах – количество камней в позиции.";
+                "всех партий, возможных при этой<br>выигрышной стратегии (в виде рисунка или таблицы). " +
+                "На рёбрах дерева указывайте, кто делает ход, в узлах – количество<br>камней в позиции.";
 
+            // Строка для форматирования шаблона
             string[] data = new string[] { string.Join(", ", toAdd), toMult.ToString(),
                 toWin.ToString(), additionalString, (toWin-1).ToString(), quest1b,
                 string.Join(", ", new string[] { quest2Win, quest2Lose }), quest3 };
 
-            return string.Format(text, data);
+            string tableString = "<br>";
+            for (int i = 1; i < table.Length; i++)
+            {
+                tableString += $"{i}{table[i][0]}";
+            }
+            //string task = string.Format(text, data);
+            //string answer = "Решение\n1, a. {0}.\n1, б. {1}.\n2. {3}.\n3. {4}\nРазвернутые ответы не генерируются";
+            //string ans1a = string.Join(", ", oneMoveWins);
+
+            return new string[] { string.Format(text, data) + tableString, "solution" };
+        }
+
+        static string[] GenTwoHeaps()
+        {
+            return new string[2];
+        }
+
+        static string[] GenTwoWords()
+        {
+            return new string[2];
         }
     }
 }

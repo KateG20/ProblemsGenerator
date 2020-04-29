@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.difLabel = new System.Windows.Forms.Label();
-            this.difComboBox = new System.Windows.Forms.ComboBox();
+            this.typeComboBox = new System.Windows.Forms.ComboBox();
             this.numTextBox = new System.Windows.Forms.TextBox();
             this.numLabel = new System.Windows.Forms.Label();
             this.errorLabel = new System.Windows.Forms.Label();
@@ -47,19 +47,19 @@
             this.difLabel.Text = "Выберите тип задачи:";
             this.difLabel.Click += new System.EventHandler(this.DifLabel_Click);
             // 
-            // difComboBox
+            // typeComboBox
             // 
-            this.difComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.difComboBox.FormattingEnabled = true;
-            this.difComboBox.Items.AddRange(new object[] {
+            this.typeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.typeComboBox.FormattingEnabled = true;
+            this.typeComboBox.Items.AddRange(new object[] {
             "одна куча камней",
             "две кучи камней",
             "два слова"});
-            this.difComboBox.Location = new System.Drawing.Point(432, 100);
-            this.difComboBox.Name = "difComboBox";
-            this.difComboBox.Size = new System.Drawing.Size(206, 33);
-            this.difComboBox.TabIndex = 1;
-            this.difComboBox.SelectedIndexChanged += new System.EventHandler(this.DifComboBox_SelectedIndexChanged);
+            this.typeComboBox.Location = new System.Drawing.Point(432, 100);
+            this.typeComboBox.Name = "typeComboBox";
+            this.typeComboBox.Size = new System.Drawing.Size(206, 33);
+            this.typeComboBox.TabIndex = 1;
+            this.typeComboBox.SelectedIndexChanged += new System.EventHandler(this.TypeComboBox_SelectedIndexChanged);
             // 
             // numTextBox
             // 
@@ -87,9 +87,9 @@
             this.errorLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.errorLabel.Location = new System.Drawing.Point(550, 150);
             this.errorLabel.Name = "errorLabel";
-            this.errorLabel.Size = new System.Drawing.Size(595, 31);
+            this.errorLabel.Size = new System.Drawing.Size(575, 93);
             this.errorLabel.TabIndex = 4;
-            this.errorLabel.Text = "Количество задач - целое число не меньше 1.";
+            this.errorLabel.Text = "Количество задач - целое число от 1 до 100.\r\n\r\n.";
             this.errorLabel.Visible = false;
             // 
             // genButton
@@ -113,7 +113,7 @@
             this.Controls.Add(this.errorLabel);
             this.Controls.Add(this.numLabel);
             this.Controls.Add(this.numTextBox);
-            this.Controls.Add(this.difComboBox);
+            this.Controls.Add(this.typeComboBox);
             this.Controls.Add(this.difLabel);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -125,7 +125,7 @@
         #endregion
 
         private System.Windows.Forms.Label difLabel;
-        private System.Windows.Forms.ComboBox difComboBox;
+        private System.Windows.Forms.ComboBox typeComboBox;
         private System.Windows.Forms.TextBox numTextBox;
         private System.Windows.Forms.Label numLabel;
         private System.Windows.Forms.Label errorLabel;
