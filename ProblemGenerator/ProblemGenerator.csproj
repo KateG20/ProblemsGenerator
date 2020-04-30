@@ -57,7 +57,6 @@
     </Compile>
     <Compile Include="Generator.cs" />
     <Compile Include="Generator0.cs" />
-    <Compile Include="HTMLSaving.cs" />
     <Compile Include="HTMLWriter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

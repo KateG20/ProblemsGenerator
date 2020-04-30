@@ -21,14 +21,19 @@
 	   border: 3px double black;
 	   margin: 20px;
    }
+   input.colored{
+   	   border-radius: 5px;
+	   color: #008000;
+	   background: #FFFFFF;
+   }
   </style>
   <script>
-   function showAnswer(ans) {
-    var answer = document.getElementById("answer");
+   function showAnswer(ans, id) {
+    var answer = document.getElementById(id);
     answer.innerHTML = ans;
 	}
-   function hideAnswer() {
-    var answer = document.getElementById("answer");
+   function hideAnswer(id) {
+    var answer = document.getElementById(id);
     answer.innerHTML = "";
    }
   </script>
@@ -54,7 +59,8 @@
      Задание 3. У кого из игроков есть выигрышная стратегия при S = 16? Постройте дерево 
      всех партий, возможных при этой<br>выигрышной стратегии (в виде рисунка или таблицы). 
      На рёбрах дерева указывайте, кто делает ход, в узлах – количество<br>камней в позиции.</p>
-  <p><input type="button" value="Решение" onclick="showAnswer('kek!!')"><input type="button" value="Спрятать решение" onclick="hideAnswer()"></p>
-  <p><span id="answer"></span></p>
+  <p><input class="colored" type="button" value="Решение" onclick="showAnswer('kek!!', 'answer1')">
+  <input class="colored" type="button" value="Спрятать решение" onclick="hideAnswer('answer1')"></p>
+  <p><span id="answer1"></span></p>
 
 </html>

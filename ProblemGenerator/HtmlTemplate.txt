@@ -21,14 +21,19 @@
 	   border: 3px double black;
 	   margin: 20px;
    }
+   input.colored{
+   	   border-radius: 5px;
+	   color: #008000;
+	   background: #FFFFFF;
+   }
   </style>
   <script>
-   function showAnswer(ans) {
-    var answer = document.getElementById("answer");
+   function showAnswer(ans, id) {
+    var answer = document.getElementById(id);
     answer.innerHTML = ans;
 	}
-   function hideAnswer() {
-    var answer = document.getElementById("answer");
+   function hideAnswer(id) {
+    var answer = document.getElementById(id);
     answer.innerHTML = "";
    }
   </script>

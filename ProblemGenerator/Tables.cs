@@ -170,16 +170,21 @@ namespace ProblemGenerator
                 }
             }
 
-            return table;
+            //string res = "";
 
             //for (int i = 1; i < toWin; i++)
             //{
             //    for (int j = 1; j < toWin; j++)
             //    {
-            //        File.AppendAllText("../../result.txt", table[i, j] + " ");
+            //        //File.AppendAllText("../../result.txt", table[i, j] + " ");
+            //        res += table[i, j] + " ";
             //    }
-            //    File.AppendAllText("../../result.txt", Environment.NewLine);
+            //    //File.AppendAllText("../../result.txt", Environment.NewLine);
+            //    res += "\n";
             //}
+            //MessageBox.Show(res);
+
+            return table;
             //MessageBox.Show(table.Length.ToString());
         }
     }
