@@ -261,9 +261,11 @@ namespace ProblemGenerator
 
         static string[] GenTwoHeaps()
         {
+            // Генерация числовых значений
             int toAdd = rand.Next(1, 3);
             int toMult = rand.Next(2, 4);
             int toWin = rand.Next(35, 81);
+            // Создание таблицы
             string[,] table = Tables.TwoHeaps(toAdd, toMult, toWin);
 
             // 1) две -1
@@ -375,6 +377,7 @@ namespace ProblemGenerator
 
         static string[] GenTwoWords()
         {
+            Tables.TwoWords(new Adder[] { x => x + 1, x => x * 2 }, new Adder[] { x => x + 2, x => x * 3 }, 52);
             return new string[2];
         }
     }

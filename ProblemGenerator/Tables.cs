@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
@@ -187,5 +189,201 @@ namespace ProblemGenerator
             return table;
             //MessageBox.Show(table.Length.ToString());
         }
+        //public static string[,] TwoWords(int[] add, int[] mult, int toWin)
+        public static string[,] TwoWords(Generator.Adder[] actionsX, Generator.Adder[] actionsY, int toWin)
+        {
+            //actionsX = [];
+            //actionsY = [];
+
+            //var print = document.getElementById("res");
+            //print.innerHTML = "Вычисляю..";
+
+            //for (var row of this_form['actionsX'].value.split(" "))
+            //{
+            //    row = row.trim();
+            //    if (row != '')
+            //    {
+            //        var actionX = new Function('x', 'return x ' + row + ';');
+            //        actionsX[actionsX.length] = actionX;
+            //    }
+            //}
+            //for (var row of this_form['actionsY'].value.split(" "))
+            //{
+            //    row = row.trim();
+            //    if (row != '')
+            //    {
+            //        var actionY = new Function('x', 'return x ' + row + ';');
+            //        actionsY[actionsY.length] = actionY;
+            //    }
+            //}
+
+            //win = +this_form['win'].value;
+            //startX = +this_form['startX'].value;
+            //startY = +this_form['startY'].value;
+            //a = new Array(win).fill(0);
+            string[,] table = new string[toWin, toWin];
+
+            // Заполнение шапок (не знаю, надо ли)
+            //for (var r = 0; r < toWin; r++)
+            //{
+            //    table[r, 0] = r.ToString();
+            //}
+            //for (var c = 0; c < toWin; c++)
+            //{
+            //    table[0, c] = c.ToString();
+            //}
+
+            for (var y = toWin-1; y > 0; y--)
+            {
+                for (var x = toWin-1; x > 0; x--)
+                {
+                    table[y, x] = "-";
+                    List<string> targets = new List<string>();
+                    if ((y + x) >= toWin)
+                        table[y, x] = "!";
+                    else
+                    {
+                        foreach (var actionX in actionsX)
+                        {
+                            if (y + actionX(x) >= toWin)
+                            {
+                                targets.Add("!");
+                                break;
+                            }
+                            else
+                            {
+                                targets.Add(table[y, actionX(x)]);
+                            }
+                        }
+                        foreach (var actionY in actionsY)
+                        {
+                            if (x + actionY(y) >= toWin)
+                            {
+                                targets.Add("!");
+                                break;
+                            }
+                            else
+                            {
+                                targets.Add(table[actionY(y), x]);
+                            }
+                        }
+                        if (targets.IndexOf("!") != -1) table[y, x] = "+1";
+                        else if (targets.IndexOf("-1") != -1) table[y, x] = "+2";
+                        else if (targets.IndexOf("-1,2") != -1) table[y, x] = "+";
+                        else if (targets.IndexOf("-") != -1) table[y, x] = "+";
+                        else
+                        {
+                            table[y, x] = "-";
+                            int k1 = 0;
+                            int k2 = 0;
+                            foreach (string target in targets)
+                            {
+                                if (target == "+1") k1 += 1;
+                                else if (target == "+2") k2 += 1;
+                            }
+                            if (k1 == targets.Count) table[y, x] = "-1";
+                            else if ((k1 + k2) == targets.Count) table[y, x] = "-1,2";
+                        }
+                    }
+                }
+            }
+
+            var xx = 1;
+            var x0 = 0;
+            while ((xx + 1) < toWin)
+            {
+                x0 += 1;
+                foreach (var actionX in actionsX)
+                    if (actionX(x0) > xx) xx = actionX(x0);
+            }
+            int finishX = x0;
+
+            var yy = 1;
+            var y0 = 0;
+            while (yy + 1 < toWin)
+            {
+                y0 += 1;
+                foreach (var actionY in actionsY)
+                    if (actionY(y0) > yy) yy = actionY(y0);
+            }
+            int finishY = y0;
+
+            string res = "";
+            for (int i = 1; i < toWin; i++)
+            {
+                for (int j = 0; j < toWin; j++)
+                {
+                    res += table[i, j] + " ";
+                }
+                res += "\n";
+            }
+            MessageBox.Show(res);
+
+            return table;
+
+            //var output = "";
+            //output += '<table id = "table">';
+            //output += '<TR>';
+            //output += '<TD></TD>';
+
+            //for (var x = startX; x <= finishX; x++)
+            //{
+            //    output += '<TD>' + a[0][x] + '</TD>';
+            //}
+            //output += '<TD>...</TD>';
+            //output += '<TD>' + (win - startY) + '</TD>';
+            //output += '</TR>';
+
+            //var win_values = new Set(['+', '+1', '+2', '!']);
+            //for (var y = startY; y <= finishY; y++)
+            //{
+            //    output += '<TR>';
+            //    output += '<TD>' + a[y][0] + '</TD>';
+            //    if (a[y])
+            //    {
+            //        for (var x = startX; x <= finishX; x++)
+            //        {
+            //            var y = a[y][0];
+            //            if (win_values.has(a[y][x]))
+            //            {
+            //                output += '<TD class = "V"';
+            //            }
+            //            else
+            //            {
+            //                output += '<TD '
+            //            }
+            //            output += ' onclick="select(this.parentNode.rowIndex,this.cellIndex)">';
+            //            output += a[y][x];
+            //            output += '</TD>';
+            //        }
+            //    }
+            //    output += '<TD class = "V">+1</TD>';
+            //    output += '<TD class = "V">!</TD>';
+            //    output += '</TR>';
+            //}
+            //output += '<TR>';
+            //output += '<TD>...</TD>';
+            //for (var x = startX; x <= finishX; x++)
+            //{
+            //    output += '<TD class = "V">+1</TD>';
+            //}
+            //output += '<TD class = "V">+1</TD>';
+            //output += '<TD class = "V">!</TD>';
+            //output += '</TR>';
+
+            //output += '<TR>';
+            //output += '<TD>' + (win - startX) + '</TD>';
+            //for (var x = startX; x <= finishX; x++)
+            //{
+            //    output += '<TD class = "V">!</TD>';
+            //}
+            //output += '<TD class = "V">!</TD>';
+            //output += '<TD class = "V">!</TD>';
+            //output += '</TR>';
+
+            //output += '</table>';
+            //print.innerHTML = output;
+        }
     }
 }
+
