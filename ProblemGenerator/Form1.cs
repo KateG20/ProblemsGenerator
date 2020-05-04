@@ -40,15 +40,16 @@ namespace ProblemGenerator
         {
             Generator.ProblemType = typeComboBox.SelectedIndex;
             genButton.Visible = true;
+            infoLabel.Visible = true;
         }
 
         private void GenButton_Click(object sender, EventArgs e)
         {
-            //if (numTextBox.Text == "")
-            //{
-            //    errorLabel.Visible = true;
-            //    return;
-            //}
+            if (numTextBox.Text == "")
+            {
+                errorLabel.Visible = true;
+                return;
+            }
             string[,] problemsData = Generator.Generate();
             HTMLWriter.WriteHTML(problemsData);
             Close();

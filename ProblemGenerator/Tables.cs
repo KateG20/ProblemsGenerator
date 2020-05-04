@@ -288,101 +288,39 @@ namespace ProblemGenerator
                 }
             }
 
-            var xx = 1;
-            var x0 = 0;
-            while ((xx + 1) < toWin)
-            {
-                x0 += 1;
-                foreach (var actionX in actionsX)
-                    if (actionX(x0) > xx) xx = actionX(x0);
-            }
-            int finishX = x0;
+            // Что это???
+            //var xx = 1;
+            //var x0 = 0;
+            //while ((xx + 1) < toWin)
+            //{
+            //    x0 += 1;
+            //    foreach (var actionX in actionsX)
+            //        if (actionX(x0) > xx) xx = actionX(x0);
+            //}
+            //int finishX = x0;
 
-            var yy = 1;
-            var y0 = 0;
-            while (yy + 1 < toWin)
-            {
-                y0 += 1;
-                foreach (var actionY in actionsY)
-                    if (actionY(y0) > yy) yy = actionY(y0);
-            }
-            int finishY = y0;
+            //var yy = 1;
+            //var y0 = 0;
+            //while (yy + 1 < toWin)
+            //{
+            //    y0 += 1;
+            //    foreach (var actionY in actionsY)
+            //        if (actionY(y0) > yy) yy = actionY(y0);
+            //}
+            //int finishY = y0;
 
-            string res = "";
-            for (int i = 1; i < toWin; i++)
-            {
-                for (int j = 0; j < toWin; j++)
-                {
-                    res += table[i, j] + " ";
-                }
-                res += "\n";
-            }
-            MessageBox.Show(res);
+            //string res = "";
+            //for (int i = 1; i < toWin; i++)
+            //{
+            //    for (int j = 0; j < toWin; j++)
+            //    {
+            //        res += table[i, j] + " ";
+            //    }
+            //    res += "\n";
+            //}
+            //MessageBox.Show(res);
 
             return table;
-
-            //var output = "";
-            //output += '<table id = "table">';
-            //output += '<TR>';
-            //output += '<TD></TD>';
-
-            //for (var x = startX; x <= finishX; x++)
-            //{
-            //    output += '<TD>' + a[0][x] + '</TD>';
-            //}
-            //output += '<TD>...</TD>';
-            //output += '<TD>' + (win - startY) + '</TD>';
-            //output += '</TR>';
-
-            //var win_values = new Set(['+', '+1', '+2', '!']);
-            //for (var y = startY; y <= finishY; y++)
-            //{
-            //    output += '<TR>';
-            //    output += '<TD>' + a[y][0] + '</TD>';
-            //    if (a[y])
-            //    {
-            //        for (var x = startX; x <= finishX; x++)
-            //        {
-            //            var y = a[y][0];
-            //            if (win_values.has(a[y][x]))
-            //            {
-            //                output += '<TD class = "V"';
-            //            }
-            //            else
-            //            {
-            //                output += '<TD '
-            //            }
-            //            output += ' onclick="select(this.parentNode.rowIndex,this.cellIndex)">';
-            //            output += a[y][x];
-            //            output += '</TD>';
-            //        }
-            //    }
-            //    output += '<TD class = "V">+1</TD>';
-            //    output += '<TD class = "V">!</TD>';
-            //    output += '</TR>';
-            //}
-            //output += '<TR>';
-            //output += '<TD>...</TD>';
-            //for (var x = startX; x <= finishX; x++)
-            //{
-            //    output += '<TD class = "V">+1</TD>';
-            //}
-            //output += '<TD class = "V">+1</TD>';
-            //output += '<TD class = "V">!</TD>';
-            //output += '</TR>';
-
-            //output += '<TR>';
-            //output += '<TD>' + (win - startX) + '</TD>';
-            //for (var x = startX; x <= finishX; x++)
-            //{
-            //    output += '<TD class = "V">!</TD>';
-            //}
-            //output += '<TD class = "V">!</TD>';
-            //output += '<TD class = "V">!</TD>';
-            //output += '</TR>';
-
-            //output += '</table>';
-            //print.innerHTML = output;
         }
     }
 }

@@ -113,7 +113,7 @@ namespace ProblemGenerator
             {
                 for (int i = toWin - 1; i >= toWin - term; i--)
                 {
-                    if (!oneMoveWins.Contains(i)) 
+                    if (!oneMoveWins.Contains(i))
                         oneMoveWins.Add(i);
                 }
             }
@@ -149,10 +149,10 @@ namespace ProblemGenerator
                 // После добавления удаляем этот элемент, чтобы не было повторений
                 fastWins.RemoveAt(indToAdd);
             }
-             
+
             // Добавляем одну проигрышную
             quest1bInts.Add(fastLoses[rand.Next(fastLoses.Count)]);
-            
+
             // Сортируем
             quest1bInts.Sort();
 
@@ -186,30 +186,13 @@ namespace ProblemGenerator
                     }
                 }
             }
-            
+
             // Выбираем рандомом, чтобы в третьем вопросе выводил клетку - или +
             string quest3;
             if (rand.Next(2) == 1) quest3 = quest3Win;
             else quest3 = quest3Lose;
 
-            // Шаблон текста
-            //string text = "Два игрока, Петя и Ваня, играют в следующую игру. Перед игроками лежит куча " +
-            //    "камней. Игроки ходят по очереди,<br>первый ход делает Петя. За один ход игрок может:<br>" +
-            //    "- добавить в кучу любое допустимое количество камней: {0};<br>" +
-            //    "- увеличить количество камней в куче в {1} раза.<br>" +
-            //    "Игра завершается в тот момент, когда количество камней в куче становится не менее {2}. " +
-            //    "{3}В начальный момент в куче было S камней, 1 ≤ S ≤ {4}.<br>" +
-            //    "Задание 1.<br>" +
-            //    "а) При каких значениях числа S Петя может выиграть в один ход? Укажите все такие " +
-            //    "значения и соответствующие ходы Пети.<br>" +
-            //    "б) У кого из игроков есть выигрышная стратегия при S = {5}? Опишите " +
-            //    "выигрышные стратегии для этих случаев.<br>" +
-            //    "Задание 2. У кого из игроков есть выигрышная стратегия при S = {6}? " +
-            //    "Опишите соответствующие выигрышные стратегии.<br>" +
-            //    "Задание 3. У кого из игроков есть выигрышная стратегия при S = {7}? Постройте дерево " +
-            //    "всех партий, возможных при этой<br>выигрышной стратегии (в виде рисунка или таблицы). " +
-            //    "На рёбрах дерева указывайте, кто делает ход, в узлах – количество<br>камней в позиции.";
-
+            // Строка с шаблоном задания
             string text = "Два игрока, Петя и Ваня, играют в следующую игру. Перед игроками лежит куча " +
                 "камней. Игроки ходят по очереди, первый ход делает Петя. За один ход игрок может:<br>" +
                 "- добавить в кучу любое допустимое количество камней: {0};<br>" +
@@ -282,15 +265,13 @@ namespace ProblemGenerator
                 }
             }
 
-            // Теперь ищем клетки с +2 (в окресности клетки -1 на две координаты назад)
+            // Теперь ищем клетки с +2 (в окрестности клетки -1 на две координаты назад)
             List<int[]> quest2array = new List<int[]>();
-            //MessageBox.Show($"{toWin}, {toAdd}, {toMult}");
             foreach (var pair in quest1array)
             {
-                //MessageBox.Show(string.Join(", ", pair));
-                for (int i = pair[0]-2; i <= pair[0]; i++)
+                for (int i = pair[0] - 2; i <= pair[0]; i++)
                 {
-                    for (int j = pair[1]-2; j <= pair[1]; j++)
+                    for (int j = pair[1] - 2; j <= pair[1]; j++)
                     {
                         if (i > 0 && j > 0 && i <= j)
                         {
@@ -300,7 +281,7 @@ namespace ProblemGenerator
                 }
             }
 
-            // Ищем клетки -1/2 или -2
+            // Ищем клетки -1/2 или -2 (в окрестностях +2 на одну координату назад)
             List<int[]> quest3array = new List<int[]>();
             foreach (var pair in quest2array)
             {
@@ -337,10 +318,11 @@ namespace ProblemGenerator
                 quest2array.RemoveAt(indToAdd);
             }
             string quest2 = string.Join(", ", quest2filtered);
-            
+
             // Сделали строкой координаты для третьего вопроса
             string quest3 = $"({string.Join(", ", quest3array[rand.Next(quest3array.Count)])})";
 
+            // Строка с шаблоном задания
             string text = "Два игрока, Петя и Ваня, играют в следующую игру. Перед игроками лежат две кучи " +
                 "камней. Игроки ходят по очереди, первый ход делает Петя. За один ход игрок может:<br> а) добавить " +
                 "в одну из куч (по своему выбору) {0};<br> б) увеличить количество камней в куче в {1} " +
@@ -352,15 +334,18 @@ namespace ProblemGenerator
                 "имеет выигрышную стратегию. Постройте дерево всех партий, возможных при указанной выигрышной " +
                 "стратегии.";
 
+            // Строка для форматирования шаблона
             string[] data = new string[] { toAdd.ToString() + (toAdd == 1 ? " камень" : " камня"),
                 toMult.ToString(), toWin.ToString(), quest1, quest2, quest3 };
 
+            // Строка с шаблоном ответа
             string answer = "1.<br>{0}<br>2.<br>{1}<br>3. {2}<br>Развернутые ответы проверяются учителем.";
             string ans1 = string.Empty;
 
+            // Создаем ответы
             foreach (var pair in quest1filtered)
             {
-                ans1 += $"{pair}: Вася<br>";
+                ans1 += $"{pair}: Ваня<br>";
             }
 
             string ans2 = string.Empty;
@@ -370,15 +355,186 @@ namespace ProblemGenerator
                 ans2 += $"{pair}: Петя<br>";
             }
 
-            string ans3 = quest3 + ": Вася<br>";
+            string ans3 = quest3 + ": Ваня<br>";
 
+            // Возвращаем отформатированные текст и решение
             return new string[] { string.Format(text, data), string.Format(answer, new string[] { ans1, ans2, ans3 }) };
         }
 
         static string[] GenTwoWords()
         {
-            Tables.TwoWords(new Adder[] { x => x + 1, x => x * 2 }, new Adder[] { x => x + 2, x => x * 3 }, 52);
-            return new string[2];
+            // Генерируем данные для условия
+            int[] toAdd = new int[] { rand.Next(1, 3), rand.Next(1, 3) };
+            int[] toMult = new int[] { rand.Next(2, 4), rand.Next(2, 4) };
+            Adder[] actionsX = new Adder[] { x => x + toAdd[0], x => x * toMult[0] };
+            Adder[] actionsY = new Adder[] { x => x + toAdd[1], x => x * toMult[1] };
+            int toWin = rand.Next(30, 61);
+
+            // Создаем табличку для этих даннных
+            string[,] table = Tables.TwoWords(actionsX, actionsY, toWin);
+
+            // Будем делать так:
+            // 1) две -1 с самой границы, один + из середины (две координаты назад от +2)
+            // 2) одну или две +2, одну или две -1/2
+            // 3) +2 или -1/2 или +
+
+            // Нашли все клетки с -1
+            List<int[]> minus1array = new List<int[]>();
+            for (int i = 1; i < toWin; i++)
+            {
+                for (int j = i; j < toWin; j++)
+                {
+                    if (table[i, j] == "-1") minus1array.Add(new int[] { i, j });
+                }
+            }
+
+            // Клетки с +2 (в окрестности клетки -1 на две координаты назад)
+            List<int[]> plus2array = new List<int[]>();
+            foreach (var pair in minus1array)
+            {
+                for (int i = pair[0] - 2; i <= pair[0]; i++)
+                {
+                    for (int j = pair[1] - 2; j <= pair[1]; j++)
+                    {
+                        if (i > 0 && j > 0 && i <= j)
+                        {
+                            if (table[i, j] == "+2") plus2array.Add(new int[] { i, j });
+                        }
+                    }
+                }
+            }
+
+            // Клетки с -1,2 (в окрестности клетки +2 на две координаты назад)
+            List<int[]> minus12array = new List<int[]>();
+            foreach (var pair in plus2array)
+            {
+                for (int i = pair[0] - 2; i <= pair[0]; i++)
+                {
+                    for (int j = pair[1] - 2; j <= pair[1]; j++)
+                    {
+                        if (i > 0 && j > 0 && i <= j)
+                        {
+                            if (table[i, j] == "-1,2") minus12array.Add(new int[] { i, j });
+                        }
+                    }
+                }
+            }
+
+            // Клетки с + (в окрестностях -1,2 на две координаты назад)
+            List<int[]> plusArray = new List<int[]>();
+            foreach (var pair in minus12array)
+            {
+                for (int i = pair[0] - 2; i <= pair[0]; i++)
+                {
+                    for (int j = pair[1] - 2; j <= pair[1]; j++)
+                    {
+                        if (i > 0 && j > 0 && i <= j)
+                        {
+                            if (table[i, j] == "+") plusArray.Add(new int[] { i, j });
+                        }
+                    }
+                }
+            }
+
+            // Список пар для первого вопроса
+            List<string> quest1 = new List<string>();
+            // Список ответов для первого вопроса
+            List<string> ans1 = new List<string>();
+
+            // Добавляем в него две -1
+            int indToAdd;
+            for (int i = 0; i < 2; i++)
+            {
+                indToAdd = rand.Next(minus1array.Count);
+                quest1.Add($"({string.Join(", ", minus1array[indToAdd])})");
+                ans1.Add($"({string.Join(", ", minus1array[indToAdd])}): Ваня");
+                minus1array.RemoveAt(indToAdd);
+            }
+
+            // Добавляем один + в рандомное место
+            indToAdd = rand.Next(plusArray.Count);
+            // Позиция на которой будет эта пара
+            int placeToAdd = rand.Next(quest1.Count + 1);
+            quest1.Insert(placeToAdd, $"({string.Join(", ", plusArray[indToAdd])})");
+            ans1.Insert(placeToAdd, $"({string.Join(", ", plusArray[indToAdd])}): Петя");
+            plusArray.RemoveAt(indToAdd);
+
+            // Список для второго вопроса
+            List<string> quest2 = new List<string>();
+            // Список ответов для второго вопроса
+            List<string> ans2 = new List<string>();
+
+            // Добавляем в него две +2
+            for (int i = 0; i < 2; i++)
+            {
+                indToAdd = rand.Next(plus2array.Count);
+                quest2.Add($"({string.Join(", ", plus2array[indToAdd])})");
+                ans2.Add($"({string.Join(", ", plus2array[indToAdd])}): Петя");
+                plus2array.RemoveAt(indToAdd);
+            }
+
+            // В рандомное место в нем одну или две -1/2
+            for (int i = 0; i < rand.Next(1, 3); i++)
+            {
+                indToAdd = rand.Next(minus12array.Count);
+                placeToAdd = rand.Next(quest2.Count + 1);
+                quest2.Insert(placeToAdd, $"({string.Join(", ", minus12array[indToAdd])})");
+                ans2.Insert(placeToAdd, $"({string.Join(", ", minus12array[indToAdd])}): Ваня");
+                minus12array.RemoveAt(indToAdd);
+            }
+
+            // В третьем вопросе - рандом: либо +2, либо -1/2, либо +
+            int indQuest3 = rand.Next(3);
+            string quest3 = string.Empty;
+            string ans3 = string.Empty;
+            switch (indQuest3)
+            {
+                case 0:
+                    {
+                        indToAdd = rand.Next(plus2array.Count);
+                        quest3 = $"({string.Join(", ", plus2array[indToAdd])})";
+                        ans3 = "Петя<br>";
+                        break;
+                    }
+                case 1:
+                    {
+                        indToAdd = rand.Next(minus12array.Count);
+                        quest3 = $"({string.Join(", ", minus12array[indToAdd])})";
+                        ans3 = "Ваня<br>";
+                        break;
+                    }
+                case 2:
+                    {
+                        indToAdd = rand.Next(plusArray.Count);
+                        quest3 = $"({string.Join(", ", plusArray[indToAdd])})";
+                        ans3 = "Петя<br>";
+                        break;
+                    }
+            }
+
+            // Строка с шаблоном задания
+            string text = "Два игрока, Петя и Ваня играют в игру с цепочками символов. Игра начинается " +
+                "со слова, которое состоит из n букв Х и m букв Y. Такое слово будем обозначать как (n, m). " +
+                "Игроки ходят по очереди, первый ход делает Петя. За один ход игрок может:<br>" +
+                "1) добавить в слово {0} Х;<br>2) добавить в слово {1} Y;<br>3) увеличить " +
+                "количество букв Х в {2} раза;<br>4) увеличить количество букв Y в {3} раза.<br>Игра " +
+                "завершается в тот момент, когда длина слова становится не менее {4} символов. Победителем " +
+                "считается игрок, сделавший последний ход, т.е. первым получивший слово длиной {4} или " +
+                "больше.<br>Задание 1. Для каждой из начальных позиций {5} укажите, кто из игроков имеет " +
+                "выигрышную стратегию.<br>Задание 2. Для каждой из начальных позиций {6} укажите, кто из " +
+                "игроков имеет выигрышную стратегию.<br> Задание 3. Для начальной позиции {7} укажите, " +
+                "кто из игроков имеет выигрышную стратегию. Постройте дерево всех партий, возможных при " +
+                "указанной выигрышной стратегии.";
+
+            // Данные для форматирования шаблона
+            string[] data = new string[] { toAdd[0] == 1 ? "одну букву" : "две буквы",
+                toAdd[1] == 1 ? "одну букву" : "две буквы", toMult[0].ToString(), toMult[1].ToString(),
+                toWin.ToString(), string.Join(", ", quest1), string.Join(", ", quest2), quest3 };
+
+            string answer = "1.<br>{0}<br><br>2.<br>{1}<br><br>3. {2}<br>Развернутые ответы проверяются учителем.";
+
+            return new string[] { string.Format(text, data), string.Format(answer, new string[] 
+                { string.Join("<br>", ans1), string.Join("<br>", ans2), ans3 }) };
         }
     }
 }

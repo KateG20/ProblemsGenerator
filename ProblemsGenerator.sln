@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProblemsGeneratorBeta", "ProblemsGeneratorBeta\ProblemsGeneratorBeta.csproj", "{B427D538-4045-49B3-B714-80618D29717B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProblemGenerator", "ProblemGenerator\ProblemGenerator.csproj", "{E3BBBCEF-B357-4AC3-9F54-DA04A5316FF4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProblemsGenerator", "ProblemGenerator\ProblemsGenerator.csproj", "{E3BBBCEF-B357-4AC3-9F54-DA04A5316FF4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.csproj", "{DA1E7306-2108-41BA-8CEB-B32696CB87AB}"
 EndProject
