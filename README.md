@@ -1,3 +1,3 @@
-﻿# ProblemsGenerator\
-пока ничего не работает
+﻿# ProblemsGenerator
+пока ничего не работает\
 upd работает

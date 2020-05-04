@@ -39,9 +39,48 @@ namespace ProblemGenerator
             return problems;
         }
 
+        /// <summary>
+        /// Генерирует заданное пользователем количество задач рандомного типа
+        /// </summary>
+        /// <returns>Двумерный массив - на первой строке условия, на второй - ответы</returns>
+        public static string[,] RandomGenerate()
+        {
+            string[,] problems = new string[2, ProblemsNum];
+            string[] result;
+            // Каждый раз создаем задачу рандомного типа
+            for (int i = 0; i < ProblemsNum; i++)
+            {
+                switch (rand.Next(3))
+                {
+                    case 0:
+                        {
+                            result = GenOneHeap();
+                            break;
+                        }
+                    case 1:
+                        {
+                            result = GenTwoHeaps();
+                            break;
+                        }
+                    case 2:
+                        {
+                            result = GenTwoWords();
+                            break;
+                        }
+                    default:
+                        {
+                            result = new string[1];
+                            break;
+                        }
+                }
+                problems[0, i] = $"Задача {i + 1}<br>" + result[0];
+                problems[1, i] = result[1];
+            }
+            return problems;
+        }
 
         /// <summary>
-        /// Геренирует задачу и ответ типа "одна куча камней"
+        /// Генерирует задачу и ответ типа "одна куча камней"
         /// </summary>
         /// <returns>Массив из двух строк - условие и ответ</returns>
         static string[] GenOneHeap()
@@ -533,7 +572,7 @@ namespace ProblemGenerator
 
             string answer = "1.<br>{0}<br><br>2.<br>{1}<br><br>3. {2}<br>Развернутые ответы проверяются учителем.";
 
-            return new string[] { string.Format(text, data), string.Format(answer, new string[] 
+            return new string[] { string.Format(text, data), string.Format(answer, new string[]
                 { string.Join("<br>", ans1), string.Join("<br>", ans2), ans3 }) };
         }
     }

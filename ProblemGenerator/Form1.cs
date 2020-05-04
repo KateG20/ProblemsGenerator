@@ -50,10 +50,26 @@ namespace ProblemGenerator
                 errorLabel.Visible = true;
                 return;
             }
-            string[,] problemsData = Generator.Generate();
+            string[,] problemsData;
+            if (randBox.Checked) problemsData = Generator.RandomGenerate();
+            else problemsData = Generator.Generate();
             HTMLWriter.WriteHTML(problemsData);
             Close();
-        } 
+        }
+
+        private void RandBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (randBox.Checked)
+            {
+                genButton.Visible = true;
+                infoLabel.Visible = true;
+            }
+            if (!randBox.Checked && typeComboBox.SelectedItem is null)
+            {
+                genButton.Visible = false;
+                infoLabel.Visible = false;
+            }
+        }
 
         private void DifLabel_Click(object sender, EventArgs e)
         {

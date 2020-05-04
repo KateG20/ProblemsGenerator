@@ -37,6 +37,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.infoLabel = new System.Windows.Forms.Label();
+            this.randBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // difLabel
@@ -61,7 +62,7 @@
             "два слова"});
             this.typeComboBox.Location = new System.Drawing.Point(529, 287);
             this.typeComboBox.Name = "typeComboBox";
-            this.typeComboBox.Size = new System.Drawing.Size(336, 39);
+            this.typeComboBox.Size = new System.Drawing.Size(304, 39);
             this.typeComboBox.TabIndex = 1;
             this.typeComboBox.SelectedIndexChanged += new System.EventHandler(this.TypeComboBox_SelectedIndexChanged);
             // 
@@ -103,7 +104,7 @@
             this.genButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.genButton.Font = new System.Drawing.Font("Comic Sans MS", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.genButton.ForeColor = System.Drawing.Color.Green;
-            this.genButton.Location = new System.Drawing.Point(485, 470);
+            this.genButton.Location = new System.Drawing.Point(485, 463);
             this.genButton.Name = "genButton";
             this.genButton.Size = new System.Drawing.Size(285, 59);
             this.genButton.TabIndex = 5;
@@ -144,12 +145,25 @@
             this.infoLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.infoLabel.Visible = false;
             // 
+            // randBox
+            // 
+            this.randBox.AutoSize = true;
+            this.randBox.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.randBox.Location = new System.Drawing.Point(908, 283);
+            this.randBox.Name = "randBox";
+            this.randBox.Size = new System.Drawing.Size(317, 49);
+            this.randBox.TabIndex = 9;
+            this.randBox.Text = "Рандомные типы";
+            this.randBox.UseVisualStyleBackColor = true;
+            this.randBox.CheckedChanged += new System.EventHandler(this.RandBox_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Ivory;
             this.ClientSize = new System.Drawing.Size(1273, 738);
+            this.Controls.Add(this.randBox);
             this.Controls.Add(this.infoLabel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -177,6 +191,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label infoLabel;
+        private System.Windows.Forms.CheckBox randBox;
     }
 }
 
