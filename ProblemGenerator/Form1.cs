@@ -20,14 +20,18 @@ namespace ProblemGenerator
         }
         private void NumTextBox_TextChanged(object sender, EventArgs e)
         {
+            // Проверяем, чтобы было введено положительное целое число
             if (!int.TryParse(numTextBox.Text, out int num) || num < 1)
             {
+                // Очищаем поле
                 numTextBox.Text = string.Empty;
                 errorLabel.Visible = true;
                 return;
             }
-            if (num > 99)
+            // И оно было меньше 100
+            if (num > 100)
             {
+                // Обрезаем число, оставляем только первые две цифры
                 numTextBox.Text = numTextBox.Text.Substring(0, 2);
                 errorLabel.Visible = true;
                 return;
@@ -38,6 +42,7 @@ namespace ProblemGenerator
 
         private void TypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Передаем тип в класс генератора, делаем видимой кнопку запуска
             Generator.ProblemType = typeComboBox.SelectedIndex;
             genButton.Visible = true;
             infoLabel.Visible = true;
@@ -45,6 +50,7 @@ namespace ProblemGenerator
 
         private void GenButton_Click(object sender, EventArgs e)
         {
+            // Если количество задач не указано, сообщение об ошибке
             if (numTextBox.Text == "")
             {
                 errorLabel.Visible = true;
@@ -53,17 +59,27 @@ namespace ProblemGenerator
             string[,] problemsData;
             if (randBox.Checked) problemsData = Generator.RandomGenerate();
             else problemsData = Generator.Generate();
-            HTMLWriter.WriteHTML(problemsData);
+            try
+            {
+                HTMLWriter.WriteHTML(problemsData);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Произошла ошибка при создании html-файла.\n" + ex.Message);
+                Environment.Exit(0);
+            }
             Close();
         }
 
         private void RandBox_CheckedChanged(object sender, EventArgs e)
         {
+            // Если галочка стоит, делаем видимой кнопку запуска
             if (randBox.Checked)
             {
                 genButton.Visible = true;
                 infoLabel.Visible = true;
             }
+            // Если галочка не стоит и тип задач не выбран, скрываем ее
             if (!randBox.Checked && typeComboBox.SelectedItem is null)
             {
                 genButton.Visible = false;
@@ -71,6 +87,7 @@ namespace ProblemGenerator
             }
         }
 
+        // Пасхалочки
         private void DifLabel_Click(object sender, EventArgs e)
         {
             difLabel.ForeColor = Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256));

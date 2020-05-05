@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.IO;
 using System.Windows.Forms;
 
 namespace ProblemGenerator
@@ -18,51 +17,80 @@ namespace ProblemGenerator
         /// <param name="actions">Список арифметических действий</param>
         /// <param name="winMin">Минимальное количество камней для выигрыша</param>
         /// <param name="winMax">Максимальное количество камней для выигрыша</param>
-        /// <returns>пока не знаю</returns>
-        public static string[] OneHeap(Generator.Adder[] actions, int winMin, int winMax)
+        /// <returns>Массив исходов для каждой клетки</returns>
+        public static string[] OneHeap(int[] toAdd, int toMult, int winMin, int winMax)
         {
             string[] table = new string[winMin];
+            // Флаг для выхода из массива, если уже определили значение клетки
+            bool ok;
             // Для каждого количества камней, для каждого действия
             for (int i = winMin - 1; i > 0; i--)
             {
-                foreach (var action in actions)
+                ok = false;
+                // Проверяем эту клетку для каждого слагаемого
+                foreach (var addend in toAdd)
                 {
                     // Если ходом мы попадаем в зону выигрыша, то в этой клетке 1
-                    if ((action(i) >= winMin) && (action(i) <= winMax))
+                    if ((i + addend >= winMin) && (i + addend <= winMax))
                     {
-                        table[i] = "+1";
+                        table[i] = "+";
+                        ok = true;
                         break;
                     }
                     else
                     {
-                        // Если следующим ходом мы не попадаем в зону выигрыша, 
-                        // то этим попадаем вторым (???)
-                        if (action(i) <= winMin && table[action(i)][0] == '-')
+                        // Если мы попадаем в зону проигрыша, то это тоже зона выигрыша
+                        if (i + addend < winMin && table[i + addend] == "-")
                         {
-                            table[i] = "+" + table[action(i)].Substring(1); //a[action(i)] * (-1) + 1;
+                            table[i] = "+";
+                            ok = true;
                             break;
                         }
                     }
-                    // Если никак не попадаем, то это зона проигрыша
-                    table[i] = "-1";
+                    // Иначе это зона проигрыша
+                    table[i] = "-";
                 }
+                if (ok) continue;
+                // Теперь так же для множителя
+                // Если ходом мы попадаем в зону выигрыша, то в этой клетке 1
+                if ((i * toMult >= winMin) && (i * toMult <= winMax))
+                {
+                    table[i] = "+";
+                    continue;
+                }
+                else
+                {
+                    // Если мы попадаем в зону проигрыша, то это тоже зона выигрыша
+                    if (i * toMult < winMin && table[i * toMult] == "-")
+                    {
+                        table[i] = "+";
+                        continue;
+                    }
+                }
+                // Иначе это зона проигрыша
+                table[i] = "-";
             }
 
-            //MessageBox.Show(string.Join(", ", table));
+            string tableString = "";
+            for (int i = 1; i < table.Length; i++)
+            {
+                tableString += $"{i}{table[i]} ";
+            }
+            //MessageBox.Show(tableString);
+
             return table;
-            //string res = "";
-            //for (int i = 0; i < table.Length; i++)
-            //{
-            //    res += $"{i}: {table[i]}\n";
-            //}
-            //return res;
         }
 
+        /// <summary>
+        /// Создает таблицу с исходами для любого количества элементов,
+        /// для двух куч
+        /// </summary>
+        /// <param name="add">Сколько камней добавляется</param>
+        /// <param name="mult">Во сколько раз умножается количество камней</param>
+        /// <param name="toWin">Сколько камней нужно для выигрыша</param>
+        /// <returns>Двумерный массив (таблицу) с исходами</returns>
         public static string[,] TwoHeaps(int add, int mult, int toWin)
         {
-            //string path = "../../result.txt";
-            //File.WriteAllText(path, string.Empty);
-
             // Методы, принимающие на вход четыре варианты развития событий 
             // после разных ходов, и возвращающие соответствие своему названию
             bool IsWin1(string[] cells)
@@ -172,55 +200,19 @@ namespace ProblemGenerator
                 }
             }
 
-            //string res = "";
-
-            //for (int i = 1; i < toWin; i++)
-            //{
-            //    for (int j = 1; j < toWin; j++)
-            //    {
-            //        //File.AppendAllText("../../result.txt", table[i, j] + " ");
-            //        res += table[i, j] + " ";
-            //    }
-            //    //File.AppendAllText("../../result.txt", Environment.NewLine);
-            //    res += "\n";
-            //}
-            //MessageBox.Show(res);
-
             return table;
-            //MessageBox.Show(table.Length.ToString());
         }
-        //public static string[,] TwoWords(int[] add, int[] mult, int toWin)
+
+        /// <summary>
+        /// Создает таблицу с исходами для любого количества букв,
+        /// для двух слов
+        /// </summary>
+        /// <param name="actionsX">Действия для первого слова</param>
+        /// <param name="actionsY">Действия для второго слова</param>
+        /// <param name="toWin">Количество букв для победы</param>
+        /// <returns>Двумерный массив (таблицу) с исходами</returns>
         public static string[,] TwoWords(Generator.Adder[] actionsX, Generator.Adder[] actionsY, int toWin)
         {
-            //actionsX = [];
-            //actionsY = [];
-
-            //var print = document.getElementById("res");
-            //print.innerHTML = "Вычисляю..";
-
-            //for (var row of this_form['actionsX'].value.split(" "))
-            //{
-            //    row = row.trim();
-            //    if (row != '')
-            //    {
-            //        var actionX = new Function('x', 'return x ' + row + ';');
-            //        actionsX[actionsX.length] = actionX;
-            //    }
-            //}
-            //for (var row of this_form['actionsY'].value.split(" "))
-            //{
-            //    row = row.trim();
-            //    if (row != '')
-            //    {
-            //        var actionY = new Function('x', 'return x ' + row + ';');
-            //        actionsY[actionsY.length] = actionY;
-            //    }
-            //}
-
-            //win = +this_form['win'].value;
-            //startX = +this_form['startX'].value;
-            //startY = +this_form['startY'].value;
-            //a = new Array(win).fill(0);
             string[,] table = new string[toWin, toWin];
 
             // Заполнение шапок (не знаю, надо ли)
@@ -287,38 +279,6 @@ namespace ProblemGenerator
                     }
                 }
             }
-
-            // Что это???
-            //var xx = 1;
-            //var x0 = 0;
-            //while ((xx + 1) < toWin)
-            //{
-            //    x0 += 1;
-            //    foreach (var actionX in actionsX)
-            //        if (actionX(x0) > xx) xx = actionX(x0);
-            //}
-            //int finishX = x0;
-
-            //var yy = 1;
-            //var y0 = 0;
-            //while (yy + 1 < toWin)
-            //{
-            //    y0 += 1;
-            //    foreach (var actionY in actionsY)
-            //        if (actionY(y0) > yy) yy = actionY(y0);
-            //}
-            //int finishY = y0;
-
-            //string res = "";
-            //for (int i = 1; i < toWin; i++)
-            //{
-            //    for (int j = 0; j < toWin; j++)
-            //    {
-            //        res += table[i, j] + " ";
-            //    }
-            //    res += "\n";
-            //}
-            //MessageBox.Show(res);
 
             return table;
         }

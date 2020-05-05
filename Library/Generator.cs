@@ -1,10 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ProblemGenerator
 {
@@ -40,7 +39,7 @@ namespace ProblemGenerator
         }
 
         /// <summary>
-        /// Генерирует заданное пользователем количество задач рандомного типа
+        /// Генерирует заданное пользователем количество задач разных типов, выбирая их рандомно
         /// </summary>
         /// <returns>Двумерный массив - на первой строке условия, на второй - ответы</returns>
         public static string[,] RandomGenerate()
@@ -99,42 +98,48 @@ namespace ProblemGenerator
                 {
                     num = rand.Next(1, 4);
                 } while (toAdd.Contains(num));
+                //MessageBox.Show(num.ToString());
                 toAdd[i] = num;
-                actions[i] = (x) => x + num;
+                actions[i] = ((x) => x + num);
             }
             Array.Sort(toAdd);
 
             // Действие умножения (пусть будет одно)
             int toMult = rand.Next(2, 4);
-            actions[numOfActions - 1] = (x) => x * toMult;
+            //MessageBox.Show("mult "+toMult.ToString());
+            actions[numOfActions - 1] = ((x) => x * toMult);
 
             // Количество камней для выигрыша
             int toWin = rand.Next(25, 66);
+            //MessageBox.Show("win " + toWin.ToString());
 
             string[] table;
-            // Верхнее ограничение для выигрыша, если оно есть.
+            // Верхнее ограничение для выигрыша.
             int upperBound = (toWin - toAdd.Max()) * toMult - rand.Next(8, 14);
-            int isUpperBounded = 1;// rand.Next(2);
-            string additionalString = "";
+            //MessageBox.Show("bpund " + upperBound.ToString());
+            table = Tables.OneHeap(toAdd, toMult, toWin, upperBound);
+
+            //int isUpperBounded = 1;// rand.Next(2);
+            //string additionalString = "";
 
 
-            // 50 на 50 - задача с верхней границей или без
-            if (isUpperBounded == 1)
-            {
-                table = Tables.OneHeap(actions, toWin, upperBound);
-                additionalString = $"Если при этом в куче оказалось<br>не более {upperBound} камней, " +
-                "то победителем считается игрок, сделавший последний ход. В противном случае победителем<br>" +
-                "становится его противник. ";
-            }
-            else table = Tables.OneHeap(actions, toWin, 100000);
+            //// 50 на 50 - задача с верхней границей или без
+            //if (isUpperBounded == 1)
+            //{
+            //    table = Tables.OneHeap(actions, toWin, upperBound);
+            //    additionalString = $"Если при этом в куче оказалось<br>не более {upperBound} камней, " +
+            //    "то победителем считается игрок, сделавший последний ход. В противном случае победителем<br>" +
+            //    "становится его противник. ";
+            //}
+            //else table = Tables.OneHeap(actions, toWin, 100000);
 
 
             /////////////////////////////////////////////////////// фальшивая табличка
-            //toAdd = new int[] { 1,2,3 };
+            //toAdd = new int[] { 1, 2, 3 };
             //toMult = 3;
-            //toWin = 61;
-            //upperBound = 110;
-            //table = Tables.OneHeap(new Adder[] { x => x + 1, x => x + 2, x => x + 3, x => x * 3 }, 61, 110);
+            //toWin = 55;
+            //upperBound = 144;
+            //table = Tables.OneHeap(new Adder[] { x => x + 1, x => x + 2, x => x + 3, x => x * toMult }, toWin, upperBound);
 
             // 1б - рандомно 1-2 минуса и плюса из переда таблицы
             // 2 - первый минус и первый плюс в основной части
@@ -153,50 +158,39 @@ namespace ProblemGenerator
                 for (int i = toWin - 1; i >= toWin - term; i--)
                 {
                     if (!oneMoveWins.Contains(i))
+                    {
                         oneMoveWins.Add(i);
+                    }
                 }
             }
+            oneMoveWins.Sort();
 
-            // Проходимся во всей таблице с конца, добавляя номера клеток 
-            // в соответствующие списки.
-            for (int i = table.Length - 2; i > 0; i--)
-            {
-                // Добавляем выигрышные не в первый ход (они в вопросе 1а) и проигрышные клетки
-                if (table[i] == "+1")
-                {
-                    if (!oneMoveWins.Contains(i))
-                        fastWins.Add(i);
-                }
-                else
-                {
-                    fastLoses.Add(i);
-                    //currWins = 0;
-                }
-                // Одного проигрыша и двух выигрышей достаточо
-                if (fastWins.Count >= 2 && fastLoses.Count >= 1) break;
-            }
+            // Сразу создадим строку для первого ответа
+            string ans1a = $"{(int)Math.Ceiling((double)toWin / toMult)}-{upperBound / toMult}, " +
+                string.Join(", ", oneMoveWins);
 
-            // Создали список всех подходящих номеров клеток для вопроса 1б
+            // И список для вопроса 1б
             List<int> quest1bInts = new List<int>();
-            int indToAdd;
-
-            // Добавляем две выигрышные клетки из найденных (вдруг их больше двух)
-            for (int i = 0; i < 2; i++)
+            // Добавляем в него все, что выигрывается не первым ходом из-за ограничения сверху
+            for (int i = upperBound / toMult + 1; i < toWin - toAdd[toAdd.Length - 1]; i++)
             {
-                indToAdd = rand.Next(fastWins.Count);
-                quest1bInts.Add(fastWins[indToAdd]);
-                // После добавления удаляем этот элемент, чтобы не было повторений
-                fastWins.RemoveAt(indToAdd);
+                quest1bInts.Add(i);
             }
 
-            // Добавляем одну проигрышную
-            quest1bInts.Add(fastLoses[rand.Next(fastLoses.Count)]);
-
-            // Сортируем
-            quest1bInts.Sort();
-
-            // Запоминаем строкой
+            // Нужно оставить всего 3-4 штуки, остальные удаляем
+            int toDelete = quest1bInts.Count - rand.Next(3, 5);
+            for (int i = 0; i < toDelete; i++)
+            {
+                quest1bInts.RemoveAt(rand.Next(quest1bInts.Count));
+            }
+            // Делаем строкой
             string quest1b = string.Join(", ", quest1bInts);
+
+            // Добавим в список выигрыши от умножения
+            for (int i = (int)Math.Ceiling((double)toWin / toMult); i <= upperBound / toMult; i++)
+            {
+                oneMoveWins.Add(i);
+            }
 
             /// Вопросы 2 и 3
             // Создаем переменные для первых и вторых плюсов и минусов
@@ -206,7 +200,7 @@ namespace ProblemGenerator
             for (int i = upperBound / toMult; i > 0; i--)
             {
                 // Если клетка проигрыша, то проверям, первая или вторая, и записываем ее
-                if (table[i] == "-1")
+                if (table[i] == "-")
                 {
                     if (quest2Lose.Length == 0)
                         quest2Lose = i.ToString();
@@ -215,7 +209,7 @@ namespace ProblemGenerator
                 }
                 // Если клетка выигрыша, то тоже проверяем, а если это вторая выигрышная,
                 // то выходим из цикла - данные нам больше не нужны
-                if (table[i] == "+1")
+                if (table[i] == "+")
                 {
                     if (quest2Lose.Length > 0 && quest2Win.Length == 0) quest2Win = i.ToString();
                     else if (quest3Lose.Length > 0)
@@ -237,7 +231,9 @@ namespace ProblemGenerator
                 "- добавить в кучу любое допустимое количество камней: {0};<br>" +
                 "- увеличить количество камней в куче в {1} раза.<br>" +
                 "Игра завершается в тот момент, когда количество камней в куче становится не менее {2}. " +
-                "{3}В начальный момент в куче было S камней, 1 ≤ S ≤ {4}.<br>" +
+                "Если при этом в куче оказалось<br>не более {3} камней, " +
+                "то победителем считается игрок, сделавший последний ход. В противном случае победителем<br>" +
+                "становится его противник. В начальный момент в куче было S камней, 1 ≤ S ≤ {4}.<br>" +
                 "Задание 1.<br>" +
                 "а) При каких значениях числа S Петя может выиграть в один ход? Укажите все такие " +
                 "значения и соответствующие ходы Пети.<br>" +
@@ -251,29 +247,30 @@ namespace ProblemGenerator
 
             // Строка для форматирования шаблона
             string[] data = new string[] { string.Join(", ", toAdd), toMult.ToString(),
-                toWin.ToString(), additionalString, (toWin-1).ToString(), quest1b,
+                toWin.ToString(), upperBound.ToString(), (toWin-1).ToString(), quest1b,
                 string.Join(", ", new string[] { quest2Win, quest2Lose }), quest3 };
-
-            //string tableString = "<br>";
-            //for (int i = 1; i < table.Length; i++)
-            //{
-            //    tableString += $"{i}{table[i][0]}";
-            //}
 
             // Создаем шаблон для ответа и записываем ответ для каждого пункта.
             string answer = "1a) {0}<br>1б) {1}<br>2) {2}<br>3) {3}<br>Развернутые ответы проверяются учителем.";
-            string ans1a = string.Join(", ", oneMoveWins);
+
+            string tableString = "<br>";
+            for (int i = 1; i < table.Length; i++)
+            {
+                tableString += $"{i}{table[i]} ";
+            }
+            answer += tableString;
+
             string ans1b = string.Empty;
 
             for (int i = 0; i < quest1bInts.Count; i++)
             {
-                ans1b += $"S = {quest1bInts[i]}: " + (table[quest1bInts[i]] == "+1" ? "Петя<br>" : "Вася<br>");
+                ans1b += $"S = {quest1bInts[i]}: " + (table[quest1bInts[i]] == "+" ? "Петя<br>" : "Ваня<br>");
             }
 
-            string ans2 = $"S = {quest2Win}: " + (table[int.Parse(quest2Win)] == "+1" ? "Петя<br>" : "Вася<br>") +
-                $"S = {quest2Lose}: " + (table[int.Parse(quest2Lose)] == "+1" ? "Петя<br>" : "Вася<br>");
+            string ans2 = $"S = {quest2Win}: " + (table[int.Parse(quest2Win)] == "+" ? "Петя<br>" : "Ваня<br>") +
+                $"S = {quest2Lose}: " + (table[int.Parse(quest2Lose)] == "+" ? "Петя<br>" : "Ваня<br>");
 
-            string ans3 = $"S = {quest3}: " + (table[int.Parse(quest3)] == "+1" ? "Петя<br>" : "Вася<br>");
+            string ans3 = $"S = {quest3}: " + (table[int.Parse(quest3)] == "+" ? "Петя<br>" : "Ваня<br>");
 
             // Строка для форматирования шаблона
             string[] answers = new string[] { ans1a, ans1b, ans2, ans3 };

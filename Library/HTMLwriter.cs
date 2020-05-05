@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using HtmlAgilityPack;
-using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +19,9 @@ namespace ProblemGenerator
             string baseText = File.ReadAllText("../../HtmlTemplate.txt");
             File.WriteAllText(path, baseText, Encoding.UTF8);
 
-            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+            HtmlDocument doc = new HtmlDocument();
             doc.Load(path);
-            HtmlNode body = doc.DocumentNode.SelectSingleNode("//html/body"), 
+            HtmlNode body = doc.DocumentNode.SelectSingleNode("//html/body"),
                 task, button, input1, input2, answer, span;
 
             // Проходимся по каждой задаче из списка
@@ -63,7 +62,6 @@ namespace ProblemGenerator
 
             // Открываем страничку в браузере
             Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
-            //Process.Start(new ProcessStartInfo(@"C:\Users\Lenovo X1\source\repos\ProblemsGeneratorBeta\ProblemGenerator\template.html") { UseShellExecute = true });
         }
     }
 }

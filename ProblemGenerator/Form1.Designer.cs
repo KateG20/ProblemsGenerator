@@ -42,6 +42,7 @@
             // 
             // difLabel
             // 
+            this.difLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.difLabel.AutoSize = true;
             this.difLabel.Font = new System.Drawing.Font("Comic Sans MS", 13.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.difLabel.Location = new System.Drawing.Point(40, 280);
@@ -53,6 +54,7 @@
             // 
             // typeComboBox
             // 
+            this.typeComboBox.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.typeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.typeComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.typeComboBox.FormattingEnabled = true;
@@ -68,6 +70,7 @@
             // 
             // numTextBox
             // 
+            this.numTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.numTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numTextBox.Location = new System.Drawing.Point(529, 366);
             this.numTextBox.Name = "numTextBox";
@@ -77,6 +80,7 @@
             // 
             // numLabel
             // 
+            this.numLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.numLabel.AutoSize = true;
             this.numLabel.Font = new System.Drawing.Font("Comic Sans MS", 13.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numLabel.Location = new System.Drawing.Point(40, 361);
@@ -88,6 +92,7 @@
             // 
             // errorLabel
             // 
+            this.errorLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.errorLabel.AutoSize = true;
             this.errorLabel.Font = new System.Drawing.Font("Comic Sans MS", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.errorLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -100,6 +105,7 @@
             // 
             // genButton
             // 
+            this.genButton.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.genButton.AutoSize = true;
             this.genButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.genButton.Font = new System.Drawing.Font("Comic Sans MS", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -115,6 +121,7 @@
             // 
             // label1
             // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label1.Font = new System.Drawing.Font("Comic Sans MS", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.ForeColor = System.Drawing.Color.Green;
             this.label1.Location = new System.Drawing.Point(289, 9);
@@ -125,6 +132,7 @@
             // 
             // label2
             // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label2.Font = new System.Drawing.Font("Comic Sans MS", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label2.ForeColor = System.Drawing.Color.Green;
             this.label2.Location = new System.Drawing.Point(165, 130);
@@ -135,6 +143,7 @@
             // 
             // infoLabel
             // 
+            this.infoLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.infoLabel.Font = new System.Drawing.Font("Comic Sans MS", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.infoLabel.ForeColor = System.Drawing.Color.DarkGoldenrod;
             this.infoLabel.Location = new System.Drawing.Point(328, 546);
@@ -142,11 +151,12 @@
             this.infoLabel.Size = new System.Drawing.Size(597, 84);
             this.infoLabel.TabIndex = 8;
             this.infoLabel.Text = "Вы будете перенаправлены в браузер на страницу с готовыми задачами.";
-            this.infoLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.infoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.infoLabel.Visible = false;
             // 
             // randBox
             // 
+            this.randBox.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.randBox.AutoSize = true;
             this.randBox.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.randBox.Location = new System.Drawing.Point(908, 283);
