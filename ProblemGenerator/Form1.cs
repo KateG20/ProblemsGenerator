@@ -21,6 +21,12 @@ namespace ProblemGenerator
         private void NumTextBox_TextChanged(object sender, EventArgs e)
         {
             // Проверяем, чтобы было введено положительное целое число
+            if (numTextBox.Text.Length > 0 && numTextBox.Text[0] == '0')
+            {
+                numTextBox.Text = numTextBox.Text.Substring(1);
+                errorLabel.Visible = true;
+                return;
+            }
             if (!int.TryParse(numTextBox.Text, out int num) || num < 1)
             {
                 // Очищаем поле
@@ -33,6 +39,9 @@ namespace ProblemGenerator
             {
                 // Обрезаем число, оставляем только первые две цифры
                 numTextBox.Text = numTextBox.Text.Substring(0, 2);
+                // Ставим курсор в конец
+                numTextBox.SelectionStart = 2;
+                numTextBox.SelectionLength = 0;
                 errorLabel.Visible = true;
                 return;
             }

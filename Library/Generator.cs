@@ -28,10 +28,18 @@ namespace ProblemGenerator
             else GenerateMethod = GenTwoWords;
 
             string[,] problems = new string[2, ProblemsNum];
-            string[] result;
+            string[] result = new string[1];
             for (int i = 0; i < ProblemsNum; i++)
             {
-                result = GenerateMethod();
+                try
+                {
+                    result = GenerateMethod();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Возникла ошибка при генерации задачи.\n" + e.Message);
+                    Environment.Exit(0);
+                }
                 problems[0, i] = $"Задача {i + 1}<br>" + result[0];
                 problems[1, i] = result[1];
             }
@@ -45,32 +53,40 @@ namespace ProblemGenerator
         public static string[,] RandomGenerate()
         {
             string[,] problems = new string[2, ProblemsNum];
-            string[] result;
+            string[] result = new string[1];
             // Каждый раз создаем задачу рандомного типа
             for (int i = 0; i < ProblemsNum; i++)
             {
-                switch (rand.Next(3))
+                try
                 {
-                    case 0:
-                        {
-                            result = GenOneHeap();
-                            break;
-                        }
-                    case 1:
-                        {
-                            result = GenTwoHeaps();
-                            break;
-                        }
-                    case 2:
-                        {
-                            result = GenTwoWords();
-                            break;
-                        }
-                    default:
-                        {
-                            result = new string[1];
-                            break;
-                        }
+                    switch (rand.Next(3))
+                    {
+                        case 0:
+                            {
+                                result = GenOneHeap();
+                                break;
+                            }
+                        case 1:
+                            {
+                                result = GenTwoHeaps();
+                                break;
+                            }
+                        case 2:
+                            {
+                                result = GenTwoWords();
+                                break;
+                            }
+                        default:
+                            {
+                                result = new string[1];
+                                break;
+                            }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Возникла ошибка при генерации задачи.\n" + e.Message);
+                    Environment.Exit(0);
                 }
                 problems[0, i] = $"Задача {i + 1}<br>" + result[0];
                 problems[1, i] = result[1];
@@ -79,7 +95,7 @@ namespace ProblemGenerator
         }
 
         /// <summary>
-        /// Генерирует задачу и ответ типа "одна куча камней"
+        /// Генерирует задачу и ответ для типа "одна куча камней"
         /// </summary>
         /// <returns>Массив из двух строк - условие и ответ</returns>
         static string[] GenOneHeap()
@@ -98,7 +114,6 @@ namespace ProblemGenerator
                 {
                     num = rand.Next(1, 4);
                 } while (toAdd.Contains(num));
-                //MessageBox.Show(num.ToString());
                 toAdd[i] = num;
                 actions[i] = ((x) => x + num);
             }
@@ -106,44 +121,24 @@ namespace ProblemGenerator
 
             // Действие умножения (пусть будет одно)
             int toMult = rand.Next(2, 4);
-            //MessageBox.Show("mult "+toMult.ToString());
             actions[numOfActions - 1] = ((x) => x * toMult);
 
             // Количество камней для выигрыша
             int toWin = rand.Next(25, 66);
-            //MessageBox.Show("win " + toWin.ToString());
 
-            string[] table;
-            // Верхнее ограничение для выигрыша.
+            string[] table = new string[1];
+            // Верхнее ограничение для выигрыша
             int upperBound = (toWin - toAdd.Max()) * toMult - rand.Next(8, 14);
-            //MessageBox.Show("bpund " + upperBound.ToString());
-            table = Tables.OneHeap(toAdd, toMult, toWin, upperBound);
-
-            //int isUpperBounded = 1;// rand.Next(2);
-            //string additionalString = "";
-
-
-            //// 50 на 50 - задача с верхней границей или без
-            //if (isUpperBounded == 1)
-            //{
-            //    table = Tables.OneHeap(actions, toWin, upperBound);
-            //    additionalString = $"Если при этом в куче оказалось<br>не более {upperBound} камней, " +
-            //    "то победителем считается игрок, сделавший последний ход. В противном случае победителем<br>" +
-            //    "становится его противник. ";
-            //}
-            //else table = Tables.OneHeap(actions, toWin, 100000);
-
-
-            /////////////////////////////////////////////////////// фальшивая табличка
-            //toAdd = new int[] { 1, 2, 3 };
-            //toMult = 3;
-            //toWin = 55;
-            //upperBound = 144;
-            //table = Tables.OneHeap(new Adder[] { x => x + 1, x => x + 2, x => x + 3, x => x * toMult }, toWin, upperBound);
-
-            // 1б - рандомно 1-2 минуса и плюса из переда таблицы
-            // 2 - первый минус и первый плюс в основной части
-            // 3 - второй минус (или второй плюс)
+            // Создаем таблицу для данных
+            try
+            {
+                table = Tables.OneHeap(toAdd, toMult, toWin, upperBound);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Возникла ошибка при рассчитывании решения.\n" + e.Message);
+                Environment.Exit(0);
+            }
 
             /// Вопрос 1б
             // Создаем два списка с неколькими проигрышными и выигрышными клетками.
@@ -253,13 +248,6 @@ namespace ProblemGenerator
             // Создаем шаблон для ответа и записываем ответ для каждого пункта.
             string answer = "1a) {0}<br>1б) {1}<br>2) {2}<br>3) {3}<br>Развернутые ответы проверяются учителем.";
 
-            string tableString = "<br>";
-            for (int i = 1; i < table.Length; i++)
-            {
-                tableString += $"{i}{table[i]} ";
-            }
-            answer += tableString;
-
             string ans1b = string.Empty;
 
             for (int i = 0; i < quest1bInts.Count; i++)
@@ -278,6 +266,10 @@ namespace ProblemGenerator
             return new string[] { string.Format(text, data), string.Format(answer, answers) };
         }
 
+        /// <summary>
+        /// Генерирует задачу и ответ для типа "две кучи камней"
+        /// </summary>
+        /// <returns>Массив из двух строк - условие и ответ</returns>
         static string[] GenTwoHeaps()
         {
             // Генерация числовых значений
@@ -285,11 +277,16 @@ namespace ProblemGenerator
             int toMult = rand.Next(2, 4);
             int toWin = rand.Next(35, 81);
             // Создание таблицы
-            string[,] table = Tables.TwoHeaps(toAdd, toMult, toWin);
-
-            // 1) две -1
-            // 2) две/три +2
-            // 3) -
+            string[,] table = new string[1, 1];
+            try
+            {
+                table = Tables.TwoHeaps(toAdd, toMult, toWin);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Возникла ошибка при рассчитывании решения.\n" + e.Message);
+                Environment.Exit(0);
+            }
 
             // Нашли все клетки с -1
             List<int[]> quest1array = new List<int[]>();
@@ -397,6 +394,10 @@ namespace ProblemGenerator
             return new string[] { string.Format(text, data), string.Format(answer, new string[] { ans1, ans2, ans3 }) };
         }
 
+        /// <summary>
+        /// Генерирует задачу и ответ для типа "два слова"
+        /// </summary>
+        /// <returns>Массив из двух строк - условие и ответ</returns>
         static string[] GenTwoWords()
         {
             // Генерируем данные для условия
@@ -407,12 +408,16 @@ namespace ProblemGenerator
             int toWin = rand.Next(30, 61);
 
             // Создаем табличку для этих даннных
-            string[,] table = Tables.TwoWords(actionsX, actionsY, toWin);
-
-            // Будем делать так:
-            // 1) две -1 с самой границы, один + из середины (две координаты назад от +2)
-            // 2) одну или две +2, одну или две -1/2
-            // 3) +2 или -1/2 или +
+            string[,] table = new string[1, 1];
+            try
+            {
+                table = Tables.TwoWords(actionsX, actionsY, toWin);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Возникла ошибка при рассчитывании решения.\n" + e.Message);
+                Environment.Exit(0);
+            }
 
             // Нашли все клетки с -1
             List<int[]> minus1array = new List<int[]>();

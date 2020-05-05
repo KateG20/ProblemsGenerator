@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ProblemGenerator
 {
@@ -14,12 +15,22 @@ namespace ProblemGenerator
         public static void WriteHTML(string[,] problems)
         {
             // Добываем путь к файлу, в который будем записывать
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments) + "//task26.html";
-            // Добываем текст из шаблончика и записываем его в файл
+
+            string docpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments);
+            string path = Path.Combine(docpath, "task26.html");
+            int count = 1;
+
+            // При существовании файла создаем новый, а не перезаписываем
+            while (File.Exists(path))
+            {
+                path = Path.Combine(docpath, $"task26({count++}).html");
+            }
+
+            // Добываем текст из шаблона и записываем его в файл
             string baseText = File.ReadAllText("../../HtmlTemplate.txt");
             File.WriteAllText(path, baseText, Encoding.UTF8);
 
-            HtmlDocument doc = new HtmlDocument();
+            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
             doc.Load(path);
             HtmlNode body = doc.DocumentNode.SelectSingleNode("//html/body"),
                 task, button, input1, input2, answer, span;
@@ -60,7 +71,7 @@ namespace ProblemGenerator
             }
             doc.Save(path);
 
-            // Открываем страничку в браузере
+            // Открываем страницу в браузере
             Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
         }
     }

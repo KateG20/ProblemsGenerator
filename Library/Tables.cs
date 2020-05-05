@@ -71,13 +71,6 @@ namespace ProblemGenerator
                 table[i] = "-";
             }
 
-            string tableString = "";
-            for (int i = 1; i < table.Length; i++)
-            {
-                tableString += $"{i}{table[i]} ";
-            }
-            //MessageBox.Show(tableString);
-
             return table;
         }
 
@@ -140,22 +133,6 @@ namespace ProblemGenerator
                 return false;
             }
 
-            //////// Это я пытаюсь сделать так, чтобы в каждой клетке было указано 
-            //////// количество ходов для выигрыша; доделаю потом
-            //int IsWin0(string[] cells)
-            //{
-            //    int minStep = 100, step;
-            //    for (int i = 0; i < cells.Length; i++)
-            //    {
-            //        if (cells[i][0] == '-')
-            //        {
-            //            step = int.Parse(cells[i].Substring(1)) + 1;
-            //            if (step < minStep) minStep = step;
-            //        }
-            //    }
-            //    return minStep;
-            //}
-
             string GetValue(int row, int col, string[,] tbl)
             {
                 // Если сумма камней >= нужной, это выигрышная клетка
@@ -181,8 +158,6 @@ namespace ProblemGenerator
                     else if (IsWin2(cellsAfterMove)) { tbl[row, col] = "+2"; }
                     else if (IsLoss2(cellsAfterMove)) { tbl[row, col] = "-2"; }
                     else if (IsWin(cellsAfterMove)) { tbl[row, col] = "+"; }
-                    //int ifWin = IsWin0(cellsAfterMove);
-                    //if (ifWin != 100) tbl[row, col] = "+" + ifWin.ToString();
                     else tbl[row, col] = "-";
                 }
                 return tbl[row, col];
@@ -214,16 +189,6 @@ namespace ProblemGenerator
         public static string[,] TwoWords(Generator.Adder[] actionsX, Generator.Adder[] actionsY, int toWin)
         {
             string[,] table = new string[toWin, toWin];
-
-            // Заполнение шапок (не знаю, надо ли)
-            //for (var r = 0; r < toWin; r++)
-            //{
-            //    table[r, 0] = r.ToString();
-            //}
-            //for (var c = 0; c < toWin; c++)
-            //{
-            //    table[0, c] = c.ToString();
-            //}
 
             for (var y = toWin-1; y > 0; y--)
             {

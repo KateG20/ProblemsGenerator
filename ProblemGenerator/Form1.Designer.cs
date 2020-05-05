@@ -146,11 +146,12 @@
             this.infoLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.infoLabel.Font = new System.Drawing.Font("Comic Sans MS", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.infoLabel.ForeColor = System.Drawing.Color.DarkGoldenrod;
-            this.infoLabel.Location = new System.Drawing.Point(328, 546);
+            this.infoLabel.Location = new System.Drawing.Point(260, 534);
             this.infoLabel.Name = "infoLabel";
-            this.infoLabel.Size = new System.Drawing.Size(597, 84);
+            this.infoLabel.Size = new System.Drawing.Size(733, 136);
             this.infoLabel.TabIndex = 8;
-            this.infoLabel.Text = "Вы будете перенаправлены в браузер на страницу с готовыми задачами.";
+            this.infoLabel.Text = "Вы будете перенаправлены в браузер на страницу с готовыми задачами.\r\nФайл с ними " +
+    "будет сохранен в папке \"Документы\".\r\n";
             this.infoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.infoLabel.Visible = false;
             // 
