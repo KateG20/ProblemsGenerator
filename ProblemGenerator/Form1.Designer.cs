@@ -38,14 +38,15 @@
             this.label2 = new System.Windows.Forms.Label();
             this.infoLabel = new System.Windows.Forms.Label();
             this.randBox = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.seedBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // difLabel
             // 
-            this.difLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.difLabel.AutoSize = true;
             this.difLabel.Font = new System.Drawing.Font("Comic Sans MS", 13.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.difLabel.Location = new System.Drawing.Point(40, 280);
+            this.difLabel.Location = new System.Drawing.Point(40, 325);
             this.difLabel.Name = "difLabel";
             this.difLabel.Size = new System.Drawing.Size(389, 49);
             this.difLabel.TabIndex = 0;
@@ -54,7 +55,6 @@
             // 
             // typeComboBox
             // 
-            this.typeComboBox.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.typeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.typeComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.typeComboBox.FormattingEnabled = true;
@@ -62,7 +62,7 @@
             "одна куча камней",
             "две кучи камней",
             "два слова"});
-            this.typeComboBox.Location = new System.Drawing.Point(529, 287);
+            this.typeComboBox.Location = new System.Drawing.Point(529, 329);
             this.typeComboBox.Name = "typeComboBox";
             this.typeComboBox.Size = new System.Drawing.Size(304, 39);
             this.typeComboBox.TabIndex = 1;
@@ -70,9 +70,8 @@
             // 
             // numTextBox
             // 
-            this.numTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.numTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numTextBox.Location = new System.Drawing.Point(529, 366);
+            this.numTextBox.Location = new System.Drawing.Point(529, 410);
             this.numTextBox.Name = "numTextBox";
             this.numTextBox.Size = new System.Drawing.Size(100, 38);
             this.numTextBox.TabIndex = 2;
@@ -80,10 +79,9 @@
             // 
             // numLabel
             // 
-            this.numLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.numLabel.AutoSize = true;
             this.numLabel.Font = new System.Drawing.Font("Comic Sans MS", 13.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numLabel.Location = new System.Drawing.Point(40, 361);
+            this.numLabel.Location = new System.Drawing.Point(40, 406);
             this.numLabel.Name = "numLabel";
             this.numLabel.Size = new System.Drawing.Size(474, 49);
             this.numLabel.TabIndex = 3;
@@ -92,25 +90,23 @@
             // 
             // errorLabel
             // 
-            this.errorLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.errorLabel.AutoSize = true;
             this.errorLabel.Font = new System.Drawing.Font("Comic Sans MS", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.errorLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.errorLabel.Location = new System.Drawing.Point(643, 365);
+            this.errorLabel.Location = new System.Drawing.Point(638, 416);
             this.errorLabel.Name = "errorLabel";
-            this.errorLabel.Size = new System.Drawing.Size(597, 38);
+            this.errorLabel.Size = new System.Drawing.Size(613, 38);
             this.errorLabel.TabIndex = 4;
-            this.errorLabel.Text = "Количество задач - целое число от 1 до 100.";
+            this.errorLabel.Text = "Количество задач - целое число от 1 до 1000.";
             this.errorLabel.Visible = false;
             // 
             // genButton
             // 
-            this.genButton.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.genButton.AutoSize = true;
             this.genButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.genButton.Font = new System.Drawing.Font("Comic Sans MS", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.genButton.ForeColor = System.Drawing.Color.Green;
-            this.genButton.Location = new System.Drawing.Point(485, 463);
+            this.genButton.Location = new System.Drawing.Point(485, 582);
             this.genButton.Name = "genButton";
             this.genButton.Size = new System.Drawing.Size(285, 59);
             this.genButton.TabIndex = 5;
@@ -121,10 +117,9 @@
             // 
             // label1
             // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label1.Font = new System.Drawing.Font("Comic Sans MS", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.ForeColor = System.Drawing.Color.Green;
-            this.label1.Location = new System.Drawing.Point(289, 9);
+            this.label1.Location = new System.Drawing.Point(289, 40);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(701, 135);
             this.label1.TabIndex = 6;
@@ -132,10 +127,9 @@
             // 
             // label2
             // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label2.Font = new System.Drawing.Font("Comic Sans MS", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label2.ForeColor = System.Drawing.Color.Green;
-            this.label2.Location = new System.Drawing.Point(165, 130);
+            this.label2.Location = new System.Drawing.Point(165, 162);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(931, 125);
             this.label2.TabIndex = 7;
@@ -143,12 +137,11 @@
             // 
             // infoLabel
             // 
-            this.infoLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.infoLabel.Font = new System.Drawing.Font("Comic Sans MS", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.infoLabel.ForeColor = System.Drawing.Color.DarkGoldenrod;
-            this.infoLabel.Location = new System.Drawing.Point(260, 534);
+            this.infoLabel.Location = new System.Drawing.Point(260, 668);
             this.infoLabel.Name = "infoLabel";
-            this.infoLabel.Size = new System.Drawing.Size(733, 136);
+            this.infoLabel.Size = new System.Drawing.Size(733, 126);
             this.infoLabel.TabIndex = 8;
             this.infoLabel.Text = "Вы будете перенаправлены в браузер на страницу с готовыми задачами.\r\nФайл с ними " +
     "будет сохранен в папке \"Документы\".\r\n";
@@ -157,10 +150,9 @@
             // 
             // randBox
             // 
-            this.randBox.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.randBox.AutoSize = true;
             this.randBox.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.randBox.Location = new System.Drawing.Point(908, 283);
+            this.randBox.Location = new System.Drawing.Point(908, 327);
             this.randBox.Name = "randBox";
             this.randBox.Size = new System.Drawing.Size(317, 49);
             this.randBox.TabIndex = 9;
@@ -168,12 +160,33 @@
             this.randBox.UseVisualStyleBackColor = true;
             this.randBox.CheckedChanged += new System.EventHandler(this.RandBox_CheckedChanged);
             // 
+            // label3
+            // 
+            this.label3.Font = new System.Drawing.Font("Comic Sans MS", 9.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label3.Location = new System.Drawing.Point(-36, 476);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(538, 81);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Ключ генерации (любое 4-значное число, необязательно):";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // seedBox
+            // 
+            this.seedBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.seedBox.Location = new System.Drawing.Point(529, 488);
+            this.seedBox.Name = "seedBox";
+            this.seedBox.Size = new System.Drawing.Size(100, 38);
+            this.seedBox.TabIndex = 13;
+            this.seedBox.TextChanged += new System.EventHandler(this.SeedBox_TextChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Ivory;
-            this.ClientSize = new System.Drawing.Size(1273, 738);
+            this.ClientSize = new System.Drawing.Size(1273, 829);
+            this.Controls.Add(this.seedBox);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.randBox);
             this.Controls.Add(this.infoLabel);
             this.Controls.Add(this.label2);
@@ -203,6 +216,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label infoLabel;
         private System.Windows.Forms.CheckBox randBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox seedBox;
     }
 }
 

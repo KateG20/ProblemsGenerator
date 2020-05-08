@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,30 +19,24 @@ namespace ProblemGenerator
         {
             InitializeComponent();
             FormClosing += new FormClosingEventHandler(Form1_Closing);
+            Size = new Size(650, 470);
         }
         private void NumTextBox_TextChanged(object sender, EventArgs e)
         {
             // Проверяем, чтобы было введено положительное целое число
+            // меньше 1001
             if (numTextBox.Text.Length > 0 && numTextBox.Text[0] == '0')
             {
                 numTextBox.Text = numTextBox.Text.Substring(1);
                 errorLabel.Visible = true;
                 return;
             }
-            if (!int.TryParse(numTextBox.Text, out int num) || num < 1)
+            if (!int.TryParse(numTextBox.Text, out int num) || num > 1000)
             {
-                // Очищаем поле
-                numTextBox.Text = string.Empty;
-                errorLabel.Visible = true;
-                return;
-            }
-            // И оно было меньше 100
-            if (num > 100)
-            {
-                // Обрезаем число, оставляем только первые две цифры
-                numTextBox.Text = numTextBox.Text.Substring(0, 2);
+                // Обрезаем число, убирая введенный символ
+                numTextBox.Text = numTextBox.Text.Substring(0, Math.Max(numTextBox.Text.Length - 1, 0));
                 // Ставим курсор в конец
-                numTextBox.SelectionStart = 2;
+                numTextBox.SelectionStart = numTextBox.Text.Length;
                 numTextBox.SelectionLength = 0;
                 errorLabel.Visible = true;
                 return;
@@ -49,12 +45,59 @@ namespace ProblemGenerator
             errorLabel.Visible = false;
         }
 
+        private void SeedBox_TextChanged(object sender, EventArgs e)
+        {
+            // Если пустота, то всё ок
+            if (seedBox.Text.Length == 0)
+            {
+                genButton.Visible = true;
+                infoLabel.Visible = true;
+            }
+            // Если что-то начали писать - прячем кнопки, пока не будет
+            // 4-хзначного числа
+            else
+            {
+                genButton.Visible = false;
+                infoLabel.Visible = false;
+            }
+
+            // Проверяем, чтобы на первом месте не было нуля
+            if (seedBox.Text.Length > 0 && seedBox.Text[0] == '0')
+            {
+                seedBox.Text = seedBox.Text.Substring(1);
+                return;
+            }
+            // Проверяем, что это число меньше 5 знаков
+            if (!int.TryParse(seedBox.Text, out int num) || num > 9999)
+            {
+                // Обрезаем число, оставляем только первые четыре цифры
+                seedBox.Text = seedBox.Text.Substring(0, Math.Max(seedBox.Text.Length - 1, 0));
+                // Ставим курсор в конец
+                seedBox.SelectionStart = seedBox.Text.Length;
+                seedBox.SelectionLength = 0;
+                return;
+            }
+            // Если оно четырехзначное, можно генерировать
+            if (num > 999)
+            {
+                Generator.Seed = num;
+                if ((randBox.Checked || !(typeComboBox.SelectedItem is null)))
+                {
+                    genButton.Visible = true;
+                    infoLabel.Visible = true;
+                }
+            }
+        }
+
         private void TypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Передаем тип в класс генератора, делаем видимой кнопку запуска
             Generator.ProblemType = typeComboBox.SelectedIndex;
-            genButton.Visible = true;
-            infoLabel.Visible = true;
+            if (seedBox.Text.Length == 0 || seedBox.Text.Length == 4)
+            {
+                genButton.Visible = true;
+                infoLabel.Visible = true;
+            }
         }
 
         private void GenButton_Click(object sender, EventArgs e)
@@ -77,22 +120,28 @@ namespace ProblemGenerator
                 MessageBox.Show("Произошла ошибка при создании html-файла.\n" + ex.Message);
                 Environment.Exit(0);
             }
+
             Close();
         }
 
         private void RandBox_CheckedChanged(object sender, EventArgs e)
         {
-            // Если галочка стоит, делаем видимой кнопку запуска
-            if (randBox.Checked)
+            // Если галочка стоит, делаем видимой кнопку запуска и скрываем выбор типа
+            if (randBox.Checked && (seedBox.Text.Length == 0 || seedBox.Text.Length == 4))
             {
                 genButton.Visible = true;
                 infoLabel.Visible = true;
+                typeComboBox.Visible = false;
             }
-            // Если галочка не стоит и тип задач не выбран, скрываем ее
-            if (!randBox.Checked && typeComboBox.SelectedItem is null)
+            // Если галочка не стоит и тип задач не выбран, наоборот
+            if (!randBox.Checked)
             {
-                genButton.Visible = false;
-                infoLabel.Visible = false;
+                typeComboBox.Visible = true;
+                if (typeComboBox.SelectedItem is null)
+                {
+                    genButton.Visible = false;
+                    infoLabel.Visible = false;
+                }
             }
         }
 

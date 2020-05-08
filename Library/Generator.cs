@@ -9,10 +9,10 @@ namespace ProblemGenerator
 {
     public static class Generator
     {
-        static Random rand = new Random();
+        static Random rand;
         public delegate int Adder(int x);
         public delegate string[] GenerateType();
-
+        public static int Seed { get; set; }
         public static int ProblemType { get; set; }
         public static int ProblemsNum { get; set; }
 
@@ -22,6 +22,10 @@ namespace ProblemGenerator
         /// <returns>Двумерный массив - на первой строке условия, на второй - ответы</returns>
         public static string[,] Generate()
         {
+            // Проверяем, был ли указан ключ генерации
+            if (Seed == 0) rand = new Random();
+            else rand = new Random(Seed);
+
             GenerateType GenerateMethod;
             if (ProblemType == 0) GenerateMethod = GenOneHeap;
             else if (ProblemType == 1) GenerateMethod = GenTwoHeaps;
@@ -52,6 +56,10 @@ namespace ProblemGenerator
         /// <returns>Двумерный массив - на первой строке условия, на второй - ответы</returns>
         public static string[,] RandomGenerate()
         {
+            // Проверяем, был ли указан ключ генерации
+            if (Seed == 0) rand = new Random();
+            else rand = new Random(Seed);
+
             string[,] problems = new string[2, ProblemsNum];
             string[] result = new string[1];
             // Каждый раз создаем задачу рандомного типа
@@ -102,8 +110,6 @@ namespace ProblemGenerator
         {
             // Количество действий
             int numOfActions = rand.Next(2, 5);
-            // Массив действий
-            Adder[] actions = new Adder[numOfActions];
             // Действия сложения 
             int[] toAdd = new int[numOfActions - 1];
             int num;
@@ -115,13 +121,11 @@ namespace ProblemGenerator
                     num = rand.Next(1, 4);
                 } while (toAdd.Contains(num));
                 toAdd[i] = num;
-                actions[i] = ((x) => x + num);
             }
             Array.Sort(toAdd);
 
             // Действие умножения (пусть будет одно)
             int toMult = rand.Next(2, 4);
-            actions[numOfActions - 1] = ((x) => x * toMult);
 
             // Количество камней для выигрыша
             int toWin = rand.Next(25, 66);
