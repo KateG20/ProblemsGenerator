@@ -1,0 +1,253 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Windows.Forms;
+
+namespace ProblemGenerator
+\PYGZob{}
+    /// \PYGZlt{}summary\PYGZgt{}
+    /// Класс, содержащий методы для создания таблиц для разных видов задач
+    /// \PYGZlt{}/summary\PYGZgt{}
+    public static class Tables
+    \PYGZob{}
+        /// \PYGZlt{}summary\PYGZgt{}
+        /// Создает таблицу с исходами для любого количества элементов,
+        /// для одной кучи
+        /// \PYGZlt{}/summary\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}actions\PYGZdq{}\PYGZgt{}Список арифметических действий\PYGZlt{}/param\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}winMin\PYGZdq{}\PYGZgt{}Минимальное количество камней для выигрыша\PYGZlt{}/param\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}winMax\PYGZdq{}\PYGZgt{}Максимальное количество камней для выигрыша\PYGZlt{}/param\PYGZgt{}
+        /// \PYGZlt{}returns\PYGZgt{}Массив исходов для каждой клетки\PYGZlt{}/returns\PYGZgt{}
+        public static string[] OneHeap(int[] toAdd, int toMult, int winMin, int winMax)
+        \PYGZob{}
+            string[] table = new string[winMin];
+            // Флаг для выхода из массива, если уже определили значение клетки
+            bool ok;
+            // Для каждого количества камней, для каждого действия
+            for (int i = winMin \PYGZhy{} 1; i \PYGZgt{} 0; i\PYGZhy{}\PYGZhy{})
+            \PYGZob{}
+                ok = false;
+                // Проверяем эту клетку для каждого слагаемого
+                foreach (var addend in toAdd)
+                \PYGZob{}
+                    // Если ходом мы попадаем в зону выигрыша, то в этой клетке 1
+                    if ((i + addend \PYGZgt{}= winMin) \PYGZam{}\PYGZam{} (i + addend \PYGZlt{}= winMax))
+                    \PYGZob{}
+                        table[i] = \PYGZdq{}+\PYGZdq{};
+                        ok = true;
+                        break;
+                    \PYGZcb{}
+                    else
+                    \PYGZob{}
+                        // Если мы попадаем в зону проигрыша, то это тоже зона выигрыша
+                        if (i + addend \PYGZlt{} winMin \PYGZam{}\PYGZam{} table[i + addend] == \PYGZdq{}\PYGZhy{}\PYGZdq{})
+                        \PYGZob{}
+                            table[i] = \PYGZdq{}+\PYGZdq{};
+                            ok = true;
+                            break;
+                        \PYGZcb{}
+                    \PYGZcb{}
+                    // Иначе это зона проигрыша
+                    table[i] = \PYGZdq{}\PYGZhy{}\PYGZdq{};
+                \PYGZcb{}
+                if (ok) continue;
+                // Теперь так же для множителя
+                // Если ходом мы попадаем в зону выигрыша, то в этой клетке 1
+                if ((i * toMult \PYGZgt{}= winMin) \PYGZam{}\PYGZam{} (i * toMult \PYGZlt{}= winMax))
+                \PYGZob{}
+                    table[i] = \PYGZdq{}+\PYGZdq{};
+                    continue;
+                \PYGZcb{}
+                else
+                \PYGZob{}
+                    // Если мы попадаем в зону проигрыша, то это тоже зона выигрыша
+                    if (i * toMult \PYGZlt{} winMin \PYGZam{}\PYGZam{} table[i * toMult] == \PYGZdq{}\PYGZhy{}\PYGZdq{})
+                    \PYGZob{}
+                        table[i] = \PYGZdq{}+\PYGZdq{};
+                        continue;
+                    \PYGZcb{}
+                \PYGZcb{}
+                // Иначе это зона проигрыша
+                table[i] = \PYGZdq{}\PYGZhy{}\PYGZdq{};
+            \PYGZcb{}
+
+            return table;
+        \PYGZcb{}
+
+        /// \PYGZlt{}summary\PYGZgt{}
+        /// Создает таблицу с исходами для любого количества элементов,
+        /// для двух куч
+        /// \PYGZlt{}/summary\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}add\PYGZdq{}\PYGZgt{}Сколько камней добавляется\PYGZlt{}/param\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}mult\PYGZdq{}\PYGZgt{}Во сколько раз умножается количество камней\PYGZlt{}/param\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}toWin\PYGZdq{}\PYGZgt{}Сколько камней нужно для выигрыша\PYGZlt{}/param\PYGZgt{}
+        /// \PYGZlt{}returns\PYGZgt{}Двумерный массив (таблицу) с исходами\PYGZlt{}/returns\PYGZgt{}
+        public static string[,] TwoHeaps(int add, int mult, int toWin)
+        \PYGZob{}
+            // Методы, принимающие на вход четыре варианты развития событий 
+            // после разных ходов, и возвращающие соответствие своему названию
+            bool IsWin1(string[] cells)
+            \PYGZob{}
+                for (int i = 0; i \PYGZlt{} cells.Length; i++)
+                \PYGZob{}
+                    if (cells[i] == \PYGZdq{}!\PYGZdq{}) return true;
+                \PYGZcb{}
+                return false;
+            \PYGZcb{}
+
+            bool IsLoss1(string[] cells)
+            \PYGZob{}
+                int k = 0;
+                for (int i = 0; i \PYGZlt{} cells.Length; i++)
+                \PYGZob{}
+                    if (cells[i] == \PYGZdq{}+1\PYGZdq{}) k++;
+                \PYGZcb{}
+                return k == 4;
+            \PYGZcb{}
+
+            bool IsWin2(string[] cells)
+            \PYGZob{}
+                for (int i = 0; i \PYGZlt{} cells.Length; i++)
+                \PYGZob{}
+                    if (cells[i] == \PYGZdq{}\PYGZhy{}1\PYGZdq{}) return true;
+                \PYGZcb{}
+                return false;
+            \PYGZcb{}
+
+            bool IsLoss2(string[] cells)
+            \PYGZob{}
+                int k = 0;
+                for (int i = 0; i \PYGZlt{} cells.Length; i++)
+                \PYGZob{}
+                    if (cells[i] == \PYGZdq{}\PYGZhy{}2\PYGZdq{}) \PYGZob{} k++; break; \PYGZcb{}
+                \PYGZcb{}
+                return k != 0;
+            \PYGZcb{}
+
+            bool IsWin(string[] cells)
+            \PYGZob{}
+                for (int i = 0; i \PYGZlt{} cells.Length; i++)
+                \PYGZob{}
+                    if (cells[i] == \PYGZdq{}\PYGZhy{}\PYGZdq{}) return true;
+                \PYGZcb{}
+                return false;
+            \PYGZcb{}
+
+            string GetValue(int row, int col, string[,] tbl)
+            \PYGZob{}
+                // Если сумма камней \PYGZgt{}= нужной, это выигрышная клетка
+                if (row + col \PYGZgt{}= toWin)
+                \PYGZob{}
+                    if (row \PYGZlt{} toWin \PYGZam{}\PYGZam{} col \PYGZlt{} toWin)
+                    \PYGZob{}
+                        tbl[row, col] = \PYGZdq{}!\PYGZdq{};
+                    \PYGZcb{}
+                    return \PYGZdq{}!\PYGZdq{};
+                \PYGZcb{}
+                else if (tbl[row, col] is null)
+                \PYGZob{}
+                    // Смотрим на четыре возможных варианта развития событий из 
+                    // этого хода (рекурсией)
+                    var cellsAfterMove = new string[] \PYGZob{}
+                        GetValue(row + add, col, tbl), GetValue(row, col + add, tbl),
+                        GetValue(row * mult, col, tbl), GetValue(row, col * mult, tbl) \PYGZcb{};
+                    // По этим четырем вариантам решаем, эта клеточка выигрышная или
+                    // проигрышная
+                    if (IsWin1(cellsAfterMove)) \PYGZob{} tbl[row, col] = \PYGZdq{}+1\PYGZdq{}; \PYGZcb{}
+                    else if (IsLoss1(cellsAfterMove)) \PYGZob{} tbl[row, col] = \PYGZdq{}\PYGZhy{}1\PYGZdq{}; \PYGZcb{}
+                    else if (IsWin2(cellsAfterMove)) \PYGZob{} tbl[row, col] = \PYGZdq{}+2\PYGZdq{}; \PYGZcb{}
+                    else if (IsLoss2(cellsAfterMove)) \PYGZob{} tbl[row, col] = \PYGZdq{}\PYGZhy{}2\PYGZdq{}; \PYGZcb{}
+                    else if (IsWin(cellsAfterMove)) \PYGZob{} tbl[row, col] = \PYGZdq{}+\PYGZdq{}; \PYGZcb{}
+                    else tbl[row, col] = \PYGZdq{}\PYGZhy{}\PYGZdq{};
+                \PYGZcb{}
+                return tbl[row, col];
+            \PYGZcb{}
+
+            // Создаем пустую таблицу
+            string[,] table = new string[toWin, toWin];
+
+            // Определяем значение для каждой клетки
+            for (int r = 1; r \PYGZlt{} toWin; r++)
+            \PYGZob{}
+                for (int c = 1; c \PYGZlt{} toWin; c++)
+                \PYGZob{}
+                    GetValue(r, c, table);
+                \PYGZcb{}
+            \PYGZcb{}
+
+            return table;
+        \PYGZcb{}
+
+        /// \PYGZlt{}summary\PYGZgt{}
+        /// Создает таблицу с исходами для любого количества букв,
+        /// для двух слов
+        /// \PYGZlt{}/summary\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}actionsX\PYGZdq{}\PYGZgt{}Действия для первого слова\PYGZlt{}/param\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}actionsY\PYGZdq{}\PYGZgt{}Действия для второго слова\PYGZlt{}/param\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}toWin\PYGZdq{}\PYGZgt{}Количество букв для победы\PYGZlt{}/param\PYGZgt{}
+        /// \PYGZlt{}returns\PYGZgt{}Двумерный массив (таблицу) с исходами\PYGZlt{}/returns\PYGZgt{}
+        public static string[,] TwoWords(Generator.Adder[] actionsX, Generator.Adder[] actionsY, int toWin)
+        \PYGZob{}
+            string[,] table = new string[toWin, toWin];
+
+            for (var y = toWin\PYGZhy{}1; y \PYGZgt{} 0; y\PYGZhy{}\PYGZhy{})
+            \PYGZob{}
+                for (var x = toWin\PYGZhy{}1; x \PYGZgt{} 0; x\PYGZhy{}\PYGZhy{})
+                \PYGZob{}
+                    table[y, x] = \PYGZdq{}\PYGZhy{}\PYGZdq{};
+                    List\PYGZlt{}string\PYGZgt{} targets = new List\PYGZlt{}string\PYGZgt{}();
+                    if ((y + x) \PYGZgt{}= toWin)
+                        table[y, x] = \PYGZdq{}!\PYGZdq{};
+                    else
+                    \PYGZob{}
+                        foreach (var actionX in actionsX)
+                        \PYGZob{}
+                            if (y + actionX(x) \PYGZgt{}= toWin)
+                            \PYGZob{}
+                                targets.Add(\PYGZdq{}!\PYGZdq{});
+                                break;
+                            \PYGZcb{}
+                            else
+                            \PYGZob{}
+                                targets.Add(table[y, actionX(x)]);
+                            \PYGZcb{}
+                        \PYGZcb{}
+                        foreach (var actionY in actionsY)
+                        \PYGZob{}
+                            if (x + actionY(y) \PYGZgt{}= toWin)
+                            \PYGZob{}
+                                targets.Add(\PYGZdq{}!\PYGZdq{});
+                                break;
+                            \PYGZcb{}
+                            else
+                            \PYGZob{}
+                                targets.Add(table[actionY(y), x]);
+                            \PYGZcb{}
+                        \PYGZcb{}
+                        if (targets.IndexOf(\PYGZdq{}!\PYGZdq{}) != \PYGZhy{}1) table[y, x] = \PYGZdq{}+1\PYGZdq{};
+                        else if (targets.IndexOf(\PYGZdq{}\PYGZhy{}1\PYGZdq{}) != \PYGZhy{}1) table[y, x] = \PYGZdq{}+2\PYGZdq{};
+                        else if (targets.IndexOf(\PYGZdq{}\PYGZhy{}1,2\PYGZdq{}) != \PYGZhy{}1) table[y, x] = \PYGZdq{}+\PYGZdq{};
+                        else if (targets.IndexOf(\PYGZdq{}\PYGZhy{}\PYGZdq{}) != \PYGZhy{}1) table[y, x] = \PYGZdq{}+\PYGZdq{};
+                        else
+                        \PYGZob{}
+                            table[y, x] = \PYGZdq{}\PYGZhy{}\PYGZdq{};
+                            int k1 = 0;
+                            int k2 = 0;
+                            foreach (string target in targets)
+                            \PYGZob{}
+                                if (target == \PYGZdq{}+1\PYGZdq{}) k1 += 1;
+                                else if (target == \PYGZdq{}+2\PYGZdq{}) k2 += 1;
+                            \PYGZcb{}
+                            if (k1 == targets.Count) table[y, x] = \PYGZdq{}\PYGZhy{}1\PYGZdq{};
+                            else if ((k1 + k2) == targets.Count) table[y, x] = \PYGZdq{}\PYGZhy{}1,2\PYGZdq{};
+                        \PYGZcb{}
+                    \PYGZcb{}
+                \PYGZcb{}
+            \PYGZcb{}
+
+            return table;
+        \PYGZcb{}
+    \PYGZcb{}
+\PYGZcb{}
+\end{Verbatim}

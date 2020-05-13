@@ -1,0 +1,166 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+using System;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace ProblemGenerator
+\PYGZob{}
+    public partial class Form1 : Form
+    \PYGZob{}
+        private static readonly Random rand = new Random();
+        public Form1()
+        \PYGZob{}
+            InitializeComponent();
+            FormClosing += new FormClosingEventHandler(Form1\PYGZus{}Closing);
+            Size = new Size(650, 470);
+        \PYGZcb{}
+        private void NumTextBox\PYGZus{}TextChanged(object sender, EventArgs e)
+        \PYGZob{}
+            // Проверяем, чтобы было введено положительное целое число
+            // меньше 1001
+            if (numTextBox.Text.Length \PYGZgt{} 0 \PYGZam{}\PYGZam{} numTextBox.Text[0] == \PYGZsq{}0\PYGZsq{})
+            \PYGZob{}
+                numTextBox.Text = numTextBox.Text.Substring(1);
+                errorLabel.Visible = true;
+                return;
+            \PYGZcb{}
+            if (!int.TryParse(numTextBox.Text, out int num) || num \PYGZgt{} 1000)
+            \PYGZob{}
+                // Обрезаем число, убирая введенный символ
+                numTextBox.Text = numTextBox.Text.Substring(0, Math.Max(numTextBox.Text.Length \PYGZhy{} 1, 0));
+                // Ставим курсор в конец
+                numTextBox.SelectionStart = numTextBox.Text.Length;
+                numTextBox.SelectionLength = 0;
+                errorLabel.Visible = true;
+                return;
+            \PYGZcb{}
+            Generator.ProblemsNum = num;
+            errorLabel.Visible = false;
+        \PYGZcb{}
+
+        private void SeedBox\PYGZus{}TextChanged(object sender, EventArgs e)
+        \PYGZob{}
+            // Если пустота, то всё ок
+            if (seedBox.Text.Length == 0)
+            \PYGZob{}
+                genButton.Visible = true;
+                infoLabel.Visible = true;
+            \PYGZcb{}
+            // Если что\PYGZhy{}то начали писать \PYGZhy{} прячем кнопки, пока не будет
+            // 4\PYGZhy{}хзначного числа
+            else
+            \PYGZob{}
+                genButton.Visible = false;
+                infoLabel.Visible = false;
+            \PYGZcb{}
+
+            // Проверяем, чтобы на первом месте не было нуля
+            if (seedBox.Text.Length \PYGZgt{} 0 \PYGZam{}\PYGZam{} seedBox.Text[0] == \PYGZsq{}0\PYGZsq{})
+            \PYGZob{}
+                seedBox.Text = seedBox.Text.Substring(1);
+                return;
+            \PYGZcb{}
+            // Проверяем, что это число меньше 5 знаков
+            if (!int.TryParse(seedBox.Text, out int num) || num \PYGZgt{} 9999)
+            \PYGZob{}
+                // Обрезаем число, оставляем только первые четыре цифры
+                seedBox.Text = seedBox.Text.Substring(0, Math.Max(seedBox.Text.Length \PYGZhy{} 1, 0));
+                // Ставим курсор в конец
+                seedBox.SelectionStart = seedBox.Text.Length;
+                seedBox.SelectionLength = 0;
+                return;
+            \PYGZcb{}
+            // Если оно четырехзначное, можно генерировать
+            if (num \PYGZgt{} 999)
+            \PYGZob{}
+                Generator.Seed = num;
+                if ((randBox.Checked || !(typeComboBox.SelectedItem is null)))
+                \PYGZob{}
+                    genButton.Visible = true;
+                    infoLabel.Visible = true;
+                \PYGZcb{}
+            \PYGZcb{}
+        \PYGZcb{}
+
+        private void TypeComboBox\PYGZus{}SelectedIndexChanged(object sender, EventArgs e)
+        \PYGZob{}
+            // Передаем тип в класс генератора, делаем видимой кнопку запуска
+            Generator.ProblemType = typeComboBox.SelectedIndex;
+            if (seedBox.Text.Length == 0 || seedBox.Text.Length == 4)
+            \PYGZob{}
+                genButton.Visible = true;
+                infoLabel.Visible = true;
+            \PYGZcb{}
+        \PYGZcb{}
+
+        private void GenButton\PYGZus{}Click(object sender, EventArgs e)
+        \PYGZob{}
+            // Если количество задач не указано, сообщение об ошибке
+            if (numTextBox.Text == \PYGZdq{}\PYGZdq{})
+            \PYGZob{}
+                errorLabel.Visible = true;
+                return;
+            \PYGZcb{}
+            string[,] problemsData;
+            if (randBox.Checked) problemsData = Generator.RandomGenerate();
+            else problemsData = Generator.Generate();
+            try
+            \PYGZob{}
+                HTMLWriter.WriteHTML(problemsData);
+            \PYGZcb{}
+            catch (Exception ex)
+            \PYGZob{}
+                MessageBox.Show(\PYGZdq{}Произошла ошибка при создании html\PYGZhy{}файла.\PYGZbs{}n\PYGZdq{} + ex.Message);
+                Environment.Exit(0);
+            \PYGZcb{}
+
+            Close();
+        \PYGZcb{}
+
+        private void RandBox\PYGZus{}CheckedChanged(object sender, EventArgs e)
+        \PYGZob{}
+            // Если галочка стоит, делаем видимой кнопку запуска и скрываем выбор типа
+            if (randBox.Checked \PYGZam{}\PYGZam{} (seedBox.Text.Length == 0 || seedBox.Text.Length == 4))
+            \PYGZob{}
+                genButton.Visible = true;
+                infoLabel.Visible = true;
+                typeComboBox.Visible = false;
+            \PYGZcb{}
+            // Если галочка не стоит и тип задач не выбран, наоборот
+            if (!randBox.Checked)
+            \PYGZob{}
+                typeComboBox.Visible = true;
+                if (typeComboBox.SelectedItem is null)
+                \PYGZob{}
+                    genButton.Visible = false;
+                    infoLabel.Visible = false;
+                \PYGZcb{}
+            \PYGZcb{}
+        \PYGZcb{}
+
+        // Пасхалочки
+        private void DifLabel\PYGZus{}Click(object sender, EventArgs e)
+        \PYGZob{}
+            difLabel.ForeColor = Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256));
+        \PYGZcb{}
+
+        private void NumLabel\PYGZus{}Click(object sender, EventArgs e)
+        \PYGZob{}
+            numLabel.ForeColor = Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256));
+        \PYGZcb{}
+
+        private void Form1\PYGZus{}Closing(object sender, FormClosingEventArgs e)
+        \PYGZob{}
+            Application.Exit();
+        \PYGZcb{}
+    \PYGZcb{}
+\PYGZcb{}
+\end{Verbatim}

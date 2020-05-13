@@ -1,0 +1,58 @@
+\newcommand{\CRTyear}{2020}
+\newcommand{\CRTname}{Приложение для генерации задач}
+\newcommand{\CRTnameeng}{Application for Problems Generation}
+\newcommand{\CRTdocnum}{RU.17701729.04.01-01 \CRTdocnumMID}
+
+\year{\CRTyear}
+\project{\CRTname}
+\docNumber{\CRTdocnum-ЛУ}
+\docFormat{\CRTdocFormat}
+\student{БПИ 199}{Голикова Е. В.}
+
+\supervisor{
+  % Руководитель проекта,
+  Научный руководитель, доцент \vfill 
+департамента больших данных и \vfill 
+информационного поиска факультета\vfill
+компьютерных наук
+}{И. Ю. Самоненко}
+
+\newcommand{\CRTlistRegistration}{
+  \newpage
+  \section{Лист регистрации изменений}
+  \noindent
+  % \listRegistration
+  % \newgeometry{left=0cm,bottom=0.1cm}
+  \resizebox{499pt}{!}{%
+    \begin{tabular}{|c|P{2.00cm}|P{1.75cm}|l|P{2.00cm}|P{2.50cm}|P{2.00cm}|P{2.75cm}|P{1.75cm}|c|}
+      \hline
+      \multirow{2}{*}{Изм.} &
+      \multicolumn{4}{c|}{Номера листов} &
+      \multirow{2}{2.50cm}{Всего листов в документе} &
+      \multirow{2}{2.00cm}{$\text{№}$ документа} &
+      \multirow{2}{2.75cm}{Входящий $\text{№}$ сопроводит. докум. и дата} &
+      \multirow{2}{1.75cm}{Под\-пись} &
+      \multirow{2}{*}{Дата} \\ \cline{2-5}
+
+      &из\-ме\-нен\-ных&заме\-нен\-ных&но\-вых&аннул\-лиро\-ван\-ных&  &  &  &  & \\[3ex]
+
+      \Repeat{27}{
+        \hline
+        & & & & & & & & & \\[0.5cm]
+      }
+      \hline
+    \end{tabular}%
+  }
+  % \restoregeometry
+}
+
+\newcommand{\CRTpreamble}{
+  \firstPage
+  \docNumber{\CRTdocnum}
+  \newpage
+  \pagenumbering{arabic}
+  \secondPage
+  \newpage
+  \thirdPage
+  \newpage
+}

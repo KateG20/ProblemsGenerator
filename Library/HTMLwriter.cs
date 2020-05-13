@@ -27,7 +27,7 @@ namespace ProblemGenerator
             }
 
             // Добываем текст из шаблона и записываем его в файл
-            string baseText = File.ReadAllText("../../HtmlTemplate.txt");
+            string baseText = File.ReadAllText("HtmlTemplate.txt");
             File.WriteAllText(path, baseText, Encoding.UTF8);
 
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();

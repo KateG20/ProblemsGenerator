@@ -1,0 +1,47 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGZlt{}!doctype html\PYGZgt{}
+\PYGZlt{}html\PYGZgt{}
+ \PYGZlt{}head\PYGZgt{}
+  \PYGZlt{}meta charset=\PYGZdq{}utf\PYGZhy{}8\PYGZdq{}\PYGZgt{}
+  \PYGZlt{}title\PYGZgt{}Задачи №26 ЕГЭ по информатике\PYGZlt{}/title\PYGZgt{}
+  \PYGZlt{}style type=\PYGZdq{}text/css\PYGZdq{}\PYGZgt{}
+   h1 \PYGZob{} 
+       font\PYGZhy{}size: 210\PYGZpc{}; 
+       font\PYGZhy{}family: Comic Sans MS, Comic Sans, cursive;
+       color: \PYGZsh{}008000;
+   \PYGZcb{}
+   p \PYGZob{}
+   	   font\PYGZhy{}size: 90\PYGZpc{};
+	   font\PYGZhy{}family: Comic Sans MS, Comic Sans, cursive;
+	   color: \PYGZsh{}000000;
+	   font\PYGZhy{}weight: 100;
+   \PYGZcb{}
+   body \PYGZob{}
+   	   padding: 0px 30px;
+	   background: \PYGZsh{}FFFFF0;
+	   border: 3px double black;
+	   margin: 20px;
+   \PYGZcb{}
+   input.colored\PYGZob{}
+   	   border\PYGZhy{}radius: 5px;
+	   color: \PYGZsh{}008000;
+	   background: \PYGZsh{}FFFFFF;
+   \PYGZcb{}
+  \PYGZlt{}/style\PYGZgt{}
+  \PYGZlt{}script\PYGZgt{}
+   function showAnswer(ans, id) \PYGZob{}
+    var answer = document.getElementById(id);
+    answer.innerHTML = ans;
+	\PYGZcb{}
+   function hideAnswer(id) \PYGZob{}
+    var answer = document.getElementById(id);
+    answer.innerHTML = \PYGZdq{}\PYGZdq{};
+   \PYGZcb{}
+  \PYGZlt{}/script\PYGZgt{}
+ \PYGZlt{}/head\PYGZgt{}
+ \PYGZlt{}body\PYGZgt{}
+
+  \PYGZlt{}h1\PYGZgt{} Задача №26 ЕГЭ по информатике \PYGZlt{}/h1\PYGZgt{}
+
+\PYGZlt{}/html\PYGZgt{}
+\end{Verbatim}

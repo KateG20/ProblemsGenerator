@@ -80,9 +80,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="HtmlTemplate.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Library\Library.csproj">
       <Project>{da1e7306-2108-41ba-8ceb-b32696cb87ab}</Project>
       <Name>Library</Name>

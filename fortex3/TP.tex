@@ -1,0 +1,32 @@
+\documentclass[a4paper,12pt]{article}
+
+\newcommand{\CRTdocFormat}{Текст программы}
+\usepackage{styledoc19}
+
+\newcommand{\CRTdocnumMID}{12 01-1}
+\usepackage{CRTconfig}
+
+\usepackage{minted}
+
+\newcommand{\CRTfile}[1]{\inputminted[tabsize=4,breaklines,breaksymbolleft=]{text}{#1}}
+% breakautoindent=false
+
+\begin{document} % конец преамбулы, начало документа
+  \CRTpreamble
+
+  \section{Текст программы}
+
+  \subsection{Библиотека классов Library}
+  \subsubsection{Generator.cs}\CRTfile{../Library/Generator.cs}
+  \subsubsection{Tables.cs}\CRTfile{../Library/Tables.cs}
+  \subsubsection{HTMLwriter.cs}\CRTfile{../Library/HTMLwriter.cs}
+
+  \subsection{Проект ProblemsGenerator}
+
+  \subsubsection{Program.cs}\CRTfile{../ProblemGenerator/Program.cs}
+  \subsubsection{Form1.cs}\CRTfile{../ProblemGenerator/Form1.cs}
+  \subsubsection{Form1.Designer.cs}\CRTfile{../ProblemGenerator/Form1.Designer.cs}
+  \subsubsection{HtmlTemplate.txt}\CRTfile{../ProblemGenerator/HtmlTemplate.txt}
+
+	\CRTlistRegistration
+\end{document} % конец документа
