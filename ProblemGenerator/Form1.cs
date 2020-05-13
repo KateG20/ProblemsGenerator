@@ -20,6 +20,15 @@ namespace ProblemGenerator
             InitializeComponent();
             FormClosing += new FormClosingEventHandler(Form1_Closing);
             Size = new Size(650, 470);
+            try
+            {
+                Icon = new Icon("../../favicon.ico");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Возникли некоторые проблемы с иконкой приложения. " +
+                    "Будет использована иконка по умолчанию.");
+            }
         }
         private void NumTextBox_TextChanged(object sender, EventArgs e)
         {
