@@ -31,21 +31,22 @@ namespace ProblemGenerator
             else if (ProblemType == 1) GenerateMethod = GenTwoHeaps;
             else GenerateMethod = GenTwoWords;
 
-            string[,] problems = new string[2, ProblemsNum];
+            string[,] problems = new string[3, ProblemsNum];
             string[] result = new string[1];
             for (int i = 0; i < ProblemsNum; i++)
             {
-                try
-                {
+                //try
+                //{
                     result = GenerateMethod();
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show("Возникла ошибка при генерации задачи.\n" + e.Message);
-                    Environment.Exit(0);
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    MessageBox.Show("Возникла ошибка при генерации задачи.\n" + e.Message);
+                //    Environment.Exit(0);
+                //}
                 problems[0, i] = $"Задача {i + 1}<br>" + result[0];
                 problems[1, i] = result[1];
+                problems[2, i] = result[2];
             }
             return problems;
         }
@@ -98,8 +99,42 @@ namespace ProblemGenerator
                 }
                 problems[0, i] = $"Задача {i + 1}<br>" + result[0];
                 problems[1, i] = result[1];
+                problems[2, i] = result[2];
             }
             return problems;
+        }
+
+        /// <summary>
+        /// Делает строку квадратной таблицей
+        /// </summary>
+        /// <param name="str">Строка</param>
+        /// <returns>Таблица</returns>
+        static string[,] StrToArray(string str)
+        {
+            string[] arr = str.Split(' ');
+            int len = (int)Math.Sqrt(arr.Length);
+            var res = new string[len, len];
+            int k = 0;
+            for (int i = 0; i < len; i++)
+            {
+                for (int j = 0; j < len; j++)
+                {
+                    res[i, j] = arr[k++];
+                }
+            }
+
+            string aoa = "";
+            foreach (var item in res)
+            {
+                foreach (var it in item)
+                {
+                    aoa += it + " ";
+                }
+                aoa += "\n";
+            }
+            MessageBox.Show(aoa);
+
+            return res;
         }
 
         /// <summary>
@@ -130,24 +165,33 @@ namespace ProblemGenerator
             // Количество камней для выигрыша
             int toWin = rand.Next(25, 66);
 
-            string[] table = new string[1];
+            string tableStr = string.Empty;
             // Верхнее ограничение для выигрыша
             int upperBound = (toWin - toAdd.Max()) * toMult - rand.Next(8, 14);
             // Создаем таблицу для данных
-            try
-            {
-                table = Tables.OneHeap(toAdd, toMult, toWin, upperBound);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Возникла ошибка при рассчитывании решения.\n" + e.Message);
-                Environment.Exit(0);
-            }
+            //try
+            //{
+                tableStr = Tables.OneHeap(toAdd, toMult, toWin, upperBound);
+            //}
+            //catch (Exception e)
+            //{
+            //    MessageBox.Show("Возникла ошибка при рассчитывании решения.\n" + e.Message);
+            //    Environment.Exit(0);
+            //}
+            //MessageBox.Show(tableStr);
+
+            string[] table = tableStr.Split(' ');
+            //string aoa = "";
+            //foreach (var item in table)
+            //{
+            //    aoa += item + " ";
+            //}
+            //MessageBox.Show(aoa);
 
             /// Вопрос 1б
             // Создаем два списка с неколькими проигрышными и выигрышными клетками.
-            List<int> fastLoses = new List<int>();
-            List<int> fastWins = new List<int>();
+            //List<int> fastLoses = new List<int>();
+            //List<int> fastWins = new List<int>();
 
             // Список клеток, из которых можно выиграть первым ходом.
             List<int> oneMoveWins = new List<int>();
@@ -199,7 +243,7 @@ namespace ProblemGenerator
             for (int i = upperBound / toMult; i > 0; i--)
             {
                 // Если клетка проигрыша, то проверям, первая или вторая, и записываем ее
-                if (table[i] == "-")
+                if (table[i] == "-") //////////////////////////////////////////////////////////////////////////////////
                 {
                     if (quest2Lose.Length == 0)
                         quest2Lose = i.ToString();
@@ -250,7 +294,7 @@ namespace ProblemGenerator
                 string.Join(", ", new string[] { quest2Win, quest2Lose }), quest3 };
 
             // Создаем шаблон для ответа и записываем ответ для каждого пункта.
-            string answer = "1a) {0}<br>1б) {1}<br>2) {2}<br>3) {3}<br>Развернутые ответы проверяются учителем.";
+            string answer = "1a) {0}<br>1б) {1}<br>2) {2}<br>3) {3}<br>Развернутые ответы проверяются учителем.<br>";
 
             string ans1b = string.Empty;
 
@@ -267,7 +311,7 @@ namespace ProblemGenerator
             // Строка для форматирования шаблона
             string[] answers = new string[] { ans1a, ans1b, ans2, ans3 };
 
-            return new string[] { string.Format(text, data), string.Format(answer, answers) };
+            return new string[] { string.Format(text, data), string.Format(answer, answers), tableStr };
         }
 
         /// <summary>
@@ -281,10 +325,10 @@ namespace ProblemGenerator
             int toMult = rand.Next(2, 4);
             int toWin = rand.Next(35, 81);
             // Создание таблицы
-            string[,] table = new string[1, 1];
+            string tableStr = string.Empty;
             try
             {
-                table = Tables.TwoHeaps(toAdd, toMult, toWin);
+                tableStr = Tables.TwoHeaps(toAdd, toMult, toWin);
             }
             catch (Exception e)
             {
@@ -292,13 +336,15 @@ namespace ProblemGenerator
                 Environment.Exit(0);
             }
 
+            string[,] table = StrToArray(tableStr);
+
             // Нашли все клетки с -1
             List<int[]> quest1array = new List<int[]>();
             for (int i = 1; i < toWin; i++)
             {
                 for (int j = i; j < toWin; j++)
                 {
-                    if (table[i, j] == "-1") quest1array.Add(new int[] { i, j });
+                    if (table[i, j] == "-1") quest1array.Add(new int[] { i, j });/////////////////////////////////////////
                 }
             }
 
@@ -376,7 +422,7 @@ namespace ProblemGenerator
                 toMult.ToString(), toWin.ToString(), quest1, quest2, quest3 };
 
             // Строка с шаблоном ответа
-            string answer = "1.<br>{0}<br>2.<br>{1}<br>3. {2}<br>Развернутые ответы проверяются учителем.";
+            string answer = "1.<br>{0}<br>2.<br>{1}<br>3. {2}<br>Развернутые ответы проверяются учителем.<br>";
             string ans1 = string.Empty;
 
             // Создаем ответы
@@ -395,7 +441,8 @@ namespace ProblemGenerator
             string ans3 = quest3 + ": Ваня<br>";
 
             // Возвращаем отформатированные текст и решение
-            return new string[] { string.Format(text, data), string.Format(answer, new string[] { ans1, ans2, ans3 }) };
+            return new string[] { string.Format(text, data),
+                string.Format(answer, new string[] { ans1, ans2, ans3 }), tableStr };
         }
 
         /// <summary>
@@ -412,16 +459,18 @@ namespace ProblemGenerator
             int toWin = rand.Next(30, 61);
 
             // Создаем табличку для этих даннных
-            string[,] table = new string[1, 1];
+            string tableStr = string.Empty;
             try
             {
-                table = Tables.TwoWords(actionsX, actionsY, toWin);
+                tableStr = Tables.TwoWords(actionsX, actionsY, toWin);
             }
             catch (Exception e)
             {
                 MessageBox.Show("Возникла ошибка при рассчитывании решения.\n" + e.Message);
                 Environment.Exit(0);
             }
+
+            string[,] table = StrToArray(tableStr);
 
             // Нашли все клетки с -1
             List<int[]> minus1array = new List<int[]>();
@@ -576,10 +625,10 @@ namespace ProblemGenerator
                 toAdd[1] == 1 ? "одну букву" : "две буквы", toMult[0].ToString(), toMult[1].ToString(),
                 toWin.ToString(), string.Join(", ", quest1), string.Join(", ", quest2), quest3 };
 
-            string answer = "1.<br>{0}<br><br>2.<br>{1}<br><br>3. {2}<br>Развернутые ответы проверяются учителем.";
+            string answer = "1.<br>{0}<br><br>2.<br>{1}<br><br>3. {2}<br>Развернутые ответы проверяются учителем.<br>";
 
             return new string[] { string.Format(text, data), string.Format(answer, new string[]
-                { string.Join("<br>", ans1), string.Join("<br>", ans2), ans3 }) };
+                { string.Join("<br>", ans1), string.Join("<br>", ans2), ans3 }), tableStr };
         }
     }
 }

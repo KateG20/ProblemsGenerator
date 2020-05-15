@@ -1,0 +1,52 @@
+﻿<!doctype html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Задачи №26 ЕГЭ по информатике</title>
+  <style type="text/css">
+   h1 { 
+       font-size: 210%; 
+       font-family: Comic Sans MS, Comic Sans, cursive;
+       color: #008000;
+   }
+   p {
+   	   font-size: 90%;
+	   font-family: Comic Sans MS, Comic Sans, cursive;
+	   color: #000000;
+	   font-weight: 100;
+   }
+   body {
+   	   padding: 0px 30px;
+	   background: #FFFFF0;
+	   border: 3px double black;
+	   margin: 20px;
+   }
+   input.colored {
+   	   border-radius: 5px;
+	   color: #008000;
+	   background: #FFFFFF;
+   }
+  </style>
+  <script>
+   function showAnswer(ans, table, id) {
+    var answer = document.getElementById(id);
+    answer.innerHTML = ans+table;
+	}
+   function hideAnswer(id) {
+    var answer = document.getElementById(id);
+    answer.innerHTML = "";
+   }
+  </script>
+ </head>
+ <body>
+
+  <h1> Задача №26 ЕГЭ по информатике </h1>
+  <p>Задача 1<br>Два игрока, Петя и Ваня, играют в следующую игру. Перед игроками лежит куча камней. Игроки ходят по очереди, первый ход делает Петя. За один ход игрок может:<br>- добавить в кучу любое допустимое количество камней: 2, 3;<br>- увеличить количество камней в куче в 2 раза.<br>Игра завершается в тот момент, когда количество камней в куче становится не менее 36. Если при этом в куче оказалось<br>не более 54 камней, то победителем считается игрок, сделавший последний ход. В противном случае победителем<br>становится его противник. В начальный момент в куче было S камней, 1 ≤ S ≤ 35.<br>Задание 1.<br>а) При каких значениях числа S Петя может выиграть в один ход? Укажите все такие значения и соответствующие ходы Пети.<br>б) У кого из игроков есть выигрышная стратегия при S = 29, 30, 31? Опишите выигрышные стратегии для этих случаев.<br>Задание 2. У кого из игроков есть выигрышная стратегия при S = 16, 17? Опишите соответствующие выигрышные стратегии.<br>Задание 3. У кого из игроков есть выигрышная стратегия при S = 11? Постройте дерево всех партий, возможных при этой выигрышной стратегии (в виде рисунка или таблицы). На рёбрах дерева указывайте, кто делает ход, в узлах – количество камней в позиции.</p>
+  <p><input class="colored" type="button" value="Решение" 
+  onclick="showAnswer('1a) 18-27, 33, 34, 35<br>1б) S = 29: Петя<br>S = 30: Петя<br>S = 31: Ваня<br><br>2) S = 16: Петя<br>S = 17: Ваня<br><br>3) S = 11: Петя<br><br>Развернутые ответы проверяются учителем.', 'answer0')">
+  <input class="colored" type="button" value="Спрятать решение" onclick="hideAnswer('answer0')"></p>
+  <p><span id="answer0"></span></p>
+  <table id = "table"><TH><TD>kek</TD><TH/>
+  </body>
+
+</html>

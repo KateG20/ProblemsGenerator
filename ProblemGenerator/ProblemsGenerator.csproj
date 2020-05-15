@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <Content Include="htmltemplate.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

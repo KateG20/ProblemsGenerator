@@ -11,6 +11,34 @@ namespace ProblemGenerator
     public static class Tables
     {
         /// <summary>
+        /// Делает 2Д таблицу строковой
+        /// </summary>
+        /// <param name="arr">Таблица</param>
+        /// <returns>Таблица в виде одной строки</returns>
+        static string ArrToStr(string[,] arr)
+        {
+            string[] joinedRows = new string[arr.GetLength(0)];
+            for (int i = 0; i < arr.GetLength(0); i++)
+            {
+                joinedRows[i] = string.Join(" ", GetRow(arr, i));
+            }
+            return string.Join("\n", joinedRows);
+        }
+
+        /// <summary>
+        /// Возвращает строку 2Д таблицы из стрингов
+        /// </summary>
+        /// <param name="arr">Таблица</param>
+        /// <param name="rowNum">Номер строки</param>
+        /// <returns>Массив - строка</returns>
+        static string[] GetRow(string[,] arr, int rowNum)
+        {
+            return Enumerable.Range(0, arr.GetLength(1))
+                    .Select(x => arr[rowNum, x])
+                    .ToArray();
+        }
+
+        /// <summary>
         /// Создает таблицу с исходами для любого количества элементов,
         /// для одной кучи
         /// </summary>
@@ -18,9 +46,9 @@ namespace ProblemGenerator
         /// <param name="winMin">Минимальное количество камней для выигрыша</param>
         /// <param name="winMax">Максимальное количество камней для выигрыша</param>
         /// <returns>Массив исходов для каждой клетки</returns>
-        public static string[] OneHeap(int[] toAdd, int toMult, int winMin, int winMax)
+        public static string OneHeap(int[] toAdd, int toMult, int winMin, int winMax)
         {
-            string[] table = new string[winMin];
+            string[,] table = new string[1, winMin];
             // Флаг для выхода из массива, если уже определили значение клетки
             bool ok;
             // Для каждого количества камней, для каждого действия
@@ -33,45 +61,67 @@ namespace ProblemGenerator
                     // Если ходом мы попадаем в зону выигрыша, то в этой клетке 1
                     if ((i + addend >= winMin) && (i + addend <= winMax))
                     {
-                        table[i] = "+";
+                        table[0, i] = "+";
                         ok = true;
                         break;
                     }
                     else
                     {
                         // Если мы попадаем в зону проигрыша, то это тоже зона выигрыша
-                        if (i + addend < winMin && table[i + addend] == "-")
+                        if (i + addend < winMin && table[0, i + addend] == "-")
                         {
-                            table[i] = "+";
+                            table[0, i] = "+";
                             ok = true;
                             break;
                         }
                     }
                     // Иначе это зона проигрыша
-                    table[i] = "-";
+                    table[0, i] = "-";
                 }
                 if (ok) continue;
                 // Теперь так же для множителя
                 // Если ходом мы попадаем в зону выигрыша, то в этой клетке 1
                 if ((i * toMult >= winMin) && (i * toMult <= winMax))
                 {
-                    table[i] = "+";
+                    table[0, i] = "+";
                     continue;
                 }
                 else
                 {
                     // Если мы попадаем в зону проигрыша, то это тоже зона выигрыша
-                    if (i * toMult < winMin && table[i * toMult] == "-")
+                    if (i * toMult < winMin && table[0, i * toMult] == "-")
                     {
-                        table[i] = "+";
+                        table[0, i] = "+";
                         continue;
                     }
                 }
                 // Иначе это зона проигрыша
-                table[i] = "-";
+                table[0, i] = "-";
             }
 
-            return table;
+            //string aoa = "";
+            //foreach (var item in table)
+            //{
+            //    foreach (var it in item)
+            //    {
+            //        aoa += item + " ";
+            //    }
+            //}
+            //MessageBox.Show(aoa);
+
+            string tableStr = ArrToStr(table);
+            //string tableStr = string.Join(" ", table);
+            MessageBox.Show(tableStr);
+
+            //string tableStr = string.Join(" ", table.OfType<string>()
+            //.Select((value, index) => new { value, index })
+            //.GroupBy(x => x.index / table.GetLength(1), x => x.value, //////////////////////////////////////
+            //(i, strs) => $"{string.Join(" ", strs)}"));
+
+            // Добавляем метку, что таблица однострочная, чтобы распознать это в дальнейшем
+            //tableStr += " 0";
+
+            return tableStr;
         }
 
         /// <summary>
@@ -82,7 +132,7 @@ namespace ProblemGenerator
         /// <param name="mult">Во сколько раз умножается количество камней</param>
         /// <param name="toWin">Сколько камней нужно для выигрыша</param>
         /// <returns>Двумерный массив (таблицу) с исходами</returns>
-        public static string[,] TwoHeaps(int add, int mult, int toWin)
+        public static string TwoHeaps(int add, int mult, int toWin)
         {
             // Методы, принимающие на вход четыре варианты развития событий 
             // после разных ходов, и возвращающие соответствие своему названию
@@ -175,7 +225,13 @@ namespace ProblemGenerator
                 }
             }
 
-            return table;
+            string tableStr = ArrToStr(table);
+            //string tableStr = string.Join(" ", table.OfType<string>()
+            //.Select((value, index) => new { value, index })
+            //.GroupBy(x => x.index / table.GetLength(1), x => x.value,
+            //(i, strs) => $"{string.Join(" ", strs)}"));
+
+            return tableStr;
         }
 
         /// <summary>
@@ -186,7 +242,7 @@ namespace ProblemGenerator
         /// <param name="actionsY">Действия для второго слова</param>
         /// <param name="toWin">Количество букв для победы</param>
         /// <returns>Двумерный массив (таблицу) с исходами</returns>
-        public static string[,] TwoWords(Generator.Adder[] actionsX, Generator.Adder[] actionsY, int toWin)
+        public static string TwoWords(Generator.Adder[] actionsX, Generator.Adder[] actionsY, int toWin)
         {
             string[,] table = new string[toWin, toWin];
 
@@ -245,7 +301,13 @@ namespace ProblemGenerator
                 }
             }
 
-            return table;
+            string tableStr = ArrToStr(table);
+            //string tableStr = string.Join(" ", table.OfType<string>()
+            //.Select((value, index) => new { value, index })
+            //.GroupBy(x => x.index / table.GetLength(1), x => x.value,
+            //(i, strs) => $"{string.Join(" ", strs)}"));
+
+            return tableStr;
         }
     }
 }
