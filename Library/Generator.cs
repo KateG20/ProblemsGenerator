@@ -111,28 +111,29 @@ namespace ProblemGenerator
         /// <returns>Таблица</returns>
         static string[,] StrToArray(string str)
         {
-            string[] arr = str.Split(' ');
-            int len = (int)Math.Sqrt(arr.Length);
+            string[] arrOfRows = str.Split('\n');
+            int len = arrOfRows.Length;
             var res = new string[len, len];
-            int k = 0;
+            string[] row;
             for (int i = 0; i < len; i++)
             {
+                row = arrOfRows[i].Split(' ');
                 for (int j = 0; j < len; j++)
                 {
-                    res[i, j] = arr[k++];
+                    res[i, j] = row[j];
                 }
             }
 
-            string aoa = "";
-            foreach (var item in res)
-            {
-                foreach (var it in item)
-                {
-                    aoa += it + " ";
-                }
-                aoa += "\n";
-            }
-            MessageBox.Show(aoa);
+            //string aoa = "";
+            //foreach (var item in res)
+            //{
+            //    foreach (var it in item)
+            //    {
+            //        aoa += it + " ";
+            //    }
+            //    aoa += "\n";
+            //}
+            //MessageBox.Show(aoa);
 
             return res;
         }
@@ -294,7 +295,10 @@ namespace ProblemGenerator
                 string.Join(", ", new string[] { quest2Win, quest2Lose }), quest3 };
 
             // Создаем шаблон для ответа и записываем ответ для каждого пункта.
-            string answer = "1a) {0}<br>1б) {1}<br>2) {2}<br>3) {3}<br>Развернутые ответы проверяются учителем.<br>";
+            string answer = "1a) {0}<br>1б) {1}<br>2) {2}<br>3) {3}<br>Развернутые ответы проверяются учителем. " +
+                "Но есть таблица, по которой можно проверить успешность любой стратегии.<br>В шапке " +
+                "указано количество камней, и если ему соответствует знак &#171;+&#187;, то находящийся " +
+                "в этой позиции игрок выиграет, если &#171;-&#187;, то проиграет.<br><br>";
 
             string ans1b = string.Empty;
 
@@ -422,7 +426,10 @@ namespace ProblemGenerator
                 toMult.ToString(), toWin.ToString(), quest1, quest2, quest3 };
 
             // Строка с шаблоном ответа
-            string answer = "1.<br>{0}<br>2.<br>{1}<br>3. {2}<br>Развернутые ответы проверяются учителем.<br>";
+            string answer = "1.<br>{0}<br>2.<br>{1}<br>3. {2}<br>Развернутые ответы проверяются учителем. " +
+                "Но есть таблица, по которой можно проверить успешность любой стратегии.<br>В шапках " +
+                "указано количество камней в кучах, и если позиции соответствует знак &#171;+&#187;, то " +
+                "находящийся в ней игрок выиграет, если &#171;-&#187;, то проиграет.<br><br>";
             string ans1 = string.Empty;
 
             // Создаем ответы
@@ -625,7 +632,10 @@ namespace ProblemGenerator
                 toAdd[1] == 1 ? "одну букву" : "две буквы", toMult[0].ToString(), toMult[1].ToString(),
                 toWin.ToString(), string.Join(", ", quest1), string.Join(", ", quest2), quest3 };
 
-            string answer = "1.<br>{0}<br><br>2.<br>{1}<br><br>3. {2}<br>Развернутые ответы проверяются учителем.<br>";
+            string answer = "1.<br>{0}<br><br>2.<br>{1}<br><br>3. {2}<br>Развернутые ответы проверяются учителем. " +
+                "Но есть таблица, по которой можно проверить успешность любой стратегии.<br>В шапках " +
+                "указано количество камней в кучах, и если позиции соответствует знак &#171;+&#187;, то " +
+                "находящийся в ней игрок выиграет, если &#171;-&#187;, то проиграет.<br><br>";
 
             return new string[] { string.Format(text, data), string.Format(answer, new string[]
                 { string.Join("<br>", ans1), string.Join("<br>", ans2), ans3 }), tableStr };

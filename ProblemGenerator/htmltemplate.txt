@@ -28,9 +28,9 @@
    }
   </style>
   <script>
-   function showAnswer(ans, table, id) {
+   function showAnswer(ans, id) {
     var answer = document.getElementById(id);
-    answer.innerHTML = ans+table;
+    answer.innerHTML = ans;
 	}
    function hideAnswer(id) {
     var answer = document.getElementById(id);

@@ -120,15 +120,15 @@ namespace ProblemGenerator
             string[,] problemsData;
             if (randBox.Checked) problemsData = Generator.RandomGenerate();
             else problemsData = Generator.Generate();
-            try
-            {
+            //try
+            //{
                 HTMLWriter.WriteHTML(problemsData);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Произошла ошибка при создании html-файла.\n" + ex.Message);
-                Environment.Exit(0);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Произошла ошибка при создании html-файла.\n" + ex.Message);
+            //    Environment.Exit(0);
+            //}
 
             Close();
         }

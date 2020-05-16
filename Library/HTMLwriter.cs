@@ -48,7 +48,7 @@ namespace ProblemGenerator
                 input1.SetAttributeValue("class", "colored");
                 input1.SetAttributeValue("type", "button");
                 input1.SetAttributeValue("value", "Решение");
-                input1.SetAttributeValue("onclick", $@"showAnswer('{problems[1, i] + Create2DTable(problems[2, i])}', 'answer{i}')");
+                input1.SetAttributeValue("onclick", $"showAnswer(\"{problems[1, i] + Create2DTable(problems[2, i])}\", 'answer{i}')");
                 button.AppendChild(input1);
 
                 input2 = doc.CreateElement("input");
@@ -67,51 +67,12 @@ namespace ProblemGenerator
                 span.SetAttributeValue("id", $"answer{i}");
                 answer.AppendChild(span);
                 body.AppendChild(answer);
-
-                //table = doc.CreateElement("table");
-                //table.SetAttributeValue("id", "table");
-                //table.SetAttributeValue("border", "1");
-                //if (problems[2, i][problems[2, i].Length-1] == '0')
-                //{
-                //    table.InnerHtml = Create1DTable(problems[2, i]);
-                //}
-                //else
-                    //table.InnerHtml = Create2DTable(problems[2, i]);
             }
             doc.Save(path);
 
             // Открываем страницу в браузере
             Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
         }
-
-        /// <summary>
-        /// Создает код для однострочной html-таблицы из строки 
-        /// </summary>
-        /// <param name="str">Строка</param>
-        /// <returns>Код для создания таблицы</returns>
-        //static string Create1DTable(string str)
-        //{
-        //    string[] arr = str.Split(' ');
-        //    StringBuilder table = new StringBuilder();
-        //    //table.Append(@"<table id = ""table"" border = ""1""><tr>");
-        //    table.Append("<tr>");
-
-        //    for (int i = 1; i < arr.Length; i++)
-        //    {
-        //        table.Append($@"<th class=""h"">{i}</th>");
-        //    }
-        //    table.Append("</tr><tr>");
-
-        //    for (int i = 1; i < arr.Length; i++)
-        //    {
-        //        if (arr[i] == "+") table.Append(@"<td class=""w"">+</td>");
-        //        else table.Append("<td>-</td>");
-        //    }
-
-        //    //table.Append("</tr></table><br>");
-        //    table.Append("</tr>");
-        //    return table.ToString();
-        //}
 
         /// <summary>
         /// Создает код для двумерной html-таблицы из строки 
@@ -129,42 +90,68 @@ namespace ProblemGenerator
 
             StringBuilder table = new StringBuilder();
             // Добавляем тег таблицы и начинаем новую строку
-            table.Append(@"<table id = \""table\"" border = '1'><tr>"); /////////тут лажа//////////////////
+            table.Append("<table id = 'table' border = '1'><tr>"); 
 
             // Добавляем пустую верхнюю левую ячейку
             table.Append("<th> </th>");
 
             // Делаем верхнюю шапку
-            for (int i = 1; i <= lenHor; i++)
+            for (int i = 1; i < lenHor; i++)
             {
-                table.Append($"<th class='h'>{i}</th>");
+                if (i < 10) table.Append($"<th class='h'>{i}&nbsp;</th>");
+                else table.Append($"<th class='h'>{i}</th>");
             }
             // Заканчиваем строку
             table.Append("</tr>");
 
-            string[] row;
-            // Создаем основную часть таблицы
-            for (int j = 1; j <= lenVert; j++)
+            if (lenVert == 1)
             {
-                // Новая строка и первый элемент - индекс для боковой шапки
-                table.Append($"<tr><th class='h'>{j}</th>");
-                // Следующая строка таблицы
-                row = arrOfRows[j-1].Split(' ');
-
-                // Пишем саму строку
-                for (int i = 0; i < lenHor; i++)
-                {
-                    // Если выигрышная клетка, красим
-                    if (row[i] == "+") table.Append("<td class='w'>+</td>");
-                    else table.Append("<td>-</td>");
-                }
-                // Заканчиваем строку
-                table.Append("</tr>");
+                table.Append($"<tr><th class='h'>&nbsp;</th>");
+                AddRow(arrOfRows[0].Split(' '), ref table);
             }
+            else
+            {
 
+                string[] cells;
+                //int j = 1;
+                // Создаем основную часть таблицы
+                for (int j = 1; j < lenVert; j++)
+                //do
+                {
+                    // Новая строка и первый элемент - индекс для боковой шапки
+                    table.Append($"<tr><th class='h'>{j}</th>");
+
+                    // Следующая строка таблицы
+                    cells = arrOfRows[j].Split(' ');
+                    AddRow(cells, ref table);
+
+                    // Заканчиваем строку
+                    table.Append("</tr>");
+                } //while (j++ < lenVert);
+            }
             // Заканчиваем таблицу
             table.Append("</table><br>");
             return table.ToString();
+        }
+
+        /// <summary>
+        /// Добавляет в таблицу строку
+        /// </summary>
+        /// <param name="cells">Массив элементов строки</param>
+        /// <param name="table">Ссылка на таблицу</param>
+        static void AddRow(string[] cells, ref StringBuilder table)
+        {
+            for (int i = 0; i < cells.Length; i++)
+            {
+                if (cells[i].Length < 1) continue;
+                // Красим клетки
+                if (cells[i][0] == '+')
+                    table.Append("<td class='w'>+</td>");
+                else if (cells[i][0] == '-')
+                    table.Append("<td class='l'>-</td>");
+                else
+                    table.Append("<td class='r'>!</td>");
+            }
         }
     }
 }

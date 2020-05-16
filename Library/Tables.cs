@@ -111,7 +111,7 @@ namespace ProblemGenerator
 
             string tableStr = ArrToStr(table);
             //string tableStr = string.Join(" ", table);
-            MessageBox.Show(tableStr);
+            //MessageBox.Show(tableStr);
 
             //string tableStr = string.Join(" ", table.OfType<string>()
             //.Select((value, index) => new { value, index })
