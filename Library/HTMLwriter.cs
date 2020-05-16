@@ -95,23 +95,39 @@ namespace ProblemGenerator
             // Добавляем пустую верхнюю левую ячейку
             table.Append("<th> </th>");
 
+            // Для удобства делаем первую строку массивом
+            string[] firstRow = arrOfRows[0].Split(' ');
+            string res = "";
             // Делаем верхнюю шапку
             for (int i = 1; i < lenHor; i++)
             {
+                // Пропускаем все колонки, в которых в исходной таблице стоит точка,
+                // единожды пишем знак пропуска ".."
+                if (firstRow[i] == ".")
+                {
+                    //MessageBox.Show(res);
+                    if (firstRow[i-1] != ".")
+                    { table.Append($"<th class='h'>..</th>"); res += ".. "; }
+                    continue;
+                }
                 if (i < 10) table.Append($"<th class='h'>{i}&nbsp;</th>");
                 else table.Append($"<th class='h'>{i}</th>");
+                res += i+" ";
             }
+
             // Заканчиваем строку
             table.Append("</tr>");
 
+            // Добавляем сами строки
+            // Для однострочной таблицы
             if (lenVert == 1)
             {
                 table.Append($"<tr><th class='h'>&nbsp;</th>");
-                AddRow(arrOfRows[0].Split(' '), ref table);
+                AddRow(firstRow, ref table);
             }
+            // Для квадратных таблиц
             else
             {
-
                 string[] cells;
                 //int j = 1;
                 // Создаем основную часть таблицы
@@ -145,7 +161,14 @@ namespace ProblemGenerator
             {
                 if (cells[i].Length < 1) continue;
                 // Красим клетки
-                if (cells[i][0] == '+')
+                // Если это клетка пропуска, "сокращаем" их до одной
+                if (cells[i][0] == '.')
+                {
+                    if (cells[i-1][0] != '.')
+                        table.Append("<td class='w'>..</td>");
+                    continue;
+                }
+                else if (cells[i][0] == '+')
                     table.Append("<td class='w'>+</td>");
                 else if (cells[i][0] == '-')
                     table.Append("<td class='l'>-</td>");

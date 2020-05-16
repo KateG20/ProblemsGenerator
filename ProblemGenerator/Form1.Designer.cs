@@ -109,7 +109,7 @@
             this.genButton.Location = new System.Drawing.Point(485, 582);
             this.genButton.Name = "genButton";
             this.genButton.Size = new System.Drawing.Size(285, 59);
-            this.genButton.TabIndex = 5;
+            this.genButton.TabIndex = 4;
             this.genButton.Text = "Сгенерировать!";
             this.genButton.UseVisualStyleBackColor = false;
             this.genButton.Visible = false;
@@ -176,7 +176,7 @@
             this.seedBox.Location = new System.Drawing.Point(529, 488);
             this.seedBox.Name = "seedBox";
             this.seedBox.Size = new System.Drawing.Size(100, 38);
-            this.seedBox.TabIndex = 13;
+            this.seedBox.TabIndex = 3;
             this.seedBox.TextChanged += new System.EventHandler(this.SeedBox_TextChanged);
             // 
             // Form1

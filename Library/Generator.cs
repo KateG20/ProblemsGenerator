@@ -244,7 +244,7 @@ namespace ProblemGenerator
             for (int i = upperBound / toMult; i > 0; i--)
             {
                 // Если клетка проигрыша, то проверям, первая или вторая, и записываем ее
-                if (table[i] == "-") //////////////////////////////////////////////////////////////////////////////////
+                if (table[i] == "-")
                 {
                     if (quest2Lose.Length == 0)
                         quest2Lose = i.ToString();
@@ -253,7 +253,7 @@ namespace ProblemGenerator
                 }
                 // Если клетка выигрыша, то тоже проверяем, а если это вторая выигрышная,
                 // то выходим из цикла - данные нам больше не нужны
-                if (table[i] == "+")
+                if (table[i] == "+" || table[i] == ".")
                 {
                     if (quest2Lose.Length > 0 && quest2Win.Length == 0) quest2Win = i.ToString();
                     else if (quest3Lose.Length > 0)
@@ -298,19 +298,20 @@ namespace ProblemGenerator
             string answer = "1a) {0}<br>1б) {1}<br>2) {2}<br>3) {3}<br>Развернутые ответы проверяются учителем. " +
                 "Но есть таблица, по которой можно проверить успешность любой стратегии.<br>В шапке " +
                 "указано количество камней, и если ему соответствует знак &#171;+&#187;, то находящийся " +
-                "в этой позиции игрок выиграет, если &#171;-&#187;, то проиграет.<br><br>";
+                "в этой позиции игрок выиграет, если &#171;-&#187;, то проиграет.<br>Пропуск " +
+                "&#171;..&#187; означает много идущих подряд выигрышных клеток.<br><br>";
 
             string ans1b = string.Empty;
 
             for (int i = 0; i < quest1bInts.Count; i++)
             {
-                ans1b += $"S = {quest1bInts[i]}: " + (table[quest1bInts[i]] == "+" ? "Петя<br>" : "Ваня<br>");
+                ans1b += $"S = {quest1bInts[i]}: " + ("+.".Contains(table[quest1bInts[i]]) ? "Петя<br>" : "Ваня<br>");
             }
 
-            string ans2 = $"S = {quest2Win}: " + (table[int.Parse(quest2Win)] == "+" ? "Петя<br>" : "Ваня<br>") +
-                $"S = {quest2Lose}: " + (table[int.Parse(quest2Lose)] == "+" ? "Петя<br>" : "Ваня<br>");
+            string ans2 = $"S = {quest2Win}: " + ("+.".Contains(table[int.Parse(quest2Win)]) ? "Петя<br>" : "Ваня<br>") +
+                $"S = {quest2Lose}: " + ("+.".Contains(table[int.Parse(quest2Lose)]) ? "Петя<br>" : "Ваня<br>");
 
-            string ans3 = $"S = {quest3}: " + (table[int.Parse(quest3)] == "+" ? "Петя<br>" : "Ваня<br>");
+            string ans3 = $"S = {quest3}: " + ("+.".Contains(table[int.Parse(quest3)]) ? "Петя<br>" : "Ваня<br>");
 
             // Строка для форматирования шаблона
             string[] answers = new string[] { ans1a, ans1b, ans2, ans3 };

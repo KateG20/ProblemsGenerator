@@ -99,6 +99,12 @@ namespace ProblemGenerator
                 table[0, i] = "-";
             }
 
+            // Заменяем много выигрышных клеток подряд на точки.
+            int k = (int)Math.Ceiling((double)winMin / toMult);
+            while (table[0, k] == "+")
+            {
+                table[0, k++] = ".";
+            }
             //string aoa = "";
             //foreach (var item in table)
             //{
@@ -111,15 +117,7 @@ namespace ProblemGenerator
 
             string tableStr = ArrToStr(table);
             //string tableStr = string.Join(" ", table);
-            //MessageBox.Show(tableStr);
-
-            //string tableStr = string.Join(" ", table.OfType<string>()
-            //.Select((value, index) => new { value, index })
-            //.GroupBy(x => x.index / table.GetLength(1), x => x.value, //////////////////////////////////////
-            //(i, strs) => $"{string.Join(" ", strs)}"));
-
-            // Добавляем метку, что таблица однострочная, чтобы распознать это в дальнейшем
-            //tableStr += " 0";
+            //MessageBox.Show(tableStr);   
 
             return tableStr;
         }
