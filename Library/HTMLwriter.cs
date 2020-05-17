@@ -90,14 +90,15 @@ namespace ProblemGenerator
 
             StringBuilder table = new StringBuilder();
             // Добавляем тег таблицы и начинаем новую строку
-            table.Append("<table id = 'table' border = '1'><tr>"); 
+            table.Append("<table id = 'table' border = '1'><tr>");
 
             // Добавляем пустую верхнюю левую ячейку
             table.Append("<th> </th>");
 
             // Для удобства делаем первую строку массивом
-            string[] firstRow = arrOfRows[0].Split(' ');
-            string res = "";
+            string[] firstRow = lenVert == 1 ? arrOfRows[0].Split(' ') : arrOfRows[1].Split(' ');
+            // Длина шапки с учетом пропусков
+            int headLen = 0;
             // Делаем верхнюю шапку
             for (int i = 1; i < lenHor; i++)
             {
@@ -106,13 +107,13 @@ namespace ProblemGenerator
                 if (firstRow[i] == ".")
                 {
                     //MessageBox.Show(res);
-                    if (firstRow[i-1] != ".")
-                    { table.Append($"<th class='h'>..</th>"); res += ".. "; }
+                    if (firstRow[i - 1] != ".")
+                        table.Append($"<th class='h'>..</th>");
                     continue;
                 }
+                headLen++;
                 if (i < 10) table.Append($"<th class='h'>{i}&nbsp;</th>");
                 else table.Append($"<th class='h'>{i}</th>");
-                res += i+" ";
             }
 
             // Заканчиваем строку
@@ -128,22 +129,58 @@ namespace ProblemGenerator
             // Для квадратных таблиц
             else
             {
+                bool flag = true;
                 string[] cells;
-                //int j = 1;
                 // Создаем основную часть таблицы
                 for (int j = 1; j < lenVert; j++)
-                //do
                 {
-                    // Новая строка и первый элемент - индекс для боковой шапки
-                    table.Append($"<tr><th class='h'>{j}</th>");
-
                     // Следующая строка таблицы
                     cells = arrOfRows[j].Split(' ');
+
+                    // Если строка непустая (второй элемент непустой (первый может 
+                    // быть пустой даже у непустой строки))
+                    if (cells[1].Length > 0)
+                    {
+                        // Если состоит из точек, её надо сокращать
+                        if (cells[1] == ".")
+                        {
+                            // Первый раз, пока флаг еще true, создаем строку из пропусков
+                            if (flag)
+                            {
+                                table.Append($"<tr><th class='h'>..</th>");
+                                for (int i = 0; i < headLen; i++)
+                                {
+                                    table.Append("<td class='w'>..</td>");
+                                }
+                                // В конце - восклицательный знак и конец строки
+                                table.Append("<td class='r'>!</td></tr>");
+                                // Меняем флаг, чтобы больше строк не создавалось
+                                flag = false;
+                            }
+                            // И в любом случае - continue
+                            continue;
+                        }
+                        // Если состоит из восклицательных знаков, ее надо сокращать
+                        else if (cells[1] == "!")
+                        {
+                            table.Append($"<tr><th class='h'>{cells.Length - 1}</th>");
+                            for (int i = 0; i < headLen; i++)
+                            {
+                                table.Append("<td class='r'>!</td>");
+                            }
+                            // В конце - восклицательный знак и конец строки
+                            table.Append("<td class='r'>!</td></tr>");
+                            // Цикл закончен
+                            break;
+                        }
+                    }
+                    // Первый элемент - индекс для боковой шапки
+                    table.Append($"<tr><th class='h'>{j}</th>");
                     AddRow(cells, ref table);
 
                     // Заканчиваем строку
                     table.Append("</tr>");
-                } //while (j++ < lenVert);
+                }
             }
             // Заканчиваем таблицу
             table.Append("</table><br>");
@@ -164,7 +201,7 @@ namespace ProblemGenerator
                 // Если это клетка пропуска, "сокращаем" их до одной
                 if (cells[i][0] == '.')
                 {
-                    if (cells[i-1][0] != '.')
+                    if (cells[i - 1][0] != '.')
                         table.Append("<td class='w'>..</td>");
                     continue;
                 }

@@ -132,7 +132,7 @@ namespace ProblemGenerator
         /// <returns>Двумерный массив (таблицу) с исходами</returns>
         public static string TwoHeaps(int add, int mult, int toWin)
         {
-            // Методы, принимающие на вход четыре варианты развития событий 
+            // Методы, принимающие на вход четыре варианта развития событий 
             // после разных ходов, и возвращающие соответствие своему названию
             bool IsWin1(string[] cells)
             {
@@ -215,11 +215,21 @@ namespace ProblemGenerator
             string[,] table = new string[toWin, toWin];
 
             // Определяем значение для каждой клетки
-            for (int r = 1; r < toWin; r++)
+            for (int row = 1; row < toWin; row++)
             {
-                for (int c = 1; c < toWin; c++)
+                for (int col = 1; col < toWin; col++)
                 {
-                    GetValue(r, c, table);
+                    GetValue(row, col, table);
+                }
+            }
+
+            // Место, где начинается много плюсов
+            int startWins = (int)Math.Ceiling((double)toWin / mult);
+            for (int row = 1; row < toWin - 1; row++)
+            {
+                for (int col = 1; col < toWin - 1; col++)
+                {
+                    if (col >= startWins || row >= startWins) table[row, col] = ".";
                 }
             }
 
@@ -296,6 +306,20 @@ namespace ProblemGenerator
                             else if ((k1 + k2) == targets.Count) table[y, x] = "-1,2";
                         }
                     }
+                }
+            }
+
+            // Применяем действия умножения к единице, если получим 2 - 
+            // значит минимум происходит умножение на 2
+            int minMult = Math.Min(actionsX[1](1), actionsY[1](1));
+
+            // Место, где начинается много плюсов, с запасом
+            int startWins = (int)Math.Ceiling((double)toWin / minMult);
+            for (int row = 1; row < toWin - 1; row++)
+            {
+                for (int col = 1; col < toWin - 1; col++)
+                {
+                    if (col >= startWins || row >= startWins) table[row, col] = ".";
                 }
             }
 

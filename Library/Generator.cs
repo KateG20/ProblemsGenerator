@@ -61,7 +61,7 @@ namespace ProblemGenerator
             if (Seed == 0) rand = new Random();
             else rand = new Random(Seed);
 
-            string[,] problems = new string[2, ProblemsNum];
+            string[,] problems = new string[3, ProblemsNum];
             string[] result = new string[1];
             // Каждый раз создаем задачу рандомного типа
             for (int i = 0; i < ProblemsNum; i++)
@@ -349,7 +349,8 @@ namespace ProblemGenerator
             {
                 for (int j = i; j < toWin; j++)
                 {
-                    if (table[i, j] == "-1") quest1array.Add(new int[] { i, j });/////////////////////////////////////////
+                    if (table[i, j] == "-1")
+                        quest1array.Add(new int[] { i, j });
                 }
             }
 
@@ -363,7 +364,8 @@ namespace ProblemGenerator
                     {
                         if (i > 0 && j > 0 && i <= j)
                         {
-                            if (table[i, j] == "+2") quest2array.Add(new int[] { i, j }); ///////////
+                            if (table[i, j] == "+2")
+                                quest2array.Add(new int[] { i, j });
                         }
                     }
                 }
@@ -379,7 +381,8 @@ namespace ProblemGenerator
                     {
                         if (i > 0 && j > 0 && i <= j)
                         {
-                            if (table[i, j] == "-") quest3array.Add(new int[] { i, j });
+                            if (table[i, j] == "-")
+                                quest3array.Add(new int[] { i, j });
                         }
                     }
                 }
@@ -430,7 +433,8 @@ namespace ProblemGenerator
             string answer = "1.<br>{0}<br>2.<br>{1}<br>3. {2}<br>Развернутые ответы проверяются учителем. " +
                 "Но есть таблица, по которой можно проверить успешность любой стратегии.<br>В шапках " +
                 "указано количество камней в кучах, и если позиции соответствует знак &#171;+&#187;, то " +
-                "находящийся в ней игрок выиграет, если &#171;-&#187;, то проиграет.<br><br>";
+                "находящийся в ней игрок выиграет, если &#171;-&#187;, то проиграет.<br>Пропуск " +
+                "&#171;..&#187; означает много идущих подряд выигрышных клеток.<br><br>";
             string ans1 = string.Empty;
 
             // Создаем ответы
@@ -636,7 +640,8 @@ namespace ProblemGenerator
             string answer = "1.<br>{0}<br><br>2.<br>{1}<br><br>3. {2}<br>Развернутые ответы проверяются учителем. " +
                 "Но есть таблица, по которой можно проверить успешность любой стратегии.<br>В шапках " +
                 "указано количество камней в кучах, и если позиции соответствует знак &#171;+&#187;, то " +
-                "находящийся в ней игрок выиграет, если &#171;-&#187;, то проиграет.<br><br>";
+                "находящийся в ней игрок выиграет, если &#171;-&#187;, то проиграет.<br>Пропуск " +
+                "&#171;..&#187; означает много идущих подряд выигрышных клеток.<br><br>";
 
             return new string[] { string.Format(text, data), string.Format(answer, new string[]
                 { string.Join("<br>", ans1), string.Join("<br>", ans2), ans3 }), tableStr };
