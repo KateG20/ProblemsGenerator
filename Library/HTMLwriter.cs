@@ -8,10 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ProblemGenerator
+namespace Library
 {
     public static class HTMLWriter
     {
+        public static bool ToOpen { get; set; }
         public static void WriteHTML(string[,] problems)
         {
             // Добываем путь к файлу, в который будем записывать
@@ -70,8 +71,9 @@ namespace ProblemGenerator
             }
             doc.Save(path);
 
-            // Открываем страницу в браузере
-            Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+            // Открываем страницу в браузере, если стоит галочка
+            if (ToOpen)
+                Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
         }
 
         /// <summary>

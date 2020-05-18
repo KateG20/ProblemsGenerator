@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Library;
 
 namespace ProblemGenerator
 {
@@ -19,7 +20,12 @@ namespace ProblemGenerator
         {
             InitializeComponent();
             FormClosing += new FormClosingEventHandler(Form1_Closing);
-            Size = new Size(650, 470);
+            Size = new Size(650, 500);
+            // Заранее устанавливаем свойство true, т.к. галочка изначально стоит
+            HTMLWriter.ToOpen = true;
+            // Ставим единицу, которая стоит по умолчанию
+            Generator.ProblemsNum = 1;
+            // Загружаем иконку
             try
             {
                 Icon = new Icon("../../favicon.ico");
@@ -123,6 +129,7 @@ namespace ProblemGenerator
             //try
             //{
                 HTMLWriter.WriteHTML(problemsData);
+            PDFwriter.BuildText(problemsData);
             //}
             //catch (Exception ex)
             //{
@@ -154,6 +161,11 @@ namespace ProblemGenerator
             }
         }
 
+        private void EscButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
         // Пасхалочки
         private void DifLabel_Click(object sender, EventArgs e)
         {
@@ -168,6 +180,18 @@ namespace ProblemGenerator
         private void Form1_Closing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void HtmlCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (htmlCheckBox.Checked) HTMLWriter.ToOpen = true;
+            else if (!htmlCheckBox.Checked) HTMLWriter.ToOpen = false;
+        }
+
+        private void PdfCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (pdfCheckBox.Checked) PDFwriter.ToOpen = true;
+            else if (!pdfCheckBox.Checked) PDFwriter.ToOpen = false;
         }
     }
 }

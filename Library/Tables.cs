@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ProblemGenerator
+namespace Library
 {
     /// <summary>
     /// Класс, содержащий методы для создания таблиц для разных видов задач
@@ -122,6 +122,120 @@ namespace ProblemGenerator
             return tableStr;
         }
 
+        public static string TwoHeaps0(int add, int mult, int toWin)
+        {
+            string[,] table = new string[toWin, toWin];
+
+            for (var y = toWin - 1; y > 0; y--)
+            {
+                for (var x = toWin - 1; x > 0; x--)
+                {
+                    table[y, x] = "-";
+                    List<string> targets = new List<string>();
+                    if ((y + x) >= toWin)
+                        table[y, x] = "!";
+                    else
+                    {
+                        for (int i = 0; i < 2; i++)
+                        {
+                            if (i == 0)
+                            {
+                                if (y + (x + add) >= toWin)
+                                {
+                                    targets.Add("!");
+                                    break;
+                                }
+                                else
+                                {
+                                    targets.Add(table[y, x + add]);
+                                }
+                            }
+                            else
+                            {
+                                if (y + (x * add) >= toWin)
+                                {
+                                    targets.Add("!");
+                                }
+                                else
+                                {
+                                    targets.Add(table[y, x * add]);
+                                }
+                            }
+                        }
+
+                        for (int i = 0; i < 2; i++)
+                        {
+                            if (i == 0)
+                            {
+                                if (x + (y + add) >= toWin)
+                                {
+                                    targets.Add("!");
+                                    break;
+                                }
+                                else
+                                {
+                                    targets.Add(table[y + add, x]);
+                                }
+                            }
+                            else
+                            {
+                                if (x + (y * add) >= toWin)
+                                {
+                                    targets.Add("!");
+                                }
+                                else
+                                {
+                                    targets.Add(table[y * add, x]);
+                                }
+                            }
+                        }
+
+                        if (targets.IndexOf("!") != -1) table[y, x] = "+1";
+                        else if (targets.IndexOf("-1") != -1) table[y, x] = "+2";
+                        else if (targets.IndexOf("-1,2") != -1) table[y, x] = "+";
+                        else if (targets.IndexOf("-") != -1) table[y, x] = "+";
+                        else
+                        {
+                            table[y, x] = "-";
+                            int k1 = 0;
+                            int k2 = 0;
+                            foreach (string target in targets)
+                            {
+                                if (target == "+1") k1 += 1;
+                                else if (target == "+2") k2 += 1;
+                            }
+                            if (k1 == targets.Count) table[y, x] = "-1";
+                            else if ((k1 + k2) == targets.Count) table[y, x] = "-1,2";
+                        }
+                    }
+                }
+            }
+
+            // Применяем действия умножения к единице, если получим 2 - 
+            // значит минимум происходит умножение на 2
+            //int minMult = Math.Min(actionsX[1](1), actionsY[1](1));
+
+            // Место, где начинается много плюсов
+            int startWins = (int)Math.Ceiling((double)toWin / mult);
+            // Меняем много плюсов на точки
+            for (int row = 1; row < toWin - 1; row++)
+            {
+                for (int col = 1; col < toWin - 1; col++)
+                {
+                    if (col >= startWins || row >= startWins) table[row, col] = ".";
+                }
+            }
+
+            string tableStr = ArrToStr(table);
+            //MessageBox.Show(tableStr);
+            //string tableStr = string.Join(" ", table.OfType<string>()
+            //.Select((value, index) => new { value, index })
+            //.GroupBy(x => x.index / table.GetLength(1), x => x.value,
+            //(i, strs) => $"{string.Join(" ", strs)}"));
+
+            return tableStr;
+        }
+
         /// <summary>
         /// Создает таблицу с исходами для любого количества элементов,
         /// для двух куч
@@ -157,7 +271,7 @@ namespace ProblemGenerator
             {
                 for (int i = 0; i < cells.Length; i++)
                 {
-                    if (cells[i] == "-1") return true;
+                    if (cells[i] == "-1" || cells[i] == "-1/2") return true;
                 }
                 return false;
             }
@@ -167,9 +281,20 @@ namespace ProblemGenerator
                 int k = 0;
                 for (int i = 0; i < cells.Length; i++)
                 {
-                    if (cells[i] == "-2") { k++; break; }
+                    if (cells[i] == "+2") k++;
                 }
-                return k != 0;
+                return k == 4;
+            }
+
+            bool IsLoss12(string[] cells)
+            {
+                int k1 = 0, k2 = 0;
+                for (int i = 0; i < cells.Length; i++)
+                {
+                    if (cells[i] == "+2") k2++;
+                    else if (cells[i] == "+1") k1++;
+                }
+                return k1 != 0 && k2 != 0 && k1 + k2 > 3;
             }
 
             bool IsWin(string[] cells)
@@ -205,6 +330,7 @@ namespace ProblemGenerator
                     else if (IsLoss1(cellsAfterMove)) { tbl[row, col] = "-1"; }
                     else if (IsWin2(cellsAfterMove)) { tbl[row, col] = "+2"; }
                     else if (IsLoss2(cellsAfterMove)) { tbl[row, col] = "-2"; }
+                    else if (IsLoss12(cellsAfterMove)) { tbl[row, col] = "-1/2"; }
                     else if (IsWin(cellsAfterMove)) { tbl[row, col] = "+"; }
                     else tbl[row, col] = "-";
                 }
@@ -225,6 +351,7 @@ namespace ProblemGenerator
 
             // Место, где начинается много плюсов
             int startWins = (int)Math.Ceiling((double)toWin / mult);
+            // Меняем много плюсов на точки
             for (int row = 1; row < toWin - 1; row++)
             {
                 for (int col = 1; col < toWin - 1; col++)
@@ -234,10 +361,7 @@ namespace ProblemGenerator
             }
 
             string tableStr = ArrToStr(table);
-            //string tableStr = string.Join(" ", table.OfType<string>()
-            //.Select((value, index) => new { value, index })
-            //.GroupBy(x => x.index / table.GetLength(1), x => x.value,
-            //(i, strs) => $"{string.Join(" ", strs)}"));
+            //MessageBox.Show(tableStr);
 
             return tableStr;
         }
@@ -254,9 +378,9 @@ namespace ProblemGenerator
         {
             string[,] table = new string[toWin, toWin];
 
-            for (var y = toWin-1; y > 0; y--)
+            for (var y = toWin - 1; y > 0; y--)
             {
-                for (var x = toWin-1; x > 0; x--)
+                for (var x = toWin - 1; x > 0; x--)
                 {
                     table[y, x] = "-";
                     List<string> targets = new List<string>();
@@ -315,6 +439,7 @@ namespace ProblemGenerator
 
             // Место, где начинается много плюсов, с запасом
             int startWins = (int)Math.Ceiling((double)toWin / minMult);
+            // Меняем много плюсов на точки
             for (int row = 1; row < toWin - 1; row++)
             {
                 for (int col = 1; col < toWin - 1; col++)
