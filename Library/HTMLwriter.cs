@@ -13,6 +13,10 @@ namespace Library
     public static class HTMLWriter
     {
         public static bool ToOpen { get; set; }
+        /// <summary>
+        /// Записывает сгенерированные задачи в html-файл
+        /// </summary>
+        /// <param name="problems">Данные о задачах</param>
         public static void WriteHTML(string[,] problems)
         {
             // Добываем путь к файлу, в который будем записывать
