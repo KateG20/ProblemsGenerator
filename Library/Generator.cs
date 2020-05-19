@@ -10,10 +10,14 @@ namespace Library
     public static class Generator
     {
         static Random rand;
+
         public delegate int Adder(int x);
         public delegate string[] GenerateType();
+        // Ключ генерации
         public static int Seed { get; set; }
+        // Тип задачи
         public static int ProblemType { get; set; }
+        // Количество задач
         public static int ProblemsNum { get; set; }
 
         /// <summary>
@@ -35,15 +39,15 @@ namespace Library
             string[] result = new string[1];
             for (int i = 0; i < ProblemsNum; i++)
             {
-                //try
-                //{
+                try
+                {
                     result = GenerateMethod();
-                //}
-                //catch (Exception e)
-                //{
-                //    MessageBox.Show("Возникла ошибка при генерации задачи.\n" + e.Message);
-                //    Environment.Exit(0);
-                //}
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Возникла ошибка при генерации задачи.\n" + e.Message);
+                    Environment.Exit(0);
+                }
                 problems[0, i] = $"Задача {i + 1}<br>" + result[0];
                 problems[1, i] = result[1];
                 problems[2, i] = result[2];
@@ -124,17 +128,6 @@ namespace Library
                 }
             }
 
-            //string aoa = "";
-            //foreach (var item in res)
-            //{
-            //    foreach (var it in item)
-            //    {
-            //        aoa += it + " ";
-            //    }
-            //    aoa += "\n";
-            //}
-            //MessageBox.Show(aoa);
-
             return res;
         }
 
@@ -170,30 +163,20 @@ namespace Library
             // Верхнее ограничение для выигрыша
             int upperBound = (toWin - toAdd.Max()) * toMult - rand.Next(8, 14);
             // Создаем таблицу для данных
-            //try
-            //{
+            try
+            {
                 tableStr = Tables.OneHeap(toAdd, toMult, toWin, upperBound);
-            //}
-            //catch (Exception e)
-            //{
-            //    MessageBox.Show("Возникла ошибка при рассчитывании решения.\n" + e.Message);
-            //    Environment.Exit(0);
-            //}
-            //MessageBox.Show(tableStr);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Возникла ошибка при рассчитывании решения.\n" + e.Message);
+                Environment.Exit(0);
+            }
+            MessageBox.Show(tableStr);
 
             string[] table = tableStr.Split(' ');
-            //string aoa = "";
-            //foreach (var item in table)
-            //{
-            //    aoa += item + " ";
-            //}
-            //MessageBox.Show(aoa);
 
             /// Вопрос 1б
-            // Создаем два списка с неколькими проигрышными и выигрышными клетками.
-            //List<int> fastLoses = new List<int>();
-            //List<int> fastWins = new List<int>();
-
             // Список клеток, из которых можно выиграть первым ходом.
             List<int> oneMoveWins = new List<int>();
 
@@ -381,7 +364,7 @@ namespace Library
                     {
                         if (i > 0 && j > 0 && i <= j)
                         {
-                            if (table[i, j][0] == '-')/////////////////////////////////////////////////////////////
+                            if (table[i, j][0] == '-')
                                 quest3array.Add(new int[] { i, j });
                         }
                     }
@@ -637,14 +620,20 @@ namespace Library
                 toAdd[1] == 1 ? "одну букву" : "две буквы", toMult[0].ToString(), toMult[1].ToString(),
                 toWin.ToString(), string.Join(", ", quest1), string.Join(", ", quest2), quest3 };
 
+            // Шаблон ответа
             string answer = "1.<br>{0}<br><br>2.<br>{1}<br><br>3. {2}<br>Развернутые ответы проверяются учителем. " +
                 "Но есть таблица, по которой можно проверить успешность любой стратегии.<br>В шапках " +
                 "указано количество камней в кучах, и если позиции соответствует знак &#171;+&#187;, то " +
                 "находящийся в ней игрок выиграет, если &#171;-&#187;, то проиграет.<br>Пропуск " +
                 "&#171;..&#187; означает много идущих подряд выигрышных клеток.<br><br>";
 
-            return new string[] { string.Format(text, data), string.Format(answer, new string[]
-                { string.Join("<br>", ans1), string.Join("<br>", ans2), ans3 }), tableStr };
+            return new string[] {
+                string.Format(text, data),
+                string.Format(answer, new string[] {
+                    string.Join("<br>", ans1),
+                    string.Join("<br>", ans2),
+                    ans3 }),
+                tableStr };
         }
     }
 }

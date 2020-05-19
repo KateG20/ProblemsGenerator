@@ -4,11 +4,6 @@ using System.IO;
 using MigraDoc;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
-//using PdfSharp;
-//using PdfSharp.Drawing;
-//using PdfSharp.Drawing.Layout;
-//using PdfSharp.Pdf;
-//using PdfSharp.Pdf.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +13,10 @@ namespace Library
 {
     public static class PDFwriter
     {
+        // Открывать ли файл сразу
         public static bool ToOpen { get; set; }
+        // Размер текста, установленный пользователем
+        public static int FontSize { get; set; }
 
         /// <summary>
         /// Создает одну строку текста с условиями из данных о задачах
@@ -89,6 +87,7 @@ namespace Library
             // Стиль по умолчанию
             style.Font.Name = "Times New Roman";
 
+            // Стиль для заголовка
             style = document.Styles.AddStyle("Heading", "Normal");
             style.Font.Size = 18;
             style.Font.Bold = true;
@@ -96,8 +95,11 @@ namespace Library
             style.ParagraphFormat.SpaceAfter = 12;
             style.ParagraphFormat.LeftIndent = -15;
 
+            // Стиль основного текста
             style = document.Styles.AddStyle("BaseText", "Normal");
-            style.Font.Size = 9;
+            if (FontSize == 0)
+                style.Font.Size = 10;
+            else style.Font.Size = FontSize;
             style.ParagraphFormat.PageBreakBefore = false;
             style.ParagraphFormat.SpaceBefore = 20;
             style.ParagraphFormat.SpaceAfter = 6;
@@ -105,9 +107,11 @@ namespace Library
             style.ParagraphFormat.LineSpacing = 15;
             style.ParagraphFormat.LeftIndent = -15;
 
+            // Верхний колонтитул
             style = document.Styles[StyleNames.Header];
             style.ParagraphFormat.AddTabStop("3cm", TabAlignment.Right);
 
+            // Нижний колонтитул
             style = document.Styles[StyleNames.Footer];
             style.ParagraphFormat.AddTabStop("5cm", TabAlignment.Center);
         }

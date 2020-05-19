@@ -43,6 +43,9 @@
             this.escButton = new System.Windows.Forms.Button();
             this.htmlCheckBox = new System.Windows.Forms.CheckBox();
             this.pdfCheckBox = new System.Windows.Forms.CheckBox();
+            this.textSizeComboBox = new System.Windows.Forms.ComboBox();
+            this.textSizeLabel1 = new System.Windows.Forms.Label();
+            this.textSizeLabel2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // difLabel
@@ -221,12 +224,57 @@
             this.pdfCheckBox.UseVisualStyleBackColor = true;
             this.pdfCheckBox.CheckedChanged += new System.EventHandler(this.PdfCheckBox_CheckedChanged);
             // 
+            // textSizeComboBox
+            // 
+            this.textSizeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.textSizeComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textSizeComboBox.FormattingEnabled = true;
+            this.textSizeComboBox.Items.AddRange(new object[] {
+            "8",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "16",
+            "18",
+            "20"});
+            this.textSizeComboBox.Location = new System.Drawing.Point(1079, 556);
+            this.textSizeComboBox.Name = "textSizeComboBox";
+            this.textSizeComboBox.Size = new System.Drawing.Size(80, 39);
+            this.textSizeComboBox.TabIndex = 11;
+            this.textSizeComboBox.Visible = false;
+            this.textSizeComboBox.SelectedIndexChanged += new System.EventHandler(this.TextSizeComboBox_SelectedIndexChanged);
+            // 
+            // textSizeLabel1
+            // 
+            this.textSizeLabel1.Font = new System.Drawing.Font("Comic Sans MS", 9.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textSizeLabel1.Location = new System.Drawing.Point(875, 560);
+            this.textSizeLabel1.Name = "textSizeLabel1";
+            this.textSizeLabel1.Size = new System.Drawing.Size(205, 40);
+            this.textSizeLabel1.TabIndex = 12;
+            this.textSizeLabel1.Text = "(размер текста";
+            this.textSizeLabel1.Visible = false;
+            // 
+            // textSizeLabel2
+            // 
+            this.textSizeLabel2.Font = new System.Drawing.Font("Comic Sans MS", 9.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textSizeLabel2.Location = new System.Drawing.Point(1163, 560);
+            this.textSizeLabel2.Name = "textSizeLabel2";
+            this.textSizeLabel2.Size = new System.Drawing.Size(25, 40);
+            this.textSizeLabel2.TabIndex = 13;
+            this.textSizeLabel2.Text = ")";
+            this.textSizeLabel2.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Ivory;
             this.ClientSize = new System.Drawing.Size(1273, 1029);
+            this.Controls.Add(this.textSizeLabel2);
+            this.Controls.Add(this.textSizeLabel1);
+            this.Controls.Add(this.textSizeComboBox);
             this.Controls.Add(this.pdfCheckBox);
             this.Controls.Add(this.htmlCheckBox);
             this.Controls.Add(this.escButton);
@@ -266,6 +314,9 @@
         private System.Windows.Forms.Button escButton;
         private System.Windows.Forms.CheckBox htmlCheckBox;
         private System.Windows.Forms.CheckBox pdfCheckBox;
+        private System.Windows.Forms.ComboBox textSizeComboBox;
+        private System.Windows.Forms.Label textSizeLabel1;
+        private System.Windows.Forms.Label textSizeLabel2;
     }
 }
 

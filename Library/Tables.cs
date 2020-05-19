@@ -45,7 +45,7 @@ namespace Library
         /// <param name="actions">Список арифметических действий</param>
         /// <param name="winMin">Минимальное количество камней для выигрыша</param>
         /// <param name="winMax">Максимальное количество камней для выигрыша</param>
-        /// <returns>Массив исходов для каждой клетки</returns>
+        /// <returns>Таблица с исходами в виде строки</returns>
         public static string OneHeap(int[] toAdd, int toMult, int winMin, int winMax)
         {
             string[,] table = new string[1, winMin];
@@ -105,133 +105,8 @@ namespace Library
             {
                 table[0, k++] = ".";
             }
-            //string aoa = "";
-            //foreach (var item in table)
-            //{
-            //    foreach (var it in item)
-            //    {
-            //        aoa += item + " ";
-            //    }
-            //}
-            //MessageBox.Show(aoa);
 
-            string tableStr = ArrToStr(table);
-            //string tableStr = string.Join(" ", table);
-            //MessageBox.Show(tableStr);   
-
-            return tableStr;
-        }
-
-        public static string TwoHeaps0(int add, int mult, int toWin)
-        {
-            string[,] table = new string[toWin, toWin];
-
-            for (var y = toWin - 1; y > 0; y--)
-            {
-                for (var x = toWin - 1; x > 0; x--)
-                {
-                    table[y, x] = "-";
-                    List<string> targets = new List<string>();
-                    if ((y + x) >= toWin)
-                        table[y, x] = "!";
-                    else
-                    {
-                        for (int i = 0; i < 2; i++)
-                        {
-                            if (i == 0)
-                            {
-                                if (y + (x + add) >= toWin)
-                                {
-                                    targets.Add("!");
-                                    break;
-                                }
-                                else
-                                {
-                                    targets.Add(table[y, x + add]);
-                                }
-                            }
-                            else
-                            {
-                                if (y + (x * add) >= toWin)
-                                {
-                                    targets.Add("!");
-                                }
-                                else
-                                {
-                                    targets.Add(table[y, x * add]);
-                                }
-                            }
-                        }
-
-                        for (int i = 0; i < 2; i++)
-                        {
-                            if (i == 0)
-                            {
-                                if (x + (y + add) >= toWin)
-                                {
-                                    targets.Add("!");
-                                    break;
-                                }
-                                else
-                                {
-                                    targets.Add(table[y + add, x]);
-                                }
-                            }
-                            else
-                            {
-                                if (x + (y * add) >= toWin)
-                                {
-                                    targets.Add("!");
-                                }
-                                else
-                                {
-                                    targets.Add(table[y * add, x]);
-                                }
-                            }
-                        }
-
-                        if (targets.IndexOf("!") != -1) table[y, x] = "+1";
-                        else if (targets.IndexOf("-1") != -1) table[y, x] = "+2";
-                        else if (targets.IndexOf("-1,2") != -1) table[y, x] = "+";
-                        else if (targets.IndexOf("-") != -1) table[y, x] = "+";
-                        else
-                        {
-                            table[y, x] = "-";
-                            int k1 = 0;
-                            int k2 = 0;
-                            foreach (string target in targets)
-                            {
-                                if (target == "+1") k1 += 1;
-                                else if (target == "+2") k2 += 1;
-                            }
-                            if (k1 == targets.Count) table[y, x] = "-1";
-                            else if ((k1 + k2) == targets.Count) table[y, x] = "-1,2";
-                        }
-                    }
-                }
-            }
-
-            // Применяем действия умножения к единице, если получим 2 - 
-            // значит минимум происходит умножение на 2
-            //int minMult = Math.Min(actionsX[1](1), actionsY[1](1));
-
-            // Место, где начинается много плюсов
-            int startWins = (int)Math.Ceiling((double)toWin / mult);
-            // Меняем много плюсов на точки
-            for (int row = 1; row < toWin - 1; row++)
-            {
-                for (int col = 1; col < toWin - 1; col++)
-                {
-                    if (col >= startWins || row >= startWins) table[row, col] = ".";
-                }
-            }
-
-            string tableStr = ArrToStr(table);
-            //MessageBox.Show(tableStr);
-            //string tableStr = string.Join(" ", table.OfType<string>()
-            //.Select((value, index) => new { value, index })
-            //.GroupBy(x => x.index / table.GetLength(1), x => x.value,
-            //(i, strs) => $"{string.Join(" ", strs)}"));
+            string tableStr = ArrToStr(table);   
 
             return tableStr;
         }
@@ -243,7 +118,7 @@ namespace Library
         /// <param name="add">Сколько камней добавляется</param>
         /// <param name="mult">Во сколько раз умножается количество камней</param>
         /// <param name="toWin">Сколько камней нужно для выигрыша</param>
-        /// <returns>Двумерный массив (таблицу) с исходами</returns>
+        /// <returns>Таблица с исходами в виде строки</returns>
         public static string TwoHeaps(int add, int mult, int toWin)
         {
             // Методы, принимающие на вход четыре варианта развития событий 
@@ -271,7 +146,7 @@ namespace Library
             {
                 for (int i = 0; i < cells.Length; i++)
                 {
-                    if (cells[i] == "-1" || cells[i] == "-1/2") return true;
+                    if (cells[i] == "-1") return true;
                 }
                 return false;
             }
@@ -281,20 +156,9 @@ namespace Library
                 int k = 0;
                 for (int i = 0; i < cells.Length; i++)
                 {
-                    if (cells[i] == "+2") k++;
+                    if (cells[i] == "+2") { k++; break; }
                 }
                 return k == 4;
-            }
-
-            bool IsLoss12(string[] cells)
-            {
-                int k1 = 0, k2 = 0;
-                for (int i = 0; i < cells.Length; i++)
-                {
-                    if (cells[i] == "+2") k2++;
-                    else if (cells[i] == "+1") k1++;
-                }
-                return k1 != 0 && k2 != 0 && k1 + k2 > 3;
             }
 
             bool IsWin(string[] cells)
@@ -330,7 +194,6 @@ namespace Library
                     else if (IsLoss1(cellsAfterMove)) { tbl[row, col] = "-1"; }
                     else if (IsWin2(cellsAfterMove)) { tbl[row, col] = "+2"; }
                     else if (IsLoss2(cellsAfterMove)) { tbl[row, col] = "-2"; }
-                    else if (IsLoss12(cellsAfterMove)) { tbl[row, col] = "-1/2"; }
                     else if (IsWin(cellsAfterMove)) { tbl[row, col] = "+"; }
                     else tbl[row, col] = "-";
                 }
@@ -361,7 +224,6 @@ namespace Library
             }
 
             string tableStr = ArrToStr(table);
-            //MessageBox.Show(tableStr);
 
             return tableStr;
         }
@@ -373,7 +235,7 @@ namespace Library
         /// <param name="actionsX">Действия для первого слова</param>
         /// <param name="actionsY">Действия для второго слова</param>
         /// <param name="toWin">Количество букв для победы</param>
-        /// <returns>Двумерный массив (таблицу) с исходами</returns>
+        /// <returns>Таблица с исходами в виде строки</returns>
         public static string TwoWords(Generator.Adder[] actionsX, Generator.Adder[] actionsY, int toWin)
         {
             string[,] table = new string[toWin, toWin];
@@ -449,10 +311,6 @@ namespace Library
             }
 
             string tableStr = ArrToStr(table);
-            //string tableStr = string.Join(" ", table.OfType<string>()
-            //.Select((value, index) => new { value, index })
-            //.GroupBy(x => x.index / table.GetLength(1), x => x.value,
-            //(i, strs) => $"{string.Join(" ", strs)}"));
 
             return tableStr;
         }

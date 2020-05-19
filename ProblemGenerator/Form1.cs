@@ -126,18 +126,18 @@ namespace ProblemGenerator
             string[,] problemsData;
             if (randBox.Checked) problemsData = Generator.RandomGenerate();
             else problemsData = Generator.Generate();
-            //try
-            //{
+            try
+            {
                 HTMLWriter.WriteHTML(problemsData);
-            PDFwriter.BuildText(problemsData);
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("Произошла ошибка при создании html-файла.\n" + ex.Message);
-            //    Environment.Exit(0);
-            //}
+                PDFwriter.BuildText(problemsData);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Произошла ошибка при создании файлов.\n" + ex.Message);
+                Environment.Exit(0);
+            }
 
-            Close();
+            //Close();
         }
 
         private void RandBox_CheckedChanged(object sender, EventArgs e)
@@ -161,6 +161,35 @@ namespace ProblemGenerator
             }
         }
 
+        private void HtmlCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (htmlCheckBox.Checked) HTMLWriter.ToOpen = true;
+            else if (!htmlCheckBox.Checked) HTMLWriter.ToOpen = false;
+        }
+
+        private void PdfCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (pdfCheckBox.Checked)
+            {
+                PDFwriter.ToOpen = true;
+                textSizeLabel1.Visible = true;
+                textSizeLabel2.Visible = true;
+                textSizeComboBox.Visible = true;
+            }
+            else if (!pdfCheckBox.Checked)
+            {
+                PDFwriter.ToOpen = false;
+                textSizeLabel1.Visible = false;
+                textSizeLabel2.Visible = false;
+                textSizeComboBox.Visible = false;
+            }
+        }
+
+        private void TextSizeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            PDFwriter.FontSize = int.Parse(textSizeComboBox.Text);
+        }
+
         private void EscButton_Click(object sender, EventArgs e)
         {
             Close();
@@ -180,18 +209,6 @@ namespace ProblemGenerator
         private void Form1_Closing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
-        }
-
-        private void HtmlCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (htmlCheckBox.Checked) HTMLWriter.ToOpen = true;
-            else if (!htmlCheckBox.Checked) HTMLWriter.ToOpen = false;
-        }
-
-        private void PdfCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (pdfCheckBox.Checked) PDFwriter.ToOpen = true;
-            else if (!pdfCheckBox.Checked) PDFwriter.ToOpen = false;
         }
     }
 }

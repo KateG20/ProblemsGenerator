@@ -12,7 +12,9 @@ namespace Library
 {
     public static class HTMLWriter
     {
+        // Открывать ли файл сразу
         public static bool ToOpen { get; set; }
+
         /// <summary>
         /// Записывает сгенерированные задачи в html-файл
         /// </summary>
