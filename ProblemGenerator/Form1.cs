@@ -28,7 +28,8 @@ namespace ProblemGenerator
             // Загружаем иконку
             try
             {
-                Icon = new Icon("../../favicon.ico");
+                Icon = new Icon("favicon.ico");
+
             }
             catch (Exception e)
             {
@@ -129,11 +130,13 @@ namespace ProblemGenerator
             try
             {
                 HTMLWriter.WriteHTML(problemsData);
-                PDFwriter.BuildText(problemsData);
+                if (createPdfCheckBox.Checked)
+                    PDFwriter.BuildText(problemsData);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Произошла ошибка при создании файлов.\n" + ex.Message);
+                MessageBox.Show("Произошла ошибка при создании файла.\n" +
+                    "Приложение принудительно завершит работу." + ex.Message);
                 Environment.Exit(0);
             }
 
@@ -163,31 +166,25 @@ namespace ProblemGenerator
 
         private void HtmlCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (htmlCheckBox.Checked) HTMLWriter.ToOpen = true;
-            else if (!htmlCheckBox.Checked) HTMLWriter.ToOpen = false;
+            if (htmlCheckBox.Checked)
+                HTMLWriter.ToOpen = true;
+            else if (!htmlCheckBox.Checked)
+                HTMLWriter.ToOpen = false;
         }
 
         private void PdfCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (pdfCheckBox.Checked)
-            {
                 PDFwriter.ToOpen = true;
-                textSizeLabel1.Visible = true;
-                textSizeLabel2.Visible = true;
-                textSizeComboBox.Visible = true;
-            }
             else if (!pdfCheckBox.Checked)
-            {
                 PDFwriter.ToOpen = false;
-                textSizeLabel1.Visible = false;
-                textSizeLabel2.Visible = false;
-                textSizeComboBox.Visible = false;
-            }
         }
 
         private void TextSizeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            PDFwriter.FontSize = int.Parse(textSizeComboBox.Text);
+            int.TryParse(textSizeComboBox.Text, out int size);
+            if (size == 0) size = 10;
+            PDFwriter.FontSize = size;
         }
 
         private void EscButton_Click(object sender, EventArgs e)
@@ -209,6 +206,22 @@ namespace ProblemGenerator
         private void Form1_Closing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void CreatePdfCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (createPdfCheckBox.Checked)
+            {
+                pdfCheckBox.Visible = true;
+                textSizeLabel1.Visible = true;
+                textSizeComboBox.Visible = true;
+            }
+            else if (!createPdfCheckBox.Checked)
+            {
+                pdfCheckBox.Visible = false;
+                textSizeLabel1.Visible = false;
+                textSizeComboBox.Visible = false;
+            }
         }
     }
 }

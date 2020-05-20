@@ -7,6 +7,7 @@ using MigraDoc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using System.Threading.Tasks;
 
 namespace Library
@@ -17,6 +18,7 @@ namespace Library
         public static bool ToOpen { get; set; }
         // Размер текста, установленный пользователем
         public static int FontSize { get; set; }
+        public static int FileNum { get; set; }
 
         /// <summary>
         /// Создает одну строку текста с условиями из данных о задачах
@@ -40,14 +42,21 @@ namespace Library
         {
             // Добываем путь к файлу, в который будем записывать
             string docpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments);
-            string path = Path.Combine(docpath, "task26.pdf");
-            int count = 1;
+            string path = Path.Combine(docpath, FileNum == 0 ? "Task26.pdf" : 
+                $"Task26({FileNum}).pdf");
+
+            if (File.Exists(path))
+            {
+                MessageBox.Show($"Файл с названием, аналогичным создаваемому ({path}), уже существует. " +
+                    "Он будет перезаписан.");
+            }
+            //int count = 1;
 
             // При существовании файла создаем новый, а не перезаписываем
-            while (File.Exists(path))
-            {
-                path = Path.Combine(docpath, $"task26({count++}).pdf");
-            }
+            //while (File.Exists(path))
+            //{
+            //    path = Path.Combine(docpath, $"Task26({count++}).pdf");
+            //}
 
             // Создаем документ
             Document doc = new Document();
@@ -109,11 +118,11 @@ namespace Library
 
             // Верхний колонтитул
             style = document.Styles[StyleNames.Header];
-            style.ParagraphFormat.AddTabStop("3cm", TabAlignment.Right);
+            style.ParagraphFormat.AddTabStop("3cm", MigraDoc.DocumentObjectModel.TabAlignment.Right);
 
             // Нижний колонтитул
             style = document.Styles[StyleNames.Footer];
-            style.ParagraphFormat.AddTabStop("5cm", TabAlignment.Center);
+            style.ParagraphFormat.AddTabStop("5cm", MigraDoc.DocumentObjectModel.TabAlignment.Center);
         }
     }
 }

@@ -45,7 +45,8 @@ namespace Library
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show("Возникла ошибка при генерации задачи.\n" + e.Message);
+                    MessageBox.Show("Возникла ошибка при генерации задачи.\n" +
+                        "Приложение принудительно завершит работу." + e.Message);
                     Environment.Exit(0);
                 }
                 problems[0, i] = $"Задача {i + 1}<br>" + result[0];
@@ -98,7 +99,8 @@ namespace Library
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show("Возникла ошибка при генерации задачи.\n" + e.Message);
+                    MessageBox.Show("Возникла ошибка при генерации задачи.\n" +
+                        "Приложение принудительно завершит работу." + e.Message);
                     Environment.Exit(0);
                 }
                 problems[0, i] = $"Задача {i + 1}<br>" + result[0];
@@ -172,7 +174,6 @@ namespace Library
                 MessageBox.Show("Возникла ошибка при рассчитывании решения.\n" + e.Message);
                 Environment.Exit(0);
             }
-            MessageBox.Show(tableStr);
 
             string[] table = tableStr.Split(' ');
 

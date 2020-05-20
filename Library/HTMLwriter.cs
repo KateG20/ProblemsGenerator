@@ -23,14 +23,16 @@ namespace Library
         {
             // Добываем путь к файлу, в который будем записывать
             string docpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments);
-            string path = Path.Combine(docpath, "task26.html");
+            string path = Path.Combine(docpath, "Task26.html");
             int count = 1;
 
             // При существовании файла создаем новый, а не перезаписываем
             while (File.Exists(path))
             {
-                path = Path.Combine(docpath, $"task26({count++}).html");
+                path = Path.Combine(docpath, $"Task26({count++}).html");
             }
+
+            PDFwriter.FileNum = count - 1;
 
             // Добываем текст из шаблона и записываем его в файл
             string baseText = File.ReadAllText("HtmlTemplate.txt");
@@ -114,7 +116,6 @@ namespace Library
                 // единожды пишем знак пропуска ".."
                 if (firstRow[i] == ".")
                 {
-                    //MessageBox.Show(res);
                     if (firstRow[i - 1] != ".")
                         table.Append($"<th class='h'>..</th>");
                     continue;
