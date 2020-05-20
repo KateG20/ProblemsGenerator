@@ -18,13 +18,13 @@ namespace ProblemGenerator
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.ThreadException += new ThreadExceptionEventHandler(MyCommonExceptionHandlingMethod);
+            Application.ThreadException += new ThreadExceptionEventHandler(ExceptionHandlingMethod);
 
             Application.Run(new Form1());
         }
 
         // Обработчик события, вызываемого при возникновении исключений
-        private static void MyCommonExceptionHandlingMethod(object sender, ThreadExceptionEventArgs t)
+        private static void ExceptionHandlingMethod(object sender, ThreadExceptionEventArgs t)
         {
             MessageBox.Show("Произошла ошибка при работе Windows-формы.\n" +
                 "Приложение принудительно завершит работу.");

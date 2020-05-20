@@ -31,7 +31,7 @@ namespace ProblemGenerator
                 Icon = new Icon("favicon.ico");
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 MessageBox.Show("Возникли некоторые проблемы с иконкой приложения. " +
                     "Будет использована иконка по умолчанию.");
@@ -47,7 +47,7 @@ namespace ProblemGenerator
                 errorLabel.Visible = true;
                 return;
             }
-            if (!int.TryParse(numTextBox.Text, out int num) || num > 1000)
+            if (!int.TryParse(numTextBox.Text, out int num) || num > 1000 || num < 1)
             {
                 // Обрезаем число, убирая введенный символ
                 numTextBox.Text = numTextBox.Text.Substring(0, Math.Max(numTextBox.Text.Length - 1, 0));
@@ -64,7 +64,7 @@ namespace ProblemGenerator
         private void SeedBox_TextChanged(object sender, EventArgs e)
         {
             // Если пустота, то всё ок
-            if (seedBox.Text.Length == 0)
+            if (seedBox.Text.Length == 0 && (randBox.Checked || !(typeComboBox.SelectedItem is null)))
             {
                 genButton.Visible = true;
                 infoLabel.Visible = true;
@@ -84,7 +84,7 @@ namespace ProblemGenerator
                 return;
             }
             // Проверяем, что это число меньше 5 знаков
-            if (!int.TryParse(seedBox.Text, out int num) || num > 9999)
+            if (!int.TryParse(seedBox.Text, out int num) || num > 9999 || num < 1)
             {
                 // Обрезаем число, оставляем только первые четыре цифры
                 seedBox.Text = seedBox.Text.Substring(0, Math.Max(seedBox.Text.Length - 1, 0));
@@ -97,7 +97,7 @@ namespace ProblemGenerator
             if (num > 999)
             {
                 Generator.Seed = num;
-                if ((randBox.Checked || !(typeComboBox.SelectedItem is null)))
+                if (randBox.Checked || !(typeComboBox.SelectedItem is null))
                 {
                     genButton.Visible = true;
                     infoLabel.Visible = true;

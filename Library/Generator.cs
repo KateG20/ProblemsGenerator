@@ -46,7 +46,7 @@ namespace Library
                 catch (Exception e)
                 {
                     MessageBox.Show("Возникла ошибка при генерации задачи.\n" +
-                        "Приложение принудительно завершит работу." + e.Message);
+                        "Приложение принудительно завершит работу. " + e.Message);
                     Environment.Exit(0);
                 }
                 problems[0, i] = $"Задача {i + 1}<br>" + result[0];
@@ -100,7 +100,7 @@ namespace Library
                 catch (Exception e)
                 {
                     MessageBox.Show("Возникла ошибка при генерации задачи.\n" +
-                        "Приложение принудительно завершит работу." + e.Message);
+                        "Приложение принудительно завершит работу. " + e.Message);
                     Environment.Exit(0);
                 }
                 problems[0, i] = $"Задача {i + 1}<br>" + result[0];
@@ -239,7 +239,8 @@ namespace Library
                 // то выходим из цикла - данные нам больше не нужны
                 if (table[i] == "+" || table[i] == ".")
                 {
-                    if (quest2Lose.Length > 0 && quest2Win.Length == 0) quest2Win = i.ToString();
+                    if (quest2Lose.Length > 0 && quest2Win.Length == 0)
+                        quest2Win = i.ToString();
                     else if (quest3Lose.Length > 0)
                     {
                         quest3Win = i.ToString();
@@ -250,8 +251,10 @@ namespace Library
 
             // Выбираем рандомом, чтобы в третьем вопросе выводил клетку - или +
             string quest3;
-            if (rand.Next(2) == 1) quest3 = quest3Win;
-            else quest3 = quest3Lose;
+            if (rand.Next(2) == 1 && quest3Win.Length > 0)
+                quest3 = quest3Win;
+            else
+                quest3 = quest3Lose;
 
             // Строка с шаблоном задания
             string text = "Два игрока, Петя и Ваня, играют в следующую игру. Перед игроками лежит куча " +
