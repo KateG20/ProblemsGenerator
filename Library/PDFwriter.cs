@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using MigraDoc;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
@@ -31,7 +32,9 @@ namespace Library
             {
                 sb.Append(problems[0, i].Replace("<br>", "\n") + "\n\n");
             }
-            WritePdf(sb.ToString());
+            void ThreadStarter() { WritePdf(sb.ToString()); }
+            var thread = new Thread(ThreadStarter);
+            thread.Start();
         }
 
         /// <summary>
@@ -45,18 +48,12 @@ namespace Library
             string path = Path.Combine(docpath, FileNum == 0 ? "Task26.pdf" : 
                 $"Task26({FileNum}).pdf");
 
+            // Произойдет, если удалить html-файл из пары html+pdf и создать новый с таким же номером
             if (File.Exists(path))
             {
                 MessageBox.Show($"Файл с названием, аналогичным создаваемому ({path}), уже существует. " +
                     "Он будет перезаписан.");
             }
-            //int count = 1;
-
-            // При существовании файла создаем новый, а не перезаписываем
-            //while (File.Exists(path))
-            //{
-            //    path = Path.Combine(docpath, $"Task26({count++}).pdf");
-            //}
 
             // Создаем документ
             Document doc = new Document();
@@ -81,7 +78,9 @@ namespace Library
 
             // Открываем файл, если стоит галочка
             if (ToOpen)
+            {
                 Process.Start(path);
+            }
         }
 
         /// <summary>
