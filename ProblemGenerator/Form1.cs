@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace ProblemGenerator
     public partial class Form1 : Form
     {
         private static readonly Random rand = new Random();
+        //private System.Windows.Forms.Timer timer;
         public Form1()
         {
             InitializeComponent();
@@ -131,7 +133,10 @@ namespace ProblemGenerator
             {
                 HTMLWriter.WriteHTML(problemsData);
                 if (createPdfCheckBox.Checked)
-                    PDFwriter.BuildText(problemsData);
+                {
+                    StartPdfThread(problemsData);
+                }
+                //PDFwriter.BuildText(problemsData);
             }
             catch (Exception ex)
             {
@@ -141,6 +146,70 @@ namespace ProblemGenerator
             }
 
             //Close();
+        }
+
+        private void StartPdfThread(string[,] data)
+        {
+            void ThreadStarter()
+            {
+                //var timer = new System.Windows.Forms.Timer();
+                try
+                {
+                    DisableAll();
+                    //waitLabel.Enabled = true;
+                    //waitLabel.Visible = true;
+                    //InitTimer(timer);
+
+                    PDFwriter.BuildText(data);
+                }
+                finally
+                {
+                    EnableAll();
+                    //timer.Stop();
+                    //waitLabel.Visible = false;
+                }
+            }
+            var thread = new Thread(ThreadStarter);
+            //DisableAll();
+            thread.Start();
+        }
+
+        //public void InitTimer(System.Windows.Forms.Timer timer)
+        //{
+        //    timer.Tick += new EventHandler(Timer_Tick);
+        //    timer.Interval = 500; // in milliseconds
+        //    timer.Start();
+        //}
+
+        //private void Timer_Tick(object sender, EventArgs e)
+        //{
+        //    if (waitLabel.Text.Length == 58)
+        //    {
+        //        waitLabel.Text = waitLabel.Text.Substring(0, 55);
+        //    }
+        //    waitLabel.Text += ".";
+        //}
+
+        /// <summary>
+        /// Делает неактивными все элементы формы
+        /// </summary>
+        private void DisableAll()
+        {
+            foreach (Control con in Controls)
+            {
+                con.Enabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Делает активными все элементы формы
+        /// </summary>
+        private void EnableAll()
+        {
+            foreach (Control con in Controls)
+            {
+                con.Enabled = true;
+            }
         }
 
         private void RandBox_CheckedChanged(object sender, EventArgs e)

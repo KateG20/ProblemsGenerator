@@ -20,7 +20,8 @@ namespace ProblemGenerator
 
             Application.ThreadException += new ThreadExceptionEventHandler(ExceptionHandlingMethod);
 
-            Application.Run(new Form1());
+            Form1 mainForm = new Form1();
+            Application.Run(mainForm);
         }
 
         // Обработчик события, вызываемого при возникновении исключений

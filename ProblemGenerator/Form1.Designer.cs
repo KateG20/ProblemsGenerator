@@ -46,6 +46,7 @@
             this.textSizeComboBox = new System.Windows.Forms.ComboBox();
             this.textSizeLabel1 = new System.Windows.Forms.Label();
             this.createPdfCheckBox = new System.Windows.Forms.CheckBox();
+            this.waitLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // difLabel
@@ -269,12 +270,25 @@
             this.createPdfCheckBox.UseVisualStyleBackColor = true;
             this.createPdfCheckBox.CheckedChanged += new System.EventHandler(this.CreatePdfCheckBox_CheckedChanged);
             // 
+            // waitLabel
+            // 
+            this.waitLabel.BackColor = System.Drawing.Color.LemonChiffon;
+            this.waitLabel.Font = new System.Drawing.Font("Comic Sans MS", 13.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.waitLabel.Location = new System.Drawing.Point(390, 397);
+            this.waitLabel.Name = "waitLabel";
+            this.waitLabel.Size = new System.Drawing.Size(472, 163);
+            this.waitLabel.TabIndex = 14;
+            this.waitLabel.Text = "Пожалуйста, подождите, пока создается pdf-файл...";
+            this.waitLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.waitLabel.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Ivory;
             this.ClientSize = new System.Drawing.Size(1273, 1029);
+            this.Controls.Add(this.waitLabel);
             this.Controls.Add(this.createPdfCheckBox);
             this.Controls.Add(this.textSizeLabel1);
             this.Controls.Add(this.textSizeComboBox);
@@ -320,6 +334,7 @@
         private System.Windows.Forms.ComboBox textSizeComboBox;
         private System.Windows.Forms.Label textSizeLabel1;
         private System.Windows.Forms.CheckBox createPdfCheckBox;
+        private System.Windows.Forms.Label waitLabel;
     }
 }
 

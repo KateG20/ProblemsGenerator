@@ -32,10 +32,27 @@ namespace Library
             {
                 sb.Append(problems[0, i].Replace("<br>", "\n") + "\n\n");
             }
-            void ThreadStarter() { WritePdf(sb.ToString()); }
+
+            WritePdf(sb.ToString());
+            //StartPdfThread(sb.ToString());
+        }
+
+        static void StartPdfThread(string text)
+        {
+            void ThreadStarter() { WritePdf(text); }
             var thread = new Thread(ThreadStarter);
             thread.Start();
+
+            //while (thread.IsAlive) { }
         }
+
+        //static void DisableFormControls(Form form)
+        //{
+        //    foreach (Control con in form.Controls)
+        //    {
+        //        con.Enabled = false;
+        //    }
+        //}
 
         /// <summary>
         /// Записывает строку текста (условия задач) в pdf с заголовком
