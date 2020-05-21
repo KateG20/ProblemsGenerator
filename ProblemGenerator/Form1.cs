@@ -126,17 +126,21 @@ namespace ProblemGenerator
                 errorLabel.Visible = true;
                 return;
             }
+
             string[,] problemsData;
             if (randBox.Checked) problemsData = Generator.RandomGenerate();
             else problemsData = Generator.Generate();
             try
             {
                 HTMLWriter.WriteHTML(problemsData);
+                // Если нужно создать pdf, запускаем это в новом треде, 
+                // а на экране блокируем все элементы и выводим сообщение
+                // об ожидании
                 if (createPdfCheckBox.Checked)
                 {
+                    waitLabel.Visible = true;
                     StartPdfThread(problemsData);
                 }
-                //PDFwriter.BuildText(problemsData);
             }
             catch (Exception ex)
             {
@@ -144,51 +148,30 @@ namespace ProblemGenerator
                     "Приложение принудительно завершит работу." + ex.Message);
                 Environment.Exit(0);
             }
-
-            //Close();
         }
 
+        /// <summary>
+        /// Запускает отдельный тред для создания pdf-файла
+        /// </summary>
+        /// <param name="data">Данные для текстов задач</param>
         private void StartPdfThread(string[,] data)
         {
             void ThreadStarter()
             {
-                //var timer = new System.Windows.Forms.Timer();
                 try
                 {
                     DisableAll();
-                    //waitLabel.Enabled = true;
-                    //waitLabel.Visible = true;
-                    //InitTimer(timer);
-
                     PDFwriter.BuildText(data);
                 }
                 finally
                 {
                     EnableAll();
-                    //timer.Stop();
-                    //waitLabel.Visible = false;
+                    waitLabel.Visible = false;
                 }
             }
             var thread = new Thread(ThreadStarter);
-            //DisableAll();
             thread.Start();
         }
-
-        //public void InitTimer(System.Windows.Forms.Timer timer)
-        //{
-        //    timer.Tick += new EventHandler(Timer_Tick);
-        //    timer.Interval = 500; // in milliseconds
-        //    timer.Start();
-        //}
-
-        //private void Timer_Tick(object sender, EventArgs e)
-        //{
-        //    if (waitLabel.Text.Length == 58)
-        //    {
-        //        waitLabel.Text = waitLabel.Text.Substring(0, 55);
-        //    }
-        //    waitLabel.Text += ".";
-        //}
 
         /// <summary>
         /// Делает неактивными все элементы формы
