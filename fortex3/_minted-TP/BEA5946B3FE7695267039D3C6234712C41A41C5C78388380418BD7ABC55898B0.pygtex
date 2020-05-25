@@ -3,7 +3,7 @@
 \PYGZlt{}html\PYGZgt{}
  \PYGZlt{}head\PYGZgt{}
   \PYGZlt{}meta charset=\PYGZdq{}utf\PYGZhy{}8\PYGZdq{}\PYGZgt{}
-  \PYGZlt{}title\PYGZgt{}Задачи №26 ЕГЭ по информатике\PYGZlt{}/title\PYGZgt{}
+  \PYGZlt{}title\PYGZgt{}Задание №26 ЕГЭ по информатике\PYGZlt{}/title\PYGZgt{}
   \PYGZlt{}style type=\PYGZdq{}text/css\PYGZdq{}\PYGZgt{}
    h1 \PYGZob{} 
        font\PYGZhy{}size: 210\PYGZpc{}; 
@@ -22,10 +22,26 @@
 	   border: 3px double black;
 	   margin: 20px;
    \PYGZcb{}
-   input.colored\PYGZob{}
+   input.colored \PYGZob{}
    	   border\PYGZhy{}radius: 5px;
 	   color: \PYGZsh{}008000;
 	   background: \PYGZsh{}FFFFFF;
+   \PYGZcb{}
+   th.h \PYGZob{}
+           background\PYGZhy{}color: \PYGZsh{}FFFADD;
+   \PYGZcb{}
+   td.w \PYGZob{}
+           background\PYGZhy{}color: lightgreen;
+   \PYGZcb{}
+   td.l \PYGZob{}
+           background\PYGZhy{}color: \PYGZsh{}FED6BC;
+   \PYGZcb{}
+   td.r \PYGZob{}
+           background\PYGZhy{}color: \PYGZsh{}FFFFF0;
+   \PYGZcb{}
+   table \PYGZob{}
+           border\PYGZhy{}collapse: collapse;
+           font\PYGZhy{}family: Andale Mono, monospace;
    \PYGZcb{}
   \PYGZlt{}/style\PYGZgt{}
   \PYGZlt{}script\PYGZgt{}
@@ -41,7 +57,7 @@
  \PYGZlt{}/head\PYGZgt{}
  \PYGZlt{}body\PYGZgt{}
 
-  \PYGZlt{}h1\PYGZgt{} Задача №26 ЕГЭ по информатике \PYGZlt{}/h1\PYGZgt{}
+  \PYGZlt{}h1\PYGZgt{} Задание №26 ЕГЭ по информатике \PYGZlt{}/h1\PYGZgt{}
 
 \PYGZlt{}/html\PYGZgt{}
 \end{Verbatim}

@@ -236,32 +236,41 @@ namespace Library
         /// <param name="actionsY">Действия для второго слова</param>
         /// <param name="toWin">Количество букв для победы</param>
         /// <returns>Таблица с исходами в виде строки</returns>
-        public static string TwoWords(Generator.Adder[] actionsX, Generator.Adder[] actionsY, int toWin)
+        public static string TwoWords(Problems.Adder[] actionsX, Problems.Adder[] actionsY, int toWin)
         {
             string[,] table = new string[toWin, toWin];
 
+            // Идем с правого нижнего угла таблицы
             for (var y = toWin - 1; y > 0; y--)
             {
                 for (var x = toWin - 1; x > 0; x--)
                 {
+                    // Изначально ячейка помечена минусом
                     table[y, x] = "-";
+                    // Массив исходов
                     List<string> targets = new List<string>();
+                    // Если сумма букв больше toWin, это победная ячейка
                     if ((y + x) >= toWin)
                         table[y, x] = "!";
                     else
                     {
+                        // Применяем по очереди действия для буквы Х
                         foreach (var actionX in actionsX)
                         {
+                            // Если с каким-то действием попадаем в зону выигрыша,
+                            // добавляем в исходы победу
                             if (y + actionX(x) >= toWin)
                             {
                                 targets.Add("!");
                                 break;
                             }
+                            // Иначе добавляем значение в полученной ячейке
                             else
                             {
                                 targets.Add(table[y, actionX(x)]);
                             }
                         }
+                        // То же самое для буквы Y
                         foreach (var actionY in actionsY)
                         {
                             if (x + actionY(y) >= toWin)
@@ -274,10 +283,16 @@ namespace Library
                                 targets.Add(table[actionY(y), x]);
                             }
                         }
+                        // Если в исходах есть !, то ячейка выигрышная с первого хода
                         if (targets.IndexOf("!") != -1) table[y, x] = "+1";
+                        // Иначе если там есть -1, то выигрышная со второго хода
                         else if (targets.IndexOf("-1") != -1) table[y, x] = "+2";
+                        // Если есть более "далекие" выигрыши, то просто выигрышная
                         else if (targets.IndexOf("-1,2") != -1) table[y, x] = "+";
                         else if (targets.IndexOf("-") != -1) table[y, x] = "+";
+                        // Иначе считаем количество исходов +1 и +2, чтобы определить,
+                        // с какого хода данная ячейка проигрышная. Если не с 1 и не с 1/2,
+                        // то она просто проигрышная
                         else
                         {
                             table[y, x] = "-";

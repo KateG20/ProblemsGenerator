@@ -28,15 +28,17 @@
 \renewcommand\labelitemi{--}
 \setcounter{secnumdepth}{4}
 
-\usepackage[figurename=Рисунок]{caption}
+\usepackage[figurename=Рисунок,justification=centering]{caption}
 \newcommand{\programmingLanguage}[1]{
 	\lstset{language=#1}
 }
 
-\usepackage{titlesec}
+\usepackage[raggedright]{titlesec}
 \usepackage{hyperref}
 \usepackage{etoolbox}
 \usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{gensymb}
 
 
 
@@ -76,12 +78,16 @@
 %%% Страница
 \usepackage{extsizes} % Возможность сделать 14-й шрифт
 \usepackage{geometry} % Простой способ задавать поля
-	\geometry{top=2cm}
-	\geometry{bottom=20mm}
-	\geometry{left=30mm}
-	\geometry{right=15mm}
+	\geometry{top=20mm} % 25mm
+	\geometry{bottom=20mm} % 15mm
+	\geometry{left=30mm} % 20mm
+	\geometry{right=15mm} % 10mm
 	\geometry{bindingoffset=0cm}
-	\geometry{bottom = 1in}
+	\geometry{bottom = 1in} % ???
+
+\geometry{left=20mm}
+\geometry{right=10mm}
+
  %
 \usepackage{fancybox}
 \usepackage{fancyhdr} % Колонтитулы
@@ -175,14 +181,25 @@
 	\lstinputlisting [frame=single, basicstyle=\footnotesize\ttfamily, caption={#2}, captionpos=b,language=TeX,breaklines] {#1}
 }
 
+\newcommand{\CRTendAdditions}{}
 \newcommand{\@startAdditions}{
+	\setcounter{CRTtempSection}{\arabic{section}}
 	\setcounter{section}{0}
 	\renewcommand{\sectionbreak}{}
-	\titleformat{\section}[block]{\Large\bfseries\filright}{}{0mm}{}
-	\renewcommand{\@startAdditions}{}
+  % \titleformat{\section}[block]{\Large\bfseries\filright}{}{0mm}{}
+  \titleformat{\section}{\normalfont\Large\bfseries\filcenter}{}{1em}{}
+  \renewcommand{\@startAdditions}{}
+  \renewcommand{\CRTendAdditions}{\setcounter{section}{\arabic{CRTtempSection}}}
 }
 
 \newcounter{@tempSection}
+\newcounter{CRTtempSection}
+
+\usepackage{totcount}
+\newtotcounter{CRTaddition}
+\newcommand{\CRTarabic}[1]{
+  \ifnum\totvalue{CRTaddition}=1 \else \arabic{#1} \fi
+}
 
 \newcommand{\sectionbreak}{\clearpage}
 
@@ -191,13 +208,14 @@
 	\clearpage
 	\newpage
 	\@startAdditions
-	\stepcounter{section}
+  \stepcounter{section}
+  \stepcounter{CRTaddition}
 	\begin{flushright}
-		\Large \textbf{\textsc{приложение \alph{section}}}
+		\Large \textbf{\textsc{приложение \CRTarabic{section}}}
 	\end{flushright}
 	\setcounter{@tempSection}{\arabic{section}}
 	\setcounter{secnumdepth}{0}
-	\section[Приложение \Alph{@tempSection}]{#1}
+	\section[Приложение \CRTarabic{@tempSection}]{#1}
 	\setcounter{secnumdepth}{4}
 }
 
@@ -254,7 +272,7 @@
 \newcommand{\secondPage}{
   \pagestyle{fancy}
   % \chead{\vfill \thepage \vfill  \@docNumber{}}
-  \lhead{УТВЕРЖДЕН \newline \@docNumber{}}
+  \lhead{УТВЕРЖДЕН \newline \@docNumber{}-ЛУ}
   % \noindent УТВЕРЖДЕН \newline \@docNumber{}
 
   \vspace*{9cm}
@@ -333,50 +351,9 @@
 	\end{tabular}
 }
 \newcommand{\listNumber}[1]{\textbf{Листов #1}}
-\newcommand{\listRegistration}{%
-  % \cfoot{ }
-  \section{Лист регистрации изменений}
-  \noindent
-  % \fontsize{10}{12}\selectfont
-  \begin{tabular}{
-    |p{0.05\linewidth}
-    |p{0.04\linewidth}
-    |p{0.06\linewidth}
-    |p{0.06\linewidth}
-    |p{0.06\linewidth}
-    |p{0.10\linewidth}
-    |p{0.10\linewidth}
-    |p{0.12\linewidth}
-    |p{0.05\linewidth}
-    |p{0.05\linewidth}|
-    }
-
-    % \hline
-    % \multicolumn{10}{|c|}{\textbf{Лист регистрации изменений}}\\
-    \hline
-    \multirow{2}{*}{Изм.} &
-    \multicolumn{4}{c|}{Номера листов} &
-    Всего листов в документе &
-    $\text{№}$ документа &
-    Входящий $\text{№}$ сопроводит. докум. и дата &
-    Под\-пись &
-    Дата\\ \cline{2-5}
-
-    &из\-ме\-нен\-ных&заме\-нен\-ных&но\-вых&аннул\-лиро\-ван\-ных&  &  &  &  & \\[10ex]
-
-    \Repeat{30}{
-      \hline
-      & & & & & & & & & \\[0ex]
-    }
-
-    \hline
-
-  \end{tabular}
-
-}
 
 \newcommand{\tabForTZ}{%
-  \begin{tabular}{|p{0.31\linewidth}|p{0.15\linewidth}|p{0.16\linewidth}|p{0.16\linewidth}|p{0.15\linewidth}|}
+  \begin{tabular}{|p{5.5cm}|p{2.475cm}|p{2.64cm}|p{2.64cm}|p{2.475cm}|}
 		\hline
 		Изм. & Лист & $\text{№}$  докум. & Подп. & Дата\\
 		\hline

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Library.Generator">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="Library.Generator.GenerateType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Generator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAIABAAAAAAAAIEAAAAAAAAAAAAAAAAAAQEAAAAA=</HashCode>
+      <FileName>Generator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Library.HTMLWriter">
+    <Position X="2.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQCAAAAAAAAAAAAAAAAAAAAEAAEAAAAAAAAAA=</HashCode>
+      <FileName>HTMLwriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Library.PDFwriter">
+    <Position X="4" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEBQAAAAAAAAAAAAAgAAQAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PDFwriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Library.Problems">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="Library.Problems.Adder" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Problems.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>gCAAAAAAAAAQAAAAAAAACAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Problems.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Library.Tables">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAEABAAACAEAAAAAAAA=</HashCode>
+      <FileName>Tables.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

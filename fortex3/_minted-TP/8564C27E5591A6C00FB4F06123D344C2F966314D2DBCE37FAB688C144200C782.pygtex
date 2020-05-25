@@ -1,5 +1,6 @@
 \begin{Verbatim}[commandchars=\\\{\}]
 using System;
+using System.Threading;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Library;
 
 namespace ProblemGenerator
 \PYGZob{}
@@ -20,7 +22,22 @@ namespace ProblemGenerator
         \PYGZob{}
             InitializeComponent();
             FormClosing += new FormClosingEventHandler(Form1\PYGZus{}Closing);
-            Size = new Size(650, 470);
+            Size = new Size(650, 500);
+            // Заранее устанавливаем свойство true, т.к. галочка изначально стоит
+            HTMLWriter.ToOpen = true;
+            // Ставим единицу, которая стоит по умолчанию
+            Generator.ProblemsNum = 1;
+            // Загружаем иконку
+            try
+            \PYGZob{}
+                Icon = new Icon(\PYGZdq{}favicon.ico\PYGZdq{});
+
+            \PYGZcb{}
+            catch (Exception)
+            \PYGZob{}
+                MessageBox.Show(\PYGZdq{}Возникли некоторые проблемы с иконкой приложения. \PYGZdq{} +
+                    \PYGZdq{}Будет использована иконка по умолчанию.\PYGZdq{});
+            \PYGZcb{}
         \PYGZcb{}
         private void NumTextBox\PYGZus{}TextChanged(object sender, EventArgs e)
         \PYGZob{}
@@ -32,7 +49,7 @@ namespace ProblemGenerator
                 errorLabel.Visible = true;
                 return;
             \PYGZcb{}
-            if (!int.TryParse(numTextBox.Text, out int num) || num \PYGZgt{} 1000)
+            if (!int.TryParse(numTextBox.Text, out int num) || num \PYGZgt{} 1000 || num \PYGZlt{} 1)
             \PYGZob{}
                 // Обрезаем число, убирая введенный символ
                 numTextBox.Text = numTextBox.Text.Substring(0, Math.Max(numTextBox.Text.Length \PYGZhy{} 1, 0));
@@ -49,7 +66,7 @@ namespace ProblemGenerator
         private void SeedBox\PYGZus{}TextChanged(object sender, EventArgs e)
         \PYGZob{}
             // Если пустота, то всё ок
-            if (seedBox.Text.Length == 0)
+            if (seedBox.Text.Length == 0 \PYGZam{}\PYGZam{} (randBox.Checked || !(typeComboBox.SelectedItem is null)))
             \PYGZob{}
                 genButton.Visible = true;
                 infoLabel.Visible = true;
@@ -69,7 +86,7 @@ namespace ProblemGenerator
                 return;
             \PYGZcb{}
             // Проверяем, что это число меньше 5 знаков
-            if (!int.TryParse(seedBox.Text, out int num) || num \PYGZgt{} 9999)
+            if (!int.TryParse(seedBox.Text, out int num) || num \PYGZgt{} 9999 || num \PYGZlt{} 1)
             \PYGZob{}
                 // Обрезаем число, оставляем только первые четыре цифры
                 seedBox.Text = seedBox.Text.Substring(0, Math.Max(seedBox.Text.Length \PYGZhy{} 1, 0));
@@ -82,7 +99,7 @@ namespace ProblemGenerator
             if (num \PYGZgt{} 999)
             \PYGZob{}
                 Generator.Seed = num;
-                if ((randBox.Checked || !(typeComboBox.SelectedItem is null)))
+                if (randBox.Checked || !(typeComboBox.SelectedItem is null))
                 \PYGZob{}
                     genButton.Visible = true;
                     infoLabel.Visible = true;
@@ -93,7 +110,7 @@ namespace ProblemGenerator
         private void TypeComboBox\PYGZus{}SelectedIndexChanged(object sender, EventArgs e)
         \PYGZob{}
             // Передаем тип в класс генератора, делаем видимой кнопку запуска
-            Generator.ProblemType = typeComboBox.SelectedIndex;
+            Generator.ProblemsType = typeComboBox.SelectedIndex;
             if (seedBox.Text.Length == 0 || seedBox.Text.Length == 4)
             \PYGZob{}
                 genButton.Visible = true;
@@ -109,20 +126,77 @@ namespace ProblemGenerator
                 errorLabel.Visible = true;
                 return;
             \PYGZcb{}
+
             string[,] problemsData;
-            if (randBox.Checked) problemsData = Generator.RandomGenerate();
-            else problemsData = Generator.Generate();
+
+            if (randBox.Checked) 
+                problemsData = Generator.RandomGenerate();
+            else 
+                problemsData = Generator.Generate();
+
             try
             \PYGZob{}
                 HTMLWriter.WriteHTML(problemsData);
+                // Если нужно создать pdf, запускаем это в новом треде, 
+                // а на экране блокируем все элементы и выводим сообщение
+                // об ожидании
+                if (createPdfCheckBox.Checked)
+                \PYGZob{}
+                    waitLabel.Visible = true;
+                    StartPdfThread(problemsData);
+                \PYGZcb{}
             \PYGZcb{}
             catch (Exception ex)
             \PYGZob{}
-                MessageBox.Show(\PYGZdq{}Произошла ошибка при создании html\PYGZhy{}файла.\PYGZbs{}n\PYGZdq{} + ex.Message);
+                MessageBox.Show(\PYGZdq{}Произошла ошибка при создании файла.\PYGZbs{}n\PYGZdq{} +
+                    \PYGZdq{}Приложение принудительно завершит работу.\PYGZdq{} + ex.Message);
                 Environment.Exit(0);
             \PYGZcb{}
+        \PYGZcb{}
 
-            Close();
+        /// \PYGZlt{}summary\PYGZgt{}
+        /// Запускает отдельный тред для создания pdf\PYGZhy{}файла
+        /// \PYGZlt{}/summary\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}data\PYGZdq{}\PYGZgt{}Данные для текстов задач \PYGZlt{}/param\PYGZgt{}
+        private void StartPdfThread(string[,] data)
+        \PYGZob{}
+            void ThreadStarter()
+            \PYGZob{}
+                try
+                \PYGZob{}
+                    DisableAll();
+                    PDFwriter.BuildText(data);
+                \PYGZcb{}
+                finally
+                \PYGZob{}
+                    EnableAll();
+                    waitLabel.Visible = false;
+                \PYGZcb{}
+            \PYGZcb{}
+            var thread = new Thread(ThreadStarter);
+            thread.Start();
+        \PYGZcb{}
+
+        /// \PYGZlt{}summary\PYGZgt{}
+        /// Делает неактивными все элементы формы
+        /// \PYGZlt{}/summary\PYGZgt{}
+        private void DisableAll()
+        \PYGZob{}
+            foreach (Control con in Controls)
+            \PYGZob{}
+                con.Enabled = false;
+            \PYGZcb{}
+        \PYGZcb{}
+
+        /// \PYGZlt{}summary\PYGZgt{}
+        /// Делает активными все элементы формы
+        /// \PYGZlt{}/summary\PYGZgt{}
+        private void EnableAll()
+        \PYGZob{}
+            foreach (Control con in Controls)
+            \PYGZob{}
+                con.Enabled = true;
+            \PYGZcb{}
         \PYGZcb{}
 
         private void RandBox\PYGZus{}CheckedChanged(object sender, EventArgs e)
@@ -146,7 +220,50 @@ namespace ProblemGenerator
             \PYGZcb{}
         \PYGZcb{}
 
-        // Пасхалочки
+        private void CreatePdfCheckBox\PYGZus{}CheckedChanged(object sender, EventArgs e)
+        \PYGZob{}
+            if (createPdfCheckBox.Checked)
+            \PYGZob{}
+                pdfCheckBox.Visible = true;
+                textSizeLabel.Visible = true;
+                textSizeComboBox.Visible = true;
+            \PYGZcb{}
+            else if (!createPdfCheckBox.Checked)
+            \PYGZob{}
+                pdfCheckBox.Visible = false;
+                textSizeLabel.Visible = false;
+                textSizeComboBox.Visible = false;
+            \PYGZcb{}
+        \PYGZcb{}
+
+        private void HtmlCheckBox\PYGZus{}CheckedChanged(object sender, EventArgs e)
+        \PYGZob{}
+            if (htmlCheckBox.Checked)
+                HTMLWriter.ToOpen = true;
+            else if (!htmlCheckBox.Checked)
+                HTMLWriter.ToOpen = false;
+        \PYGZcb{}
+
+        private void PdfCheckBox\PYGZus{}CheckedChanged(object sender, EventArgs e)
+        \PYGZob{}
+            if (pdfCheckBox.Checked)
+                PDFwriter.ToOpen = true;
+            else if (!pdfCheckBox.Checked)
+                PDFwriter.ToOpen = false;
+        \PYGZcb{}
+
+        private void TextSizeComboBox\PYGZus{}SelectedIndexChanged(object sender, EventArgs e)
+        \PYGZob{}
+            int.TryParse(textSizeComboBox.Text, out int size);
+            if (size == 0) size = 10;
+            PDFwriter.FontSize = size;
+        \PYGZcb{}
+
+        private void EscButton\PYGZus{}Click(object sender, EventArgs e)
+        \PYGZob{}
+            Close();
+        \PYGZcb{}
+
         private void DifLabel\PYGZus{}Click(object sender, EventArgs e)
         \PYGZob{}
             difLabel.ForeColor = Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256));

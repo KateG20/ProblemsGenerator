@@ -1,4 +1,5 @@
-﻿using System;
+\begin{Verbatim}[commandchars=\\\{\}]
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -6,27 +7,27 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Library
-{
+\PYGZob{}
     // Класс, запускающий генерацию
     public static class Generator
-    {
+    \PYGZob{}
         static Random rand;
 
         // Делегат для методов генерации задач
         delegate string[] GenerateType();
         // Ключ генерации
-        public static int Seed { get; set; }
+        public static int Seed \PYGZob{} get; set; \PYGZcb{}
         // Тип задачи
-        public static int ProblemsType { get; set; }
+        public static int ProblemsType \PYGZob{} get; set; \PYGZcb{}
         // Количество задач
-        public static int ProblemsNum { get; set; }
+        public static int ProblemsNum \PYGZob{} get; set; \PYGZcb{}
 
-        /// <summary>
+        /// \PYGZlt{}summary\PYGZgt{}
         /// Генерирует заданное пользователем количество задач заданного типа
-        /// </summary>
-        /// <returns>Двумерный массив - на первой строке условия, на второй - ответы</returns>
+        /// \PYGZlt{}/summary\PYGZgt{}
+        /// \PYGZlt{}returns\PYGZgt{}Двумерный массив \PYGZhy{} на первой строке условия, на второй \PYGZhy{} ответы\PYGZlt{}/returns\PYGZgt{}
         public static string[,] Generate()
-        {
+        \PYGZob{}
             // Проверяем, был ли указан ключ генерации
             if (Seed == 0) rand = new Random();
             else rand = new Random(Seed);
@@ -39,31 +40,31 @@ namespace Library
 
             string[,] problems = new string[3, ProblemsNum];
             string[] result = new string[1];
-            for (int i = 0; i < ProblemsNum; i++)
-            {
+            for (int i = 0; i \PYGZlt{} ProblemsNum; i++)
+            \PYGZob{}
                 try
-                {
+                \PYGZob{}
                     result = GenerateMethod();
-                }
+                \PYGZcb{}
                 catch (Exception e)
-                {
-                    MessageBox.Show("Возникла ошибка при генерации задачи.\n" +
-                        "Приложение принудительно завершит работу. " + e.Message);
+                \PYGZob{}
+                    MessageBox.Show(\PYGZdq{}Возникла ошибка при генерации задачи.\PYGZbs{}n\PYGZdq{} +
+                        \PYGZdq{}Приложение принудительно завершит работу. \PYGZdq{} + e.Message);
                     Environment.Exit(0);
-                }
-                problems[0, i] = $"Задача {i + 1}<br>" + result[0];
+                \PYGZcb{}
+                problems[0, i] = \PYGZdl{}\PYGZdq{}Задача \PYGZob{}i + 1\PYGZcb{}\PYGZlt{}br\PYGZgt{}\PYGZdq{} + result[0];
                 problems[1, i] = result[1];
                 problems[2, i] = result[2];
-            }
+            \PYGZcb{}
             return problems;
-        }
+        \PYGZcb{}
 
-        /// <summary>
+        /// \PYGZlt{}summary\PYGZgt{}
         /// Генерирует заданное пользователем количество задач разных типов, выбирая их рандомно
-        /// </summary>
-        /// <returns>Двумерный массив - на первой строке условия, на второй - ответы</returns>
+        /// \PYGZlt{}/summary\PYGZgt{}
+        /// \PYGZlt{}returns\PYGZgt{}Двумерный массив \PYGZhy{} на первой строке условия, на второй \PYGZhy{} ответы\PYGZlt{}/returns\PYGZgt{}
         public static string[,] RandomGenerate()
-        {
+        \PYGZob{}
             // Проверяем, был ли указан ключ генерации
             if (Seed == 0) rand = new Random();
             else rand = new Random(Seed);
@@ -74,46 +75,47 @@ namespace Library
             string[,] problems = new string[3, ProblemsNum];
             string[] result = new string[1];
             // Каждый раз создаем задачу рандомного типа
-            for (int i = 0; i < ProblemsNum; i++)
-            {
+            for (int i = 0; i \PYGZlt{} ProblemsNum; i++)
+            \PYGZob{}
                 try
-                {
+                \PYGZob{}
                     switch (rand.Next(3))
-                    {
+                    \PYGZob{}
                         case 0:
-                            {
+                            \PYGZob{}
                                 result = Problems.GenOneHeap();
                                 break;
-                            }
+                            \PYGZcb{}
                         case 1:
-                            {
+                            \PYGZob{}
                                 result = Problems.GenTwoHeaps();
                                 break;
-                            }
+                            \PYGZcb{}
                         case 2:
-                            {
+                            \PYGZob{}
                                 result = Problems.GenTwoWords();
                                 break;
-                            }
+                            \PYGZcb{}
                         default:
-                            {
+                            \PYGZob{}
                                 result = new string[1];
                                 break;
-                            }
-                    }
-                }
+                            \PYGZcb{}
+                    \PYGZcb{}
+                \PYGZcb{}
                 catch (Exception e)
-                {
-                    MessageBox.Show("Возникла ошибка при генерации задачи.\n" +
-                        "Приложение принудительно завершит работу. " + e.Message);
+                \PYGZob{}
+                    MessageBox.Show(\PYGZdq{}Возникла ошибка при генерации задачи.\PYGZbs{}n\PYGZdq{} +
+                        \PYGZdq{}Приложение принудительно завершит работу. \PYGZdq{} + e.Message);
                     Environment.Exit(0);
-                }
-                problems[0, i] = $"Задача {i + 1}<br>" + result[0];
+                \PYGZcb{}
+                problems[0, i] = \PYGZdl{}\PYGZdq{}Задача \PYGZob{}i + 1\PYGZcb{}\PYGZlt{}br\PYGZgt{}\PYGZdq{} + result[0];
                 problems[1, i] = result[1];
                 problems[2, i] = result[2];
-            }
+            \PYGZcb{}
             return problems;
-        }
+        \PYGZcb{}
 
-    }
-}
+    \PYGZcb{}
+\PYGZcb{}
+\end{Verbatim}

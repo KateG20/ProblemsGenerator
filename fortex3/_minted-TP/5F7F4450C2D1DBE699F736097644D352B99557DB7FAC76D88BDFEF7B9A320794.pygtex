@@ -1,0 +1,231 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+using System;
+using System.Diagnostics;
+using System.IO;
+using HtmlAgilityPack;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Library
+\PYGZob{}
+    /// \PYGZlt{}summary\PYGZgt{}
+    /// Класс для записи данных в html\PYGZhy{}файл
+    /// \PYGZlt{}/summary\PYGZgt{}
+    public static class HTMLWriter
+    \PYGZob{}
+        // Открывать ли файл сразу
+        public static bool ToOpen \PYGZob{} get; set; \PYGZcb{}
+
+        /// \PYGZlt{}summary\PYGZgt{}
+        /// Записывает сгенерированные задачи в html\PYGZhy{}файл
+        /// \PYGZlt{}/summary\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}problems\PYGZdq{}\PYGZgt{}Данные о задачах\PYGZlt{}/param\PYGZgt{}
+        public static void WriteHTML(string[,] problems)
+        \PYGZob{}
+            // Добываем путь к файлу, в который будем записывать
+            string docpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments);
+            string path = Path.Combine(docpath, \PYGZdq{}Task26.html\PYGZdq{});
+            int count = 1;
+
+            // При существовании файла создаем новый, а не перезаписываем
+            while (File.Exists(path))
+            \PYGZob{}
+                path = Path.Combine(docpath, \PYGZdl{}\PYGZdq{}Task26(\PYGZob{}count++\PYGZcb{}).html\PYGZdq{});
+            \PYGZcb{}
+
+            PDFwriter.FileNum = count \PYGZhy{} 1;
+
+            // Добываем текст из шаблона и записываем его в файл
+            string baseText = File.ReadAllText(\PYGZdq{}HtmlTemplate.txt\PYGZdq{});
+            File.WriteAllText(path, baseText, Encoding.UTF8);
+
+            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+            doc.Load(path);
+            HtmlNode body = doc.DocumentNode.SelectSingleNode(\PYGZdq{}//html/body\PYGZdq{}),
+                task, button, input1, input2, answer, span;
+
+            // Проходимся по каждой задаче из списка
+            for (int i = 0; i \PYGZlt{}= problems.GetUpperBound(1); i++)
+            \PYGZob{}
+                // Создаем тег для условия задачи и записываем его
+                task = doc.CreateElement(\PYGZdq{}p\PYGZdq{});
+                task.InnerHtml = problems[0, i];
+                body.AppendChild(task);
+                button = doc.CreateElement(\PYGZdq{}p\PYGZdq{});
+
+                // Создаем два тега для кнопочек, записываем туда атрибуты
+                input1 = doc.CreateElement(\PYGZdq{}input\PYGZdq{});
+                input1.SetAttributeValue(\PYGZdq{}class\PYGZdq{}, \PYGZdq{}colored\PYGZdq{});
+                input1.SetAttributeValue(\PYGZdq{}type\PYGZdq{}, \PYGZdq{}button\PYGZdq{});
+                input1.SetAttributeValue(\PYGZdq{}value\PYGZdq{}, \PYGZdq{}Решение\PYGZdq{});
+                input1.SetAttributeValue(\PYGZdq{}onclick\PYGZdq{}, \PYGZdl{}\PYGZdq{}showAnswer(\PYGZbs{}\PYGZdq{}\PYGZob{}problems[1, i] + Create2DTable(problems[2, i])\PYGZcb{}\PYGZbs{}\PYGZdq{}, \PYGZsq{}answer\PYGZob{}i\PYGZcb{}\PYGZsq{})\PYGZdq{});
+                button.AppendChild(input1);
+
+                input2 = doc.CreateElement(\PYGZdq{}input\PYGZdq{});
+                input2.SetAttributeValue(\PYGZdq{}class\PYGZdq{}, \PYGZdq{}colored\PYGZdq{});
+                input2.SetAttributeValue(\PYGZdq{}type\PYGZdq{}, \PYGZdq{}button\PYGZdq{});
+                input2.SetAttributeValue(\PYGZdq{}value\PYGZdq{}, \PYGZdq{}Спрятать решение\PYGZdq{});
+                input2.SetAttributeValue(\PYGZdq{}onclick\PYGZdq{}, \PYGZdl{}\PYGZdq{}hideAnswer(\PYGZsq{}answer\PYGZob{}i\PYGZcb{}\PYGZsq{})\PYGZdq{});
+                button.AppendChild(input2);
+
+                // Добавляем кнопочки в body
+                body.AppendChild(button);
+
+                // Создаем тег для ответа и записываем
+                answer = doc.CreateElement(\PYGZdq{}p\PYGZdq{});
+                span = doc.CreateElement(\PYGZdq{}span\PYGZdq{});
+                span.SetAttributeValue(\PYGZdq{}id\PYGZdq{}, \PYGZdl{}\PYGZdq{}answer\PYGZob{}i\PYGZcb{}\PYGZdq{});
+                answer.AppendChild(span);
+                body.AppendChild(answer);
+            \PYGZcb{}
+            doc.Save(path);
+
+            // Открываем страницу в браузере, если стоит галочка
+            if (ToOpen)
+                Process.Start(new ProcessStartInfo(path) \PYGZob{} UseShellExecute = true \PYGZcb{});
+        \PYGZcb{}
+
+        /// \PYGZlt{}summary\PYGZgt{}
+        /// Создает код для двумерной html\PYGZhy{}таблицы из строки 
+        /// \PYGZlt{}/summary\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}str\PYGZdq{}\PYGZgt{}Строка\PYGZlt{}/param\PYGZgt{}
+        /// \PYGZlt{}returns\PYGZgt{}Код таблицы\PYGZlt{}/returns\PYGZgt{}
+        static string Create2DTable(string str)
+        \PYGZob{}
+            // Делаем массив строк таблицы, разделяя по переносу строки
+            string[] arrOfRows = str.Split(\PYGZsq{}\PYGZbs{}n\PYGZsq{});
+            // Длина по горизонтали \PYGZhy{} длина первой строки
+            int lenHor = arrOfRows[0].Split(\PYGZsq{} \PYGZsq{}).Length;
+            // Длина по вертикали \PYGZhy{} количество строк
+            int lenVert = arrOfRows.Length;
+
+            StringBuilder table = new StringBuilder();
+            // Добавляем тег таблицы и начинаем новую строку
+            table.Append(\PYGZdq{}\PYGZlt{}table id = \PYGZsq{}table\PYGZsq{} border = \PYGZsq{}1\PYGZsq{}\PYGZgt{}\PYGZlt{}tr\PYGZgt{}\PYGZdq{});
+
+            // Добавляем пустую верхнюю левую ячейку
+            table.Append(\PYGZdq{}\PYGZlt{}th\PYGZgt{} \PYGZlt{}/th\PYGZgt{}\PYGZdq{});
+
+            // Для удобства делаем первую строку массивом
+            string[] firstRow = lenVert == 1 ? arrOfRows[0].Split(\PYGZsq{} \PYGZsq{}) : arrOfRows[1].Split(\PYGZsq{} \PYGZsq{});
+            // Длина шапки с учетом пропусков
+            int headLen = 0;
+            // Делаем верхнюю шапку
+            for (int i = 1; i \PYGZlt{} lenHor; i++)
+            \PYGZob{}
+                // Пропускаем все колонки, в которых в исходной таблице стоит точка,
+                // единожды пишем знак пропуска \PYGZdq{}..\PYGZdq{}
+                if (firstRow[i] == \PYGZdq{}.\PYGZdq{})
+                \PYGZob{}
+                    if (firstRow[i \PYGZhy{} 1] != \PYGZdq{}.\PYGZdq{})
+                        table.Append(\PYGZdl{}\PYGZdq{}\PYGZlt{}th class=\PYGZsq{}h\PYGZsq{}\PYGZgt{}..\PYGZlt{}/th\PYGZgt{}\PYGZdq{});
+                    continue;
+                \PYGZcb{}
+                headLen++;
+                if (i \PYGZlt{} 10) table.Append(\PYGZdl{}\PYGZdq{}\PYGZlt{}th class=\PYGZsq{}h\PYGZsq{}\PYGZgt{}\PYGZob{}i\PYGZcb{}\PYGZam{}nbsp;\PYGZlt{}/th\PYGZgt{}\PYGZdq{});
+                else table.Append(\PYGZdl{}\PYGZdq{}\PYGZlt{}th class=\PYGZsq{}h\PYGZsq{}\PYGZgt{}\PYGZob{}i\PYGZcb{}\PYGZlt{}/th\PYGZgt{}\PYGZdq{});
+            \PYGZcb{}
+
+            // Заканчиваем строку
+            table.Append(\PYGZdq{}\PYGZlt{}/tr\PYGZgt{}\PYGZdq{});
+
+            // Добавляем сами строки
+            // Для однострочной таблицы
+            if (lenVert == 1)
+            \PYGZob{}
+                table.Append(\PYGZdl{}\PYGZdq{}\PYGZlt{}tr\PYGZgt{}\PYGZlt{}th class=\PYGZsq{}h\PYGZsq{}\PYGZgt{}\PYGZam{}nbsp;\PYGZlt{}/th\PYGZgt{}\PYGZdq{});
+                AddRow(firstRow, ref table);
+            \PYGZcb{}
+            // Для квадратных таблиц
+            else
+            \PYGZob{}
+                bool flag = true;
+                string[] cells;
+                // Создаем основную часть таблицы
+                for (int j = 1; j \PYGZlt{} lenVert; j++)
+                \PYGZob{}
+                    // Следующая строка таблицы
+                    cells = arrOfRows[j].Split(\PYGZsq{} \PYGZsq{});
+
+                    // Если строка непустая (второй элемент непустой (первый может 
+                    // быть пустой даже у непустой строки))
+                    if (cells[1].Length \PYGZgt{} 0)
+                    \PYGZob{}
+                        // Если состоит из точек, её надо сокращать
+                        if (cells[1] == \PYGZdq{}.\PYGZdq{})
+                        \PYGZob{}
+                            // Первый раз, пока флаг еще true, создаем строку из пропусков
+                            if (flag)
+                            \PYGZob{}
+                                table.Append(\PYGZdl{}\PYGZdq{}\PYGZlt{}tr\PYGZgt{}\PYGZlt{}th class=\PYGZsq{}h\PYGZsq{}\PYGZgt{}..\PYGZlt{}/th\PYGZgt{}\PYGZdq{});
+                                for (int i = 0; i \PYGZlt{} headLen; i++)
+                                \PYGZob{}
+                                    table.Append(\PYGZdq{}\PYGZlt{}td class=\PYGZsq{}w\PYGZsq{}\PYGZgt{}..\PYGZlt{}/td\PYGZgt{}\PYGZdq{});
+                                \PYGZcb{}
+                                // В конце \PYGZhy{} восклицательный знак и конец строки
+                                table.Append(\PYGZdq{}\PYGZlt{}td class=\PYGZsq{}r\PYGZsq{}\PYGZgt{}!\PYGZlt{}/td\PYGZgt{}\PYGZlt{}/tr\PYGZgt{}\PYGZdq{});
+                                // Меняем флаг, чтобы больше строк не создавалось
+                                flag = false;
+                            \PYGZcb{}
+                            // И в любом случае \PYGZhy{} continue
+                            continue;
+                        \PYGZcb{}
+                        // Если состоит из восклицательных знаков, ее надо сокращать
+                        else if (cells[1] == \PYGZdq{}!\PYGZdq{})
+                        \PYGZob{}
+                            table.Append(\PYGZdl{}\PYGZdq{}\PYGZlt{}tr\PYGZgt{}\PYGZlt{}th class=\PYGZsq{}h\PYGZsq{}\PYGZgt{}\PYGZob{}cells.Length \PYGZhy{} 1\PYGZcb{}\PYGZlt{}/th\PYGZgt{}\PYGZdq{});
+                            for (int i = 0; i \PYGZlt{} headLen; i++)
+                            \PYGZob{}
+                                table.Append(\PYGZdq{}\PYGZlt{}td class=\PYGZsq{}r\PYGZsq{}\PYGZgt{}!\PYGZlt{}/td\PYGZgt{}\PYGZdq{});
+                            \PYGZcb{}
+                            // В конце \PYGZhy{} восклицательный знак и конец строки
+                            table.Append(\PYGZdq{}\PYGZlt{}td class=\PYGZsq{}r\PYGZsq{}\PYGZgt{}!\PYGZlt{}/td\PYGZgt{}\PYGZlt{}/tr\PYGZgt{}\PYGZdq{});
+                            // Цикл закончен
+                            break;
+                        \PYGZcb{}
+                    \PYGZcb{}
+                    // Первый элемент \PYGZhy{} индекс для боковой шапки
+                    table.Append(\PYGZdl{}\PYGZdq{}\PYGZlt{}tr\PYGZgt{}\PYGZlt{}th class=\PYGZsq{}h\PYGZsq{}\PYGZgt{}\PYGZob{}j\PYGZcb{}\PYGZlt{}/th\PYGZgt{}\PYGZdq{});
+                    AddRow(cells, ref table);
+
+                    // Заканчиваем строку
+                    table.Append(\PYGZdq{}\PYGZlt{}/tr\PYGZgt{}\PYGZdq{});
+                \PYGZcb{}
+            \PYGZcb{}
+            // Заканчиваем таблицу
+            table.Append(\PYGZdq{}\PYGZlt{}/table\PYGZgt{}\PYGZlt{}br\PYGZgt{}\PYGZdq{});
+            return table.ToString();
+        \PYGZcb{}
+
+        /// \PYGZlt{}summary\PYGZgt{}
+        /// Добавляет в таблицу строку
+        /// \PYGZlt{}/summary\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}cells\PYGZdq{}\PYGZgt{}Массив элементов строки\PYGZlt{}/param\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}table\PYGZdq{}\PYGZgt{}Ссылка на таблицу\PYGZlt{}/param\PYGZgt{}
+        static void AddRow(string[] cells, ref StringBuilder table)
+        \PYGZob{}
+            for (int i = 0; i \PYGZlt{} cells.Length; i++)
+            \PYGZob{}
+                if (cells[i].Length \PYGZlt{} 1) continue;
+                // Красим клетки
+                // Если это клетка пропуска, \PYGZdq{}сокращаем\PYGZdq{} их до одной
+                if (cells[i][0] == \PYGZsq{}.\PYGZsq{})
+                \PYGZob{}
+                    if (cells[i \PYGZhy{} 1][0] != \PYGZsq{}.\PYGZsq{})
+                        table.Append(\PYGZdq{}\PYGZlt{}td class=\PYGZsq{}w\PYGZsq{}\PYGZgt{}..\PYGZlt{}/td\PYGZgt{}\PYGZdq{});
+                    continue;
+                \PYGZcb{}
+                else if (cells[i][0] == \PYGZsq{}+\PYGZsq{})
+                    table.Append(\PYGZdq{}\PYGZlt{}td class=\PYGZsq{}w\PYGZsq{}\PYGZgt{}+\PYGZlt{}/td\PYGZgt{}\PYGZdq{});
+                else if (cells[i][0] == \PYGZsq{}\PYGZhy{}\PYGZsq{})
+                    table.Append(\PYGZdq{}\PYGZlt{}td class=\PYGZsq{}l\PYGZsq{}\PYGZgt{}\PYGZhy{}\PYGZlt{}/td\PYGZgt{}\PYGZdq{});
+                else
+                    table.Append(\PYGZdq{}\PYGZlt{}td class=\PYGZsq{}r\PYGZsq{}\PYGZgt{}!\PYGZlt{}/td\PYGZgt{}\PYGZdq{});
+            \PYGZcb{}
+        \PYGZcb{}
+    \PYGZcb{}
+\PYGZcb{}
+\end{Verbatim}

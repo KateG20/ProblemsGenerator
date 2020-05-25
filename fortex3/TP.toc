@@ -1,12 +1,12 @@
 \babel@toc {russian}{}
-\contentsline {section}{\numberline {1}Текст программы}{3}{section.1}%
-\contentsline {subsection}{\numberline {1.1}Библиотека классов Library}{3}{subsection.1.1}%
-\contentsline {subsubsection}{\numberline {1.1.1}Generator.cs}{3}{subsubsection.1.1.1}%
-\contentsline {subsubsection}{\numberline {1.1.2}Tables.cs}{17}{subsubsection.1.1.2}%
-\contentsline {subsubsection}{\numberline {1.1.3}HTMLwriter.cs}{22}{subsubsection.1.1.3}%
-\contentsline {subsection}{\numberline {1.2}Проект ProblemsGenerator}{24}{subsection.1.2}%
-\contentsline {subsubsection}{\numberline {1.2.1}Program.cs}{24}{subsubsection.1.2.1}%
-\contentsline {subsubsection}{\numberline {1.2.2}Form1.cs}{25}{subsubsection.1.2.2}%
-\contentsline {subsubsection}{\numberline {1.2.3}Form1.Designer.cs}{28}{subsubsection.1.2.3}%
-\contentsline {subsubsection}{\numberline {1.2.4}HtmlTemplate.txt}{34}{subsubsection.1.2.4}%
-\contentsline {section}{\numberline {2}Лист регистрации изменений}{36}{section.2}%
+\contentsline {section}{\numberline {1}Библиотека классов Library}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Generator.cs}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Problems.cs}{5}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Tables.cs}{18}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}HTMLwriter.cs}{25}{subsection.1.4}%
+\contentsline {subsection}{\numberline {1.5}PDFwriter.cs}{30}{subsection.1.5}%
+\contentsline {section}{\numberline {2}Проект ProblemsGenerator}{34}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Program.cs}{34}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Form1.cs}{34}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Form1.Designer.cs}{40}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}HtmlTemplate.txt}{49}{subsection.2.4}%

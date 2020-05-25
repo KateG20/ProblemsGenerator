@@ -1,0 +1,132 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Threading;
+using MigraDoc;
+using MigraDoc.DocumentObjectModel;
+using MigraDoc.Rendering;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using System.Threading.Tasks;
+
+namespace Library
+\PYGZob{}
+    /// \PYGZlt{}summary\PYGZgt{}
+    /// Класс для записи данных в pdf\PYGZhy{}файл
+    /// \PYGZlt{}/summary\PYGZgt{}
+    public static class PDFwriter
+    \PYGZob{}
+        // Открывать ли файл сразу
+        public static bool ToOpen \PYGZob{} get; set; \PYGZcb{}
+        // Размер текста, установленный пользователем
+        public static int FontSize \PYGZob{} get; set; \PYGZcb{}
+        public static int FileNum \PYGZob{} get; set; \PYGZcb{}
+
+        /// \PYGZlt{}summary\PYGZgt{}
+        /// Создает одну строку текста с условиями из данных о задачах
+        /// \PYGZlt{}/summary\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}problems\PYGZdq{}\PYGZgt{}Сгенерированные данные о задачах\PYGZlt{}/param\PYGZgt{}
+        public static void BuildText(string[,] problems)
+        \PYGZob{}
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i \PYGZlt{} problems.GetLength(1); i++)
+            \PYGZob{}
+                sb.Append(problems[0, i].Replace(\PYGZdq{}\PYGZlt{}br\PYGZgt{}\PYGZdq{}, \PYGZdq{}\PYGZbs{}n\PYGZdq{}) + \PYGZdq{}\PYGZbs{}n\PYGZbs{}n\PYGZdq{});
+            \PYGZcb{}
+
+            // Вызываем функцию записи этого текста в файл
+            WritePdf(sb.ToString());
+        \PYGZcb{}
+
+        /// \PYGZlt{}summary\PYGZgt{}
+        /// Записывает строку текста (условия задач) в pdf с заголовком
+        /// \PYGZlt{}/summary\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}text\PYGZdq{}\PYGZgt{}Условия задач\PYGZlt{}/param\PYGZgt{}
+        static void WritePdf(string text)
+        \PYGZob{}
+            // Добываем путь к файлу, в который будем записывать
+            string docpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments);
+            string path = Path.Combine(docpath, FileNum == 0 ? \PYGZdq{}Task26.pdf\PYGZdq{} : 
+                \PYGZdl{}\PYGZdq{}Task26(\PYGZob{}FileNum\PYGZcb{}).pdf\PYGZdq{});
+
+            // Произойдет, если удалить html\PYGZhy{}файл из пары html+pdf и создать новый с таким же номером
+            if (File.Exists(path))
+            \PYGZob{}
+                MessageBox.Show(\PYGZdl{}\PYGZdq{}Файл с названием, аналогичным создаваемому (\PYGZob{}path\PYGZcb{}), уже существует. \PYGZdq{} +
+                    \PYGZdq{}Он будет перезаписан.\PYGZdq{});
+            \PYGZcb{}
+
+            // Создаем документ
+            Document doc = new Document();
+
+            // Определяем стили
+            DefineStyles(doc);
+
+            // Создаем секцию текста
+            doc.AddSection();
+            // Пишем заголовок
+            doc.LastSection.AddParagraph(\PYGZdq{}Задание №26 ЕГЭ по информатике\PYGZdq{}, \PYGZdq{}Heading\PYGZdq{});
+            // Пишем основной текст
+            doc.LastSection.AddParagraph(text, \PYGZdq{}BaseText\PYGZdq{});
+
+            PdfDocumentRenderer renderer = new PdfDocumentRenderer(true)
+            \PYGZob{}
+                Document = doc
+            \PYGZcb{};
+            renderer.RenderDocument();
+            // Сохраняем документ
+            renderer.PdfDocument.Save(path);
+
+            // Открываем файл, если стоит галочка
+            if (ToOpen)
+            \PYGZob{}
+                Process.Start(path);
+            \PYGZcb{}
+        \PYGZcb{}
+
+        /// \PYGZlt{}summary\PYGZgt{}
+        /// Задает стили документа
+        /// \PYGZlt{}/summary\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}document\PYGZdq{}\PYGZgt{}PDF\PYGZhy{}документ\PYGZlt{}/param\PYGZgt{}
+        static void DefineStyles(Document document)
+        \PYGZob{}
+            // Базовый стиль
+            Style style = document.Styles[\PYGZdq{}Normal\PYGZdq{}];
+
+            // Стиль по умолчанию
+            style.Font.Name = \PYGZdq{}Times New Roman\PYGZdq{};
+
+            // Стиль для заголовка
+            style = document.Styles.AddStyle(\PYGZdq{}Heading\PYGZdq{}, \PYGZdq{}Normal\PYGZdq{});
+            style.Font.Size = 18;
+            style.Font.Bold = true;
+            style.ParagraphFormat.PageBreakBefore = true;
+            style.ParagraphFormat.SpaceAfter = 12;
+            style.ParagraphFormat.LeftIndent = \PYGZhy{}15;
+
+            // Стиль основного текста
+            style = document.Styles.AddStyle(\PYGZdq{}BaseText\PYGZdq{}, \PYGZdq{}Normal\PYGZdq{});
+            if (FontSize == 0)
+                style.Font.Size = 10;
+            else style.Font.Size = FontSize;
+            style.ParagraphFormat.PageBreakBefore = false;
+            style.ParagraphFormat.SpaceBefore = 20;
+            style.ParagraphFormat.SpaceAfter = 6;
+            style.ParagraphFormat.LineSpacingRule = LineSpacingRule.AtLeast;
+            style.ParagraphFormat.LineSpacing = 15;
+            style.ParagraphFormat.LeftIndent = \PYGZhy{}15;
+
+            // Верхний колонтитул
+            style = document.Styles[StyleNames.Header];
+            style.ParagraphFormat.AddTabStop(\PYGZdq{}3cm\PYGZdq{}, MigraDoc.DocumentObjectModel.TabAlignment.Right);
+
+            // Нижний колонтитул
+            style = document.Styles[StyleNames.Footer];
+            style.ParagraphFormat.AddTabStop(\PYGZdq{}5cm\PYGZdq{}, MigraDoc.DocumentObjectModel.TabAlignment.Center);
+        \PYGZcb{}
+    \PYGZcb{}
+\PYGZcb{}
+\end{Verbatim}

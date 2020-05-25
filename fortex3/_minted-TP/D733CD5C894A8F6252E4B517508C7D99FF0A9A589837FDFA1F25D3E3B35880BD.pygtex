@@ -1,0 +1,37 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace ProblemGenerator
+\PYGZob{}
+    static class Program
+    \PYGZob{}
+        /// \PYGZlt{}summary\PYGZgt{}
+        /// Главная точка входа программы.
+        /// \PYGZlt{}/summary\PYGZgt{}
+        [STAThread]
+        static void Main()
+        \PYGZob{}
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            Application.ThreadException += new ThreadExceptionEventHandler(ExceptionHandlingMethod);
+
+            Form1 mainForm = new Form1();
+            Application.Run(mainForm);
+        \PYGZcb{}
+
+        // Обработчик события, вызываемого при возникновении исключений
+        private static void ExceptionHandlingMethod(object sender, ThreadExceptionEventArgs t)
+        \PYGZob{}
+            MessageBox.Show(\PYGZdq{}Произошла ошибка при работе Windows\PYGZhy{}формы.\PYGZbs{}n\PYGZdq{} +
+                \PYGZdq{}Приложение принудительно завершит работу.\PYGZdq{});
+            Environment.Exit(0);
+        \PYGZcb{}
+    \PYGZcb{}
+\PYGZcb{}
+\end{Verbatim}

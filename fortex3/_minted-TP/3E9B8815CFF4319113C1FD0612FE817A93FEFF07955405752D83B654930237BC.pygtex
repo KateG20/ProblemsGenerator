@@ -6,111 +6,50 @@ using System.Windows.Forms;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProblemGenerator
+namespace Library
 \PYGZob{}
-    public static class Generator
+    /// \PYGZlt{}summary\PYGZgt{}
+    /// Класс, содержащий методы для генерации условий и ответов для разных видов задач
+    /// \PYGZlt{}/summary\PYGZgt{}
+    public static class Problems
     \PYGZob{}
-        static Random rand;
+        // Экземпляр рандома, созданный в классе Generator
+        public static Random Rand \PYGZob{} get; set; \PYGZcb{}
+
+        // Делегат для методов, являющихся арифметическими операциями
         public delegate int Adder(int x);
-        public delegate string[] GenerateType();
-        public static int Seed \PYGZob{} get; set; \PYGZcb{}
-        public static int ProblemType \PYGZob{} get; set; \PYGZcb{}
-        public static int ProblemsNum \PYGZob{} get; set; \PYGZcb{}
 
         /// \PYGZlt{}summary\PYGZgt{}
-        /// Генерирует заданное пользователем количество задач заданного типа
+        /// Делает строку квадратной таблицей
         /// \PYGZlt{}/summary\PYGZgt{}
-        /// \PYGZlt{}returns\PYGZgt{}Двумерный массив \PYGZhy{} на первой строке условия, на второй \PYGZhy{} ответы\PYGZlt{}/returns\PYGZgt{}
-        public static string[,] Generate()
+        /// \PYGZlt{}param name=\PYGZdq{}str\PYGZdq{}\PYGZgt{}Строка\PYGZlt{}/param\PYGZgt{}
+        /// \PYGZlt{}returns\PYGZgt{}Таблица\PYGZlt{}/returns\PYGZgt{}
+        static string[,] StrToArray(string str)
         \PYGZob{}
-            // Проверяем, был ли указан ключ генерации
-            if (Seed == 0) rand = new Random();
-            else rand = new Random(Seed);
-
-            GenerateType GenerateMethod;
-            if (ProblemType == 0) GenerateMethod = GenOneHeap;
-            else if (ProblemType == 1) GenerateMethod = GenTwoHeaps;
-            else GenerateMethod = GenTwoWords;
-
-            string[,] problems = new string[2, ProblemsNum];
-            string[] result = new string[1];
-            for (int i = 0; i \PYGZlt{} ProblemsNum; i++)
+            string[] arrOfRows = str.Split(\PYGZsq{}\PYGZbs{}n\PYGZsq{});
+            int len = arrOfRows.Length;
+            var res = new string[len, len];
+            string[] row;
+            for (int i = 0; i \PYGZlt{} len; i++)
             \PYGZob{}
-                try
+                row = arrOfRows[i].Split(\PYGZsq{} \PYGZsq{});
+                for (int j = 0; j \PYGZlt{} len; j++)
                 \PYGZob{}
-                    result = GenerateMethod();
+                    res[i, j] = row[j];
                 \PYGZcb{}
-                catch (Exception e)
-                \PYGZob{}
-                    MessageBox.Show(\PYGZdq{}Возникла ошибка при генерации задачи.\PYGZbs{}n\PYGZdq{} + e.Message);
-                    Environment.Exit(0);
-                \PYGZcb{}
-                problems[0, i] = \PYGZdl{}\PYGZdq{}Задача \PYGZob{}i + 1\PYGZcb{}\PYGZlt{}br\PYGZgt{}\PYGZdq{} + result[0];
-                problems[1, i] = result[1];
             \PYGZcb{}
-            return problems;
-        \PYGZcb{}
 
-        /// \PYGZlt{}summary\PYGZgt{}
-        /// Генерирует заданное пользователем количество задач разных типов, выбирая их рандомно
-        /// \PYGZlt{}/summary\PYGZgt{}
-        /// \PYGZlt{}returns\PYGZgt{}Двумерный массив \PYGZhy{} на первой строке условия, на второй \PYGZhy{} ответы\PYGZlt{}/returns\PYGZgt{}
-        public static string[,] RandomGenerate()
-        \PYGZob{}
-            // Проверяем, был ли указан ключ генерации
-            if (Seed == 0) rand = new Random();
-            else rand = new Random(Seed);
-
-            string[,] problems = new string[2, ProblemsNum];
-            string[] result = new string[1];
-            // Каждый раз создаем задачу рандомного типа
-            for (int i = 0; i \PYGZlt{} ProblemsNum; i++)
-            \PYGZob{}
-                try
-                \PYGZob{}
-                    switch (rand.Next(3))
-                    \PYGZob{}
-                        case 0:
-                            \PYGZob{}
-                                result = GenOneHeap();
-                                break;
-                            \PYGZcb{}
-                        case 1:
-                            \PYGZob{}
-                                result = GenTwoHeaps();
-                                break;
-                            \PYGZcb{}
-                        case 2:
-                            \PYGZob{}
-                                result = GenTwoWords();
-                                break;
-                            \PYGZcb{}
-                        default:
-                            \PYGZob{}
-                                result = new string[1];
-                                break;
-                            \PYGZcb{}
-                    \PYGZcb{}
-                \PYGZcb{}
-                catch (Exception e)
-                \PYGZob{}
-                    MessageBox.Show(\PYGZdq{}Возникла ошибка при генерации задачи.\PYGZbs{}n\PYGZdq{} + e.Message);
-                    Environment.Exit(0);
-                \PYGZcb{}
-                problems[0, i] = \PYGZdl{}\PYGZdq{}Задача \PYGZob{}i + 1\PYGZcb{}\PYGZlt{}br\PYGZgt{}\PYGZdq{} + result[0];
-                problems[1, i] = result[1];
-            \PYGZcb{}
-            return problems;
+            return res;
         \PYGZcb{}
 
         /// \PYGZlt{}summary\PYGZgt{}
         /// Генерирует задачу и ответ для типа \PYGZdq{}одна куча камней\PYGZdq{}
         /// \PYGZlt{}/summary\PYGZgt{}
         /// \PYGZlt{}returns\PYGZgt{}Массив из двух строк \PYGZhy{} условие и ответ\PYGZlt{}/returns\PYGZgt{}
-        static string[] GenOneHeap()
+        public static string[] GenOneHeap()
         \PYGZob{}
             // Количество действий
-            int numOfActions = rand.Next(2, 5);
+            int numOfActions = Rand.Next(2, 5);
             // Действия сложения 
             int[] toAdd = new int[numOfActions \PYGZhy{} 1];
             int num;
@@ -119,25 +58,25 @@ namespace ProblemGenerator
             \PYGZob{}
                 do
                 \PYGZob{}
-                    num = rand.Next(1, 4);
+                    num = Rand.Next(1, 4);
                 \PYGZcb{} while (toAdd.Contains(num));
                 toAdd[i] = num;
             \PYGZcb{}
             Array.Sort(toAdd);
 
             // Действие умножения (пусть будет одно)
-            int toMult = rand.Next(2, 4);
+            int toMult = Rand.Next(2, 4);
 
             // Количество камней для выигрыша
-            int toWin = rand.Next(25, 66);
+            int toWin = Rand.Next(25, 66);
 
-            string[] table = new string[1];
+            string tableStr = string.Empty;
             // Верхнее ограничение для выигрыша
-            int upperBound = (toWin \PYGZhy{} toAdd.Max()) * toMult \PYGZhy{} rand.Next(8, 14);
+            int upperBound = (toWin \PYGZhy{} toAdd.Max()) * toMult \PYGZhy{} Rand.Next(8, 14);
             // Создаем таблицу для данных
             try
             \PYGZob{}
-                table = Tables.OneHeap(toAdd, toMult, toWin, upperBound);
+                tableStr = Tables.OneHeap(toAdd, toMult, toWin, upperBound);
             \PYGZcb{}
             catch (Exception e)
             \PYGZob{}
@@ -145,14 +84,13 @@ namespace ProblemGenerator
                 Environment.Exit(0);
             \PYGZcb{}
 
-            /// Вопрос 1б
-            // Создаем два списка с неколькими проигрышными и выигрышными клетками.
-            List\PYGZlt{}int\PYGZgt{} fastLoses = new List\PYGZlt{}int\PYGZgt{}();
-            List\PYGZlt{}int\PYGZgt{} fastWins = new List\PYGZlt{}int\PYGZgt{}();
+            string[] table = tableStr.Split(\PYGZsq{} \PYGZsq{});
 
+            /// Вопрос 1б
             // Список клеток, из которых можно выиграть первым ходом.
             List\PYGZlt{}int\PYGZgt{} oneMoveWins = new List\PYGZlt{}int\PYGZgt{}();
 
+            // Добавляем те, которые выигрышные из\PYGZhy{}за сложения
             foreach (var term in toAdd)
             \PYGZob{}
                 for (int i = toWin \PYGZhy{} 1; i \PYGZgt{}= toWin \PYGZhy{} term; i\PYGZhy{}\PYGZhy{})
@@ -178,10 +116,10 @@ namespace ProblemGenerator
             \PYGZcb{}
 
             // Нужно оставить всего 3\PYGZhy{}4 штуки, остальные удаляем
-            int toDelete = quest1bInts.Count \PYGZhy{} rand.Next(3, 5);
+            int toDelete = quest1bInts.Count \PYGZhy{} Rand.Next(3, 5);
             for (int i = 0; i \PYGZlt{} toDelete; i++)
             \PYGZob{}
-                quest1bInts.RemoveAt(rand.Next(quest1bInts.Count));
+                quest1bInts.RemoveAt(Rand.Next(quest1bInts.Count));
             \PYGZcb{}
             // Делаем строкой
             string quest1b = string.Join(\PYGZdq{}, \PYGZdq{}, quest1bInts);
@@ -209,9 +147,10 @@ namespace ProblemGenerator
                 \PYGZcb{}
                 // Если клетка выигрыша, то тоже проверяем, а если это вторая выигрышная,
                 // то выходим из цикла \PYGZhy{} данные нам больше не нужны
-                if (table[i] == \PYGZdq{}+\PYGZdq{})
+                if (table[i] == \PYGZdq{}+\PYGZdq{} || table[i] == \PYGZdq{}.\PYGZdq{})
                 \PYGZob{}
-                    if (quest2Lose.Length \PYGZgt{} 0 \PYGZam{}\PYGZam{} quest2Win.Length == 0) quest2Win = i.ToString();
+                    if (quest2Lose.Length \PYGZgt{} 0 \PYGZam{}\PYGZam{} quest2Win.Length == 0)
+                        quest2Win = i.ToString();
                     else if (quest3Lose.Length \PYGZgt{} 0)
                     \PYGZob{}
                         quest3Win = i.ToString();
@@ -222,8 +161,10 @@ namespace ProblemGenerator
 
             // Выбираем рандомом, чтобы в третьем вопросе выводил клетку \PYGZhy{} или +
             string quest3;
-            if (rand.Next(2) == 1) quest3 = quest3Win;
-            else quest3 = quest3Lose;
+            if (Rand.Next(2) == 1 \PYGZam{}\PYGZam{} quest3Win.Length \PYGZgt{} 0)
+                quest3 = quest3Win;
+            else
+                quest3 = quest3Lose;
 
             // Строка с шаблоном задания
             string text = \PYGZdq{}Два игрока, Петя и Ваня, играют в следующую игру. Перед игроками лежит куча \PYGZdq{} +
@@ -251,41 +192,45 @@ namespace ProblemGenerator
                 string.Join(\PYGZdq{}, \PYGZdq{}, new string[] \PYGZob{} quest2Win, quest2Lose \PYGZcb{}), quest3 \PYGZcb{};
 
             // Создаем шаблон для ответа и записываем ответ для каждого пункта.
-            string answer = \PYGZdq{}1a) \PYGZob{}0\PYGZcb{}\PYGZlt{}br\PYGZgt{}1б) \PYGZob{}1\PYGZcb{}\PYGZlt{}br\PYGZgt{}2) \PYGZob{}2\PYGZcb{}\PYGZlt{}br\PYGZgt{}3) \PYGZob{}3\PYGZcb{}\PYGZlt{}br\PYGZgt{}Развернутые ответы проверяются учителем.\PYGZdq{};
+            string answer = \PYGZdq{}1a) \PYGZob{}0\PYGZcb{}\PYGZlt{}br\PYGZgt{}1б) \PYGZob{}1\PYGZcb{}\PYGZlt{}br\PYGZgt{}2) \PYGZob{}2\PYGZcb{}\PYGZlt{}br\PYGZgt{}3) \PYGZob{}3\PYGZcb{}\PYGZlt{}br\PYGZgt{}Развернутые ответы проверяются учителем. \PYGZdq{} +
+                \PYGZdq{}Но есть таблица, по которой можно проверить успешность любой стратегии.\PYGZlt{}br\PYGZgt{}В шапке \PYGZdq{} +
+                \PYGZdq{}указано количество камней, и если ему соответствует знак \PYGZam{}\PYGZsh{}171;+\PYGZam{}\PYGZsh{}187;, то находящийся \PYGZdq{} +
+                \PYGZdq{}в этой позиции игрок выиграет, если \PYGZam{}\PYGZsh{}171;\PYGZhy{}\PYGZam{}\PYGZsh{}187;, то проиграет.\PYGZlt{}br\PYGZgt{}Пропуск \PYGZdq{} +
+                \PYGZdq{}\PYGZam{}\PYGZsh{}171;..\PYGZam{}\PYGZsh{}187; означает много идущих подряд выигрышных клеток.\PYGZlt{}br\PYGZgt{}\PYGZlt{}br\PYGZgt{}\PYGZdq{};
 
             string ans1b = string.Empty;
 
             for (int i = 0; i \PYGZlt{} quest1bInts.Count; i++)
             \PYGZob{}
-                ans1b += \PYGZdl{}\PYGZdq{}S = \PYGZob{}quest1bInts[i]\PYGZcb{}: \PYGZdq{} + (table[quest1bInts[i]] == \PYGZdq{}+\PYGZdq{} ? \PYGZdq{}Петя\PYGZlt{}br\PYGZgt{}\PYGZdq{} : \PYGZdq{}Ваня\PYGZlt{}br\PYGZgt{}\PYGZdq{});
+                ans1b += \PYGZdl{}\PYGZdq{}S = \PYGZob{}quest1bInts[i]\PYGZcb{}: \PYGZdq{} + (\PYGZdq{}+.\PYGZdq{}.Contains(table[quest1bInts[i]]) ? \PYGZdq{}Петя\PYGZlt{}br\PYGZgt{}\PYGZdq{} : \PYGZdq{}Ваня\PYGZlt{}br\PYGZgt{}\PYGZdq{});
             \PYGZcb{}
 
-            string ans2 = \PYGZdl{}\PYGZdq{}S = \PYGZob{}quest2Win\PYGZcb{}: \PYGZdq{} + (table[int.Parse(quest2Win)] == \PYGZdq{}+\PYGZdq{} ? \PYGZdq{}Петя\PYGZlt{}br\PYGZgt{}\PYGZdq{} : \PYGZdq{}Ваня\PYGZlt{}br\PYGZgt{}\PYGZdq{}) +
-                \PYGZdl{}\PYGZdq{}S = \PYGZob{}quest2Lose\PYGZcb{}: \PYGZdq{} + (table[int.Parse(quest2Lose)] == \PYGZdq{}+\PYGZdq{} ? \PYGZdq{}Петя\PYGZlt{}br\PYGZgt{}\PYGZdq{} : \PYGZdq{}Ваня\PYGZlt{}br\PYGZgt{}\PYGZdq{});
+            string ans2 = \PYGZdl{}\PYGZdq{}S = \PYGZob{}quest2Win\PYGZcb{}: \PYGZdq{} + (\PYGZdq{}+.\PYGZdq{}.Contains(table[int.Parse(quest2Win)]) ? \PYGZdq{}Петя\PYGZlt{}br\PYGZgt{}\PYGZdq{} : \PYGZdq{}Ваня\PYGZlt{}br\PYGZgt{}\PYGZdq{}) +
+                \PYGZdl{}\PYGZdq{}S = \PYGZob{}quest2Lose\PYGZcb{}: \PYGZdq{} + (\PYGZdq{}+.\PYGZdq{}.Contains(table[int.Parse(quest2Lose)]) ? \PYGZdq{}Петя\PYGZlt{}br\PYGZgt{}\PYGZdq{} : \PYGZdq{}Ваня\PYGZlt{}br\PYGZgt{}\PYGZdq{});
 
-            string ans3 = \PYGZdl{}\PYGZdq{}S = \PYGZob{}quest3\PYGZcb{}: \PYGZdq{} + (table[int.Parse(quest3)] == \PYGZdq{}+\PYGZdq{} ? \PYGZdq{}Петя\PYGZlt{}br\PYGZgt{}\PYGZdq{} : \PYGZdq{}Ваня\PYGZlt{}br\PYGZgt{}\PYGZdq{});
+            string ans3 = \PYGZdl{}\PYGZdq{}S = \PYGZob{}quest3\PYGZcb{}: \PYGZdq{} + (\PYGZdq{}+.\PYGZdq{}.Contains(table[int.Parse(quest3)]) ? \PYGZdq{}Петя\PYGZlt{}br\PYGZgt{}\PYGZdq{} : \PYGZdq{}Ваня\PYGZlt{}br\PYGZgt{}\PYGZdq{});
 
             // Строка для форматирования шаблона
             string[] answers = new string[] \PYGZob{} ans1a, ans1b, ans2, ans3 \PYGZcb{};
 
-            return new string[] \PYGZob{} string.Format(text, data), string.Format(answer, answers) \PYGZcb{};
+            return new string[] \PYGZob{} string.Format(text, data), string.Format(answer, answers), tableStr \PYGZcb{};
         \PYGZcb{}
 
         /// \PYGZlt{}summary\PYGZgt{}
         /// Генерирует задачу и ответ для типа \PYGZdq{}две кучи камней\PYGZdq{}
         /// \PYGZlt{}/summary\PYGZgt{}
         /// \PYGZlt{}returns\PYGZgt{}Массив из двух строк \PYGZhy{} условие и ответ\PYGZlt{}/returns\PYGZgt{}
-        static string[] GenTwoHeaps()
+        public static string[] GenTwoHeaps()
         \PYGZob{}
             // Генерация числовых значений
-            int toAdd = rand.Next(1, 3);
-            int toMult = rand.Next(2, 4);
-            int toWin = rand.Next(35, 81);
+            int toAdd = Rand.Next(1, 3);
+            int toMult = Rand.Next(2, 4);
+            int toWin = Rand.Next(35, 81);
             // Создание таблицы
-            string[,] table = new string[1, 1];
+            string tableStr = string.Empty;
             try
             \PYGZob{}
-                table = Tables.TwoHeaps(toAdd, toMult, toWin);
+                tableStr = Tables.TwoHeaps(toAdd, toMult, toWin);
             \PYGZcb{}
             catch (Exception e)
             \PYGZob{}
@@ -293,13 +238,16 @@ namespace ProblemGenerator
                 Environment.Exit(0);
             \PYGZcb{}
 
+            string[,] table = StrToArray(tableStr);
+
             // Нашли все клетки с \PYGZhy{}1
             List\PYGZlt{}int[]\PYGZgt{} quest1array = new List\PYGZlt{}int[]\PYGZgt{}();
             for (int i = 1; i \PYGZlt{} toWin; i++)
             \PYGZob{}
                 for (int j = i; j \PYGZlt{} toWin; j++)
                 \PYGZob{}
-                    if (table[i, j] == \PYGZdq{}\PYGZhy{}1\PYGZdq{}) quest1array.Add(new int[] \PYGZob{} i, j \PYGZcb{});
+                    if (table[i, j] == \PYGZdq{}\PYGZhy{}1\PYGZdq{})
+                        quest1array.Add(new int[] \PYGZob{} i, j \PYGZcb{});
                 \PYGZcb{}
             \PYGZcb{}
 
@@ -313,7 +261,8 @@ namespace ProblemGenerator
                     \PYGZob{}
                         if (i \PYGZgt{} 0 \PYGZam{}\PYGZam{} j \PYGZgt{} 0 \PYGZam{}\PYGZam{} i \PYGZlt{}= j)
                         \PYGZob{}
-                            if (table[i, j] == \PYGZdq{}+2\PYGZdq{}) quest2array.Add(new int[] \PYGZob{} i, j \PYGZcb{}); ///////////
+                            if (table[i, j] == \PYGZdq{}+2\PYGZdq{})
+                                quest2array.Add(new int[] \PYGZob{} i, j \PYGZcb{});
                         \PYGZcb{}
                     \PYGZcb{}
                 \PYGZcb{}
@@ -329,7 +278,8 @@ namespace ProblemGenerator
                     \PYGZob{}
                         if (i \PYGZgt{} 0 \PYGZam{}\PYGZam{} j \PYGZgt{} 0 \PYGZam{}\PYGZam{} i \PYGZlt{}= j)
                         \PYGZob{}
-                            if (table[i, j] == \PYGZdq{}\PYGZhy{}\PYGZdq{}) quest3array.Add(new int[] \PYGZob{} i, j \PYGZcb{});
+                            if (table[i, j][0] == \PYGZsq{}\PYGZhy{}\PYGZsq{})
+                                quest3array.Add(new int[] \PYGZob{} i, j \PYGZcb{});
                         \PYGZcb{}
                     \PYGZcb{}
                 \PYGZcb{}
@@ -340,25 +290,25 @@ namespace ProblemGenerator
             int indToAdd;
             for (int i = 0; i \PYGZlt{} 2; i++)
             \PYGZob{}
-                indToAdd = rand.Next(quest1array.Count);
+                indToAdd = Rand.Next(quest1array.Count);
                 quest1filtered[i] = \PYGZdl{}\PYGZdq{}(\PYGZob{}string.Join(\PYGZdq{}, \PYGZdq{}, quest1array[indToAdd])\PYGZcb{})\PYGZdq{};
                 quest1array.RemoveAt(indToAdd);
             \PYGZcb{}
             string quest1 = string.Join(\PYGZdq{}, \PYGZdq{}, quest1filtered);
 
             // Выбрали рандомно две или три клетки +2, сделали строкой
-            int len = rand.Next(2, 4);
+            int len = Rand.Next(2, 4);
             string[] quest2filtered = new string[len];
             for (int i = 0; i \PYGZlt{} len; i++)
             \PYGZob{}
-                indToAdd = rand.Next(quest2array.Count);
+                indToAdd = Rand.Next(quest2array.Count);
                 quest2filtered[i] = \PYGZdl{}\PYGZdq{}(\PYGZob{}string.Join(\PYGZdq{}, \PYGZdq{}, quest2array[indToAdd])\PYGZcb{})\PYGZdq{};
                 quest2array.RemoveAt(indToAdd);
             \PYGZcb{}
             string quest2 = string.Join(\PYGZdq{}, \PYGZdq{}, quest2filtered);
 
             // Сделали строкой координаты для третьего вопроса
-            string quest3 = \PYGZdl{}\PYGZdq{}(\PYGZob{}string.Join(\PYGZdq{}, \PYGZdq{}, quest3array[rand.Next(quest3array.Count)])\PYGZcb{})\PYGZdq{};
+            string quest3 = \PYGZdl{}\PYGZdq{}(\PYGZob{}string.Join(\PYGZdq{}, \PYGZdq{}, quest3array[Rand.Next(quest3array.Count)])\PYGZcb{})\PYGZdq{};
 
             // Строка с шаблоном задания
             string text = \PYGZdq{}Два игрока, Петя и Ваня, играют в следующую игру. Перед игроками лежат две кучи \PYGZdq{} +
@@ -377,7 +327,11 @@ namespace ProblemGenerator
                 toMult.ToString(), toWin.ToString(), quest1, quest2, quest3 \PYGZcb{};
 
             // Строка с шаблоном ответа
-            string answer = \PYGZdq{}1.\PYGZlt{}br\PYGZgt{}\PYGZob{}0\PYGZcb{}\PYGZlt{}br\PYGZgt{}2.\PYGZlt{}br\PYGZgt{}\PYGZob{}1\PYGZcb{}\PYGZlt{}br\PYGZgt{}3. \PYGZob{}2\PYGZcb{}\PYGZlt{}br\PYGZgt{}Развернутые ответы проверяются учителем.\PYGZdq{};
+            string answer = \PYGZdq{}1.\PYGZlt{}br\PYGZgt{}\PYGZob{}0\PYGZcb{}\PYGZlt{}br\PYGZgt{}2.\PYGZlt{}br\PYGZgt{}\PYGZob{}1\PYGZcb{}\PYGZlt{}br\PYGZgt{}3. \PYGZob{}2\PYGZcb{}\PYGZlt{}br\PYGZgt{}Развернутые ответы проверяются учителем. \PYGZdq{} +
+                \PYGZdq{}Но есть таблица, по которой можно проверить успешность любой стратегии.\PYGZlt{}br\PYGZgt{}В шапках \PYGZdq{} +
+                \PYGZdq{}указано количество камней в кучах, и если позиции соответствует знак \PYGZam{}\PYGZsh{}171;+\PYGZam{}\PYGZsh{}187;, то \PYGZdq{} +
+                \PYGZdq{}находящийся в ней игрок выиграет, если \PYGZam{}\PYGZsh{}171;\PYGZhy{}\PYGZam{}\PYGZsh{}187;, то проиграет.\PYGZlt{}br\PYGZgt{}Пропуск \PYGZdq{} +
+                \PYGZdq{}\PYGZam{}\PYGZsh{}171;..\PYGZam{}\PYGZsh{}187; означает много идущих подряд выигрышных клеток.\PYGZlt{}br\PYGZgt{}\PYGZlt{}br\PYGZgt{}\PYGZdq{};
             string ans1 = string.Empty;
 
             // Создаем ответы
@@ -396,33 +350,36 @@ namespace ProblemGenerator
             string ans3 = quest3 + \PYGZdq{}: Ваня\PYGZlt{}br\PYGZgt{}\PYGZdq{};
 
             // Возвращаем отформатированные текст и решение
-            return new string[] \PYGZob{} string.Format(text, data), string.Format(answer, new string[] \PYGZob{} ans1, ans2, ans3 \PYGZcb{}) \PYGZcb{};
+            return new string[] \PYGZob{} string.Format(text, data),
+                string.Format(answer, new string[] \PYGZob{} ans1, ans2, ans3 \PYGZcb{}), tableStr \PYGZcb{};
         \PYGZcb{}
 
         /// \PYGZlt{}summary\PYGZgt{}
         /// Генерирует задачу и ответ для типа \PYGZdq{}два слова\PYGZdq{}
         /// \PYGZlt{}/summary\PYGZgt{}
         /// \PYGZlt{}returns\PYGZgt{}Массив из двух строк \PYGZhy{} условие и ответ\PYGZlt{}/returns\PYGZgt{}
-        static string[] GenTwoWords()
+        public static string[] GenTwoWords()
         \PYGZob{}
             // Генерируем данные для условия
-            int[] toAdd = new int[] \PYGZob{} rand.Next(1, 3), rand.Next(1, 3) \PYGZcb{};
-            int[] toMult = new int[] \PYGZob{} rand.Next(2, 4), rand.Next(2, 4) \PYGZcb{};
+            int[] toAdd = new int[] \PYGZob{} Rand.Next(1, 3), Rand.Next(1, 3) \PYGZcb{};
+            int[] toMult = new int[] \PYGZob{} Rand.Next(2, 4), Rand.Next(2, 4) \PYGZcb{};
             Adder[] actionsX = new Adder[] \PYGZob{} x =\PYGZgt{} x + toAdd[0], x =\PYGZgt{} x * toMult[0] \PYGZcb{};
             Adder[] actionsY = new Adder[] \PYGZob{} x =\PYGZgt{} x + toAdd[1], x =\PYGZgt{} x * toMult[1] \PYGZcb{};
-            int toWin = rand.Next(30, 61);
+            int toWin = Rand.Next(30, 61);
 
             // Создаем табличку для этих даннных
-            string[,] table = new string[1, 1];
+            string tableStr = string.Empty;
             try
             \PYGZob{}
-                table = Tables.TwoWords(actionsX, actionsY, toWin);
+                tableStr = Tables.TwoWords(actionsX, actionsY, toWin);
             \PYGZcb{}
             catch (Exception e)
             \PYGZob{}
                 MessageBox.Show(\PYGZdq{}Возникла ошибка при рассчитывании решения.\PYGZbs{}n\PYGZdq{} + e.Message);
                 Environment.Exit(0);
             \PYGZcb{}
+
+            string[,] table = StrToArray(tableStr);
 
             // Нашли все клетки с \PYGZhy{}1
             List\PYGZlt{}int[]\PYGZgt{} minus1array = new List\PYGZlt{}int[]\PYGZgt{}();
@@ -491,16 +448,16 @@ namespace ProblemGenerator
             int indToAdd;
             for (int i = 0; i \PYGZlt{} 2; i++)
             \PYGZob{}
-                indToAdd = rand.Next(minus1array.Count);
+                indToAdd = Rand.Next(minus1array.Count);
                 quest1.Add(\PYGZdl{}\PYGZdq{}(\PYGZob{}string.Join(\PYGZdq{}, \PYGZdq{}, minus1array[indToAdd])\PYGZcb{})\PYGZdq{});
                 ans1.Add(\PYGZdl{}\PYGZdq{}(\PYGZob{}string.Join(\PYGZdq{}, \PYGZdq{}, minus1array[indToAdd])\PYGZcb{}): Ваня\PYGZdq{});
                 minus1array.RemoveAt(indToAdd);
             \PYGZcb{}
 
             // Добавляем один + в рандомное место
-            indToAdd = rand.Next(plusArray.Count);
+            indToAdd = Rand.Next(plusArray.Count);
             // Позиция на которой будет эта пара
-            int placeToAdd = rand.Next(quest1.Count + 1);
+            int placeToAdd = Rand.Next(quest1.Count + 1);
             quest1.Insert(placeToAdd, \PYGZdl{}\PYGZdq{}(\PYGZob{}string.Join(\PYGZdq{}, \PYGZdq{}, plusArray[indToAdd])\PYGZcb{})\PYGZdq{});
             ans1.Insert(placeToAdd, \PYGZdl{}\PYGZdq{}(\PYGZob{}string.Join(\PYGZdq{}, \PYGZdq{}, plusArray[indToAdd])\PYGZcb{}): Петя\PYGZdq{});
             plusArray.RemoveAt(indToAdd);
@@ -513,45 +470,45 @@ namespace ProblemGenerator
             // Добавляем в него две +2
             for (int i = 0; i \PYGZlt{} 2; i++)
             \PYGZob{}
-                indToAdd = rand.Next(plus2array.Count);
+                indToAdd = Rand.Next(plus2array.Count);
                 quest2.Add(\PYGZdl{}\PYGZdq{}(\PYGZob{}string.Join(\PYGZdq{}, \PYGZdq{}, plus2array[indToAdd])\PYGZcb{})\PYGZdq{});
                 ans2.Add(\PYGZdl{}\PYGZdq{}(\PYGZob{}string.Join(\PYGZdq{}, \PYGZdq{}, plus2array[indToAdd])\PYGZcb{}): Петя\PYGZdq{});
                 plus2array.RemoveAt(indToAdd);
             \PYGZcb{}
 
             // В рандомное место в нем одну или две \PYGZhy{}1/2
-            for (int i = 0; i \PYGZlt{} rand.Next(1, 3); i++)
+            for (int i = 0; i \PYGZlt{} Rand.Next(1, 3); i++)
             \PYGZob{}
-                indToAdd = rand.Next(minus12array.Count);
-                placeToAdd = rand.Next(quest2.Count + 1);
+                indToAdd = Rand.Next(minus12array.Count);
+                placeToAdd = Rand.Next(quest2.Count + 1);
                 quest2.Insert(placeToAdd, \PYGZdl{}\PYGZdq{}(\PYGZob{}string.Join(\PYGZdq{}, \PYGZdq{}, minus12array[indToAdd])\PYGZcb{})\PYGZdq{});
                 ans2.Insert(placeToAdd, \PYGZdl{}\PYGZdq{}(\PYGZob{}string.Join(\PYGZdq{}, \PYGZdq{}, minus12array[indToAdd])\PYGZcb{}): Ваня\PYGZdq{});
                 minus12array.RemoveAt(indToAdd);
             \PYGZcb{}
 
             // В третьем вопросе \PYGZhy{} рандом: либо +2, либо \PYGZhy{}1/2, либо +
-            int indQuest3 = rand.Next(3);
+            int indQuest3 = Rand.Next(3);
             string quest3 = string.Empty;
             string ans3 = string.Empty;
             switch (indQuest3)
             \PYGZob{}
                 case 0:
                     \PYGZob{}
-                        indToAdd = rand.Next(plus2array.Count);
+                        indToAdd = Rand.Next(plus2array.Count);
                         quest3 = \PYGZdl{}\PYGZdq{}(\PYGZob{}string.Join(\PYGZdq{}, \PYGZdq{}, plus2array[indToAdd])\PYGZcb{})\PYGZdq{};
                         ans3 = \PYGZdq{}Петя\PYGZlt{}br\PYGZgt{}\PYGZdq{};
                         break;
                     \PYGZcb{}
                 case 1:
                     \PYGZob{}
-                        indToAdd = rand.Next(minus12array.Count);
+                        indToAdd = Rand.Next(minus12array.Count);
                         quest3 = \PYGZdl{}\PYGZdq{}(\PYGZob{}string.Join(\PYGZdq{}, \PYGZdq{}, minus12array[indToAdd])\PYGZcb{})\PYGZdq{};
                         ans3 = \PYGZdq{}Ваня\PYGZlt{}br\PYGZgt{}\PYGZdq{};
                         break;
                     \PYGZcb{}
                 case 2:
                     \PYGZob{}
-                        indToAdd = rand.Next(plusArray.Count);
+                        indToAdd = Rand.Next(plusArray.Count);
                         quest3 = \PYGZdl{}\PYGZdq{}(\PYGZob{}string.Join(\PYGZdq{}, \PYGZdq{}, plusArray[indToAdd])\PYGZcb{})\PYGZdq{};
                         ans3 = \PYGZdq{}Петя\PYGZlt{}br\PYGZgt{}\PYGZdq{};
                         break;
@@ -568,7 +525,7 @@ namespace ProblemGenerator
                 \PYGZdq{}считается игрок, сделавший последний ход, т.е. первым получивший слово длиной \PYGZob{}4\PYGZcb{} или \PYGZdq{} +
                 \PYGZdq{}больше.\PYGZlt{}br\PYGZgt{}Задание 1. Для каждой из начальных позиций \PYGZob{}5\PYGZcb{} укажите, кто из игроков имеет \PYGZdq{} +
                 \PYGZdq{}выигрышную стратегию.\PYGZlt{}br\PYGZgt{}Задание 2. Для каждой из начальных позиций \PYGZob{}6\PYGZcb{} укажите, кто из \PYGZdq{} +
-                \PYGZdq{}игроков имеет выигрышную стратегию.\PYGZlt{}br\PYGZgt{} Задание 3. Для начальной позиции \PYGZob{}7\PYGZcb{} укажите, \PYGZdq{} +
+                \PYGZdq{}игроков имеет выигрышную стратегию.\PYGZlt{}br\PYGZgt{}Задание 3. Для начальной позиции \PYGZob{}7\PYGZcb{} укажите, \PYGZdq{} +
                 \PYGZdq{}кто из игроков имеет выигрышную стратегию. Постройте дерево всех партий, возможных при \PYGZdq{} +
                 \PYGZdq{}указанной выигрышной стратегии.\PYGZdq{};
 
@@ -577,10 +534,20 @@ namespace ProblemGenerator
                 toAdd[1] == 1 ? \PYGZdq{}одну букву\PYGZdq{} : \PYGZdq{}две буквы\PYGZdq{}, toMult[0].ToString(), toMult[1].ToString(),
                 toWin.ToString(), string.Join(\PYGZdq{}, \PYGZdq{}, quest1), string.Join(\PYGZdq{}, \PYGZdq{}, quest2), quest3 \PYGZcb{};
 
-            string answer = \PYGZdq{}1.\PYGZlt{}br\PYGZgt{}\PYGZob{}0\PYGZcb{}\PYGZlt{}br\PYGZgt{}\PYGZlt{}br\PYGZgt{}2.\PYGZlt{}br\PYGZgt{}\PYGZob{}1\PYGZcb{}\PYGZlt{}br\PYGZgt{}\PYGZlt{}br\PYGZgt{}3. \PYGZob{}2\PYGZcb{}\PYGZlt{}br\PYGZgt{}Развернутые ответы проверяются учителем.\PYGZdq{};
+            // Шаблон ответа
+            string answer = \PYGZdq{}1.\PYGZlt{}br\PYGZgt{}\PYGZob{}0\PYGZcb{}\PYGZlt{}br\PYGZgt{}\PYGZlt{}br\PYGZgt{}2.\PYGZlt{}br\PYGZgt{}\PYGZob{}1\PYGZcb{}\PYGZlt{}br\PYGZgt{}\PYGZlt{}br\PYGZgt{}3. \PYGZob{}2\PYGZcb{}\PYGZlt{}br\PYGZgt{}Развернутые ответы проверяются учителем. \PYGZdq{} +
+                \PYGZdq{}Но есть таблица, по которой можно проверить успешность любой стратегии.\PYGZlt{}br\PYGZgt{}В шапках \PYGZdq{} +
+                \PYGZdq{}указано количество камней в кучах, и если позиции соответствует знак \PYGZam{}\PYGZsh{}171;+\PYGZam{}\PYGZsh{}187;, то \PYGZdq{} +
+                \PYGZdq{}находящийся в ней игрок выиграет, если \PYGZam{}\PYGZsh{}171;\PYGZhy{}\PYGZam{}\PYGZsh{}187;, то проиграет.\PYGZlt{}br\PYGZgt{}Пропуск \PYGZdq{} +
+                \PYGZdq{}\PYGZam{}\PYGZsh{}171;..\PYGZam{}\PYGZsh{}187; означает много идущих подряд выигрышных клеток.\PYGZlt{}br\PYGZgt{}\PYGZlt{}br\PYGZgt{}\PYGZdq{};
 
-            return new string[] \PYGZob{} string.Format(text, data), string.Format(answer, new string[]
-                \PYGZob{} string.Join(\PYGZdq{}\PYGZlt{}br\PYGZgt{}\PYGZdq{}, ans1), string.Join(\PYGZdq{}\PYGZlt{}br\PYGZgt{}\PYGZdq{}, ans2), ans3 \PYGZcb{}) \PYGZcb{};
+            return new string[] \PYGZob{}
+                string.Format(text, data),
+                string.Format(answer, new string[] \PYGZob{}
+                    string.Join(\PYGZdq{}\PYGZlt{}br\PYGZgt{}\PYGZdq{}, ans1),
+                    string.Join(\PYGZdq{}\PYGZlt{}br\PYGZgt{}\PYGZdq{}, ans2),
+                    ans3 \PYGZcb{}),
+                tableStr \PYGZcb{};
         \PYGZcb{}
     \PYGZcb{}
 \PYGZcb{}

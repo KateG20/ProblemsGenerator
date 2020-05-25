@@ -1,33 +1,34 @@
-﻿namespace ProblemGenerator
-{
+\begin{Verbatim}[commandchars=\\\{\}]
+namespace ProblemGenerator
+\PYGZob{}
     partial class Form1
-    {
-        /// <summary>
+    \PYGZob{}
+        /// \PYGZlt{}summary\PYGZgt{}
         /// Required designer variable.
-        /// </summary>
+        /// \PYGZlt{}/summary\PYGZgt{}
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
+        /// \PYGZlt{}summary\PYGZgt{}
         /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// \PYGZlt{}/summary\PYGZgt{}
+        /// \PYGZlt{}param name=\PYGZdq{}disposing\PYGZdq{}\PYGZgt{}true if managed resources should be disposed; otherwise, false.\PYGZlt{}/param\PYGZgt{}
         protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
+        \PYGZob{}
+            if (disposing \PYGZam{}\PYGZam{} (components != null))
+            \PYGZob{}
                 components.Dispose();
-            }
+            \PYGZcb{}
             base.Dispose(disposing);
-        }
+        \PYGZcb{}
 
-        #region Windows Form Designer generated code
+        \PYGZsh{}region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
+        /// \PYGZlt{}summary\PYGZgt{}
+        /// Required method for Designer support \PYGZhy{} do not modify
         /// the contents of this method with the code editor.
-        /// </summary>
+        /// \PYGZlt{}/summary\PYGZgt{}
         private void InitializeComponent()
-        {
+        \PYGZob{}
             this.difLabel = new System.Windows.Forms.Label();
             this.typeComboBox = new System.Windows.Forms.ComboBox();
             this.numTextBox = new System.Windows.Forms.TextBox();
@@ -52,233 +53,233 @@
             // difLabel
             // 
             this.difLabel.AutoSize = true;
-            this.difLabel.Font = new System.Drawing.Font("Comic Sans MS", 13.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.difLabel.Font = new System.Drawing.Font(\PYGZdq{}Comic Sans MS\PYGZdq{}, 13.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.difLabel.Location = new System.Drawing.Point(40, 305);
-            this.difLabel.Name = "difLabel";
+            this.difLabel.Name = \PYGZdq{}difLabel\PYGZdq{};
             this.difLabel.Size = new System.Drawing.Size(389, 49);
             this.difLabel.TabIndex = 0;
-            this.difLabel.Text = "Выберите тип задачи:";
-            this.difLabel.Click += new System.EventHandler(this.DifLabel_Click);
+            this.difLabel.Text = \PYGZdq{}Выберите тип задачи:\PYGZdq{};
+            this.difLabel.Click += new System.EventHandler(this.DifLabel\PYGZus{}Click);
             // 
             // typeComboBox
             // 
             this.typeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.typeComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.typeComboBox.Font = new System.Drawing.Font(\PYGZdq{}Microsoft Sans Serif\PYGZdq{}, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.typeComboBox.FormattingEnabled = true;
-            this.typeComboBox.Items.AddRange(new object[] {
-            "одна куча камней",
-            "две кучи камней",
-            "два слова"});
+            this.typeComboBox.Items.AddRange(new object[] \PYGZob{}
+            \PYGZdq{}одна куча камней\PYGZdq{},
+            \PYGZdq{}две кучи камней\PYGZdq{},
+            \PYGZdq{}два слова\PYGZdq{}\PYGZcb{});
             this.typeComboBox.Location = new System.Drawing.Point(529, 309);
-            this.typeComboBox.Name = "typeComboBox";
+            this.typeComboBox.Name = \PYGZdq{}typeComboBox\PYGZdq{};
             this.typeComboBox.Size = new System.Drawing.Size(304, 39);
             this.typeComboBox.TabIndex = 1;
-            this.typeComboBox.SelectedIndexChanged += new System.EventHandler(this.TypeComboBox_SelectedIndexChanged);
+            this.typeComboBox.SelectedIndexChanged += new System.EventHandler(this.TypeComboBox\PYGZus{}SelectedIndexChanged);
             // 
             // numTextBox
             // 
-            this.numTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.numTextBox.Font = new System.Drawing.Font(\PYGZdq{}Microsoft Sans Serif\PYGZdq{}, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numTextBox.Location = new System.Drawing.Point(529, 390);
-            this.numTextBox.Name = "numTextBox";
+            this.numTextBox.Name = \PYGZdq{}numTextBox\PYGZdq{};
             this.numTextBox.Size = new System.Drawing.Size(100, 38);
             this.numTextBox.TabIndex = 2;
-            this.numTextBox.Text = "1";
-            this.numTextBox.TextChanged += new System.EventHandler(this.NumTextBox_TextChanged);
+            this.numTextBox.Text = \PYGZdq{}1\PYGZdq{};
+            this.numTextBox.TextChanged += new System.EventHandler(this.NumTextBox\PYGZus{}TextChanged);
             // 
             // numLabel
             // 
             this.numLabel.AutoSize = true;
-            this.numLabel.Font = new System.Drawing.Font("Comic Sans MS", 13.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.numLabel.Font = new System.Drawing.Font(\PYGZdq{}Comic Sans MS\PYGZdq{}, 13.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numLabel.Location = new System.Drawing.Point(40, 386);
-            this.numLabel.Name = "numLabel";
+            this.numLabel.Name = \PYGZdq{}numLabel\PYGZdq{};
             this.numLabel.Size = new System.Drawing.Size(474, 49);
             this.numLabel.TabIndex = 3;
-            this.numLabel.Text = "Введите количество задач:";
-            this.numLabel.Click += new System.EventHandler(this.NumLabel_Click);
+            this.numLabel.Text = \PYGZdq{}Введите количество задач:\PYGZdq{};
+            this.numLabel.Click += new System.EventHandler(this.NumLabel\PYGZus{}Click);
             // 
             // errorLabel
             // 
             this.errorLabel.AutoSize = true;
-            this.errorLabel.Font = new System.Drawing.Font("Comic Sans MS", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.errorLabel.Font = new System.Drawing.Font(\PYGZdq{}Comic Sans MS\PYGZdq{}, 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.errorLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.errorLabel.Location = new System.Drawing.Point(638, 396);
-            this.errorLabel.Name = "errorLabel";
+            this.errorLabel.Name = \PYGZdq{}errorLabel\PYGZdq{};
             this.errorLabel.Size = new System.Drawing.Size(613, 38);
             this.errorLabel.TabIndex = 4;
-            this.errorLabel.Text = "Количество задач - целое число от 1 до 1000.";
+            this.errorLabel.Text = \PYGZdq{}Количество задач \PYGZhy{} целое число от 1 до 1000.\PYGZdq{};
             this.errorLabel.Visible = false;
             // 
             // genButton
             // 
             this.genButton.AutoSize = true;
             this.genButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.genButton.Font = new System.Drawing.Font("Comic Sans MS", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.genButton.Font = new System.Drawing.Font(\PYGZdq{}Comic Sans MS\PYGZdq{}, 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.genButton.ForeColor = System.Drawing.Color.Green;
             this.genButton.Location = new System.Drawing.Point(485, 624);
-            this.genButton.Name = "genButton";
+            this.genButton.Name = \PYGZdq{}genButton\PYGZdq{};
             this.genButton.Size = new System.Drawing.Size(285, 59);
             this.genButton.TabIndex = 6;
-            this.genButton.Text = "Сгенерировать!";
+            this.genButton.Text = \PYGZdq{}Сгенерировать!\PYGZdq{};
             this.genButton.UseVisualStyleBackColor = false;
             this.genButton.Visible = false;
-            this.genButton.Click += new System.EventHandler(this.GenButton_Click);
+            this.genButton.Click += new System.EventHandler(this.GenButton\PYGZus{}Click);
             // 
             // title1
             // 
-            this.title1.Font = new System.Drawing.Font("Comic Sans MS", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.title1.Font = new System.Drawing.Font(\PYGZdq{}Comic Sans MS\PYGZdq{}, 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.title1.ForeColor = System.Drawing.Color.Green;
             this.title1.Location = new System.Drawing.Point(289, 40);
-            this.title1.Name = "title1";
+            this.title1.Name = \PYGZdq{}title1\PYGZdq{};
             this.title1.Size = new System.Drawing.Size(701, 135);
             this.title1.TabIndex = 6;
-            this.title1.Text = "Генератор задач\r\n";
+            this.title1.Text = \PYGZdq{}Генератор задач\PYGZbs{}r\PYGZbs{}n\PYGZdq{};
             // 
             // title2
             // 
-            this.title2.Font = new System.Drawing.Font("Comic Sans MS", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.title2.Font = new System.Drawing.Font(\PYGZdq{}Comic Sans MS\PYGZdq{}, 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.title2.ForeColor = System.Drawing.Color.Green;
             this.title2.Location = new System.Drawing.Point(165, 162);
-            this.title2.Name = "title2";
+            this.title2.Name = \PYGZdq{}title2\PYGZdq{};
             this.title2.Size = new System.Drawing.Size(931, 125);
             this.title2.TabIndex = 7;
-            this.title2.Text = "№26 ЕГЭ по информатике";
+            this.title2.Text = \PYGZdq{}№26 ЕГЭ по информатике\PYGZdq{};
             // 
             // infoLabel
             // 
-            this.infoLabel.Font = new System.Drawing.Font("Comic Sans MS", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.infoLabel.Font = new System.Drawing.Font(\PYGZdq{}Comic Sans MS\PYGZdq{}, 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.infoLabel.ForeColor = System.Drawing.Color.DarkGoldenrod;
             this.infoLabel.Location = new System.Drawing.Point(260, 697);
-            this.infoLabel.Name = "infoLabel";
+            this.infoLabel.Name = \PYGZdq{}infoLabel\PYGZdq{};
             this.infoLabel.Size = new System.Drawing.Size(733, 94);
             this.infoLabel.TabIndex = 8;
-            this.infoLabel.Text = "Файлы с готовыми задачами (html и pdf) будут сохранены в папке «Документы».\r\n";
+            this.infoLabel.Text = \PYGZdq{}Файлы с готовыми задачами (html и pdf) будут сохранены в папке «Документы».\PYGZbs{}r\PYGZbs{}n\PYGZdq{};
             this.infoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.infoLabel.Visible = false;
             // 
             // randBox
             // 
             this.randBox.AutoSize = true;
-            this.randBox.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.randBox.Font = new System.Drawing.Font(\PYGZdq{}Comic Sans MS\PYGZdq{}, 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.randBox.Location = new System.Drawing.Point(908, 307);
-            this.randBox.Name = "randBox";
+            this.randBox.Name = \PYGZdq{}randBox\PYGZdq{};
             this.randBox.Size = new System.Drawing.Size(317, 49);
             this.randBox.TabIndex = 9;
-            this.randBox.Text = "Рандомные типы";
+            this.randBox.Text = \PYGZdq{}Рандомные типы\PYGZdq{};
             this.randBox.UseVisualStyleBackColor = true;
-            this.randBox.CheckedChanged += new System.EventHandler(this.RandBox_CheckedChanged);
+            this.randBox.CheckedChanged += new System.EventHandler(this.RandBox\PYGZus{}CheckedChanged);
             // 
             // seedLabel
             // 
-            this.seedLabel.Font = new System.Drawing.Font("Comic Sans MS", 9.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.seedLabel.Font = new System.Drawing.Font(\PYGZdq{}Comic Sans MS\PYGZdq{}, 9.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.seedLabel.Location = new System.Drawing.Point(12, 456);
-            this.seedLabel.Name = "seedLabel";
+            this.seedLabel.Name = \PYGZdq{}seedLabel\PYGZdq{};
             this.seedLabel.Size = new System.Drawing.Size(490, 81);
             this.seedLabel.TabIndex = 10;
-            this.seedLabel.Text = "Ключ генерации (любое 4-значное число, необязательно):";
+            this.seedLabel.Text = \PYGZdq{}Ключ генерации (любое 4\PYGZhy{}значное число, необязательно):\PYGZdq{};
             this.seedLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // seedBox
             // 
-            this.seedBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.seedBox.Font = new System.Drawing.Font(\PYGZdq{}Microsoft Sans Serif\PYGZdq{}, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.seedBox.Location = new System.Drawing.Point(529, 468);
-            this.seedBox.Name = "seedBox";
+            this.seedBox.Name = \PYGZdq{}seedBox\PYGZdq{};
             this.seedBox.Size = new System.Drawing.Size(100, 38);
             this.seedBox.TabIndex = 3;
-            this.seedBox.TextChanged += new System.EventHandler(this.SeedBox_TextChanged);
+            this.seedBox.TextChanged += new System.EventHandler(this.SeedBox\PYGZus{}TextChanged);
             // 
             // escButton
             // 
             this.escButton.BackColor = System.Drawing.Color.LemonChiffon;
-            this.escButton.Font = new System.Drawing.Font("Comic Sans MS", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.escButton.Font = new System.Drawing.Font(\PYGZdq{}Comic Sans MS\PYGZdq{}, 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.escButton.ForeColor = System.Drawing.Color.DarkGoldenrod;
             this.escButton.Location = new System.Drawing.Point(521, 805);
-            this.escButton.Name = "escButton";
+            this.escButton.Name = \PYGZdq{}escButton\PYGZdq{};
             this.escButton.Size = new System.Drawing.Size(210, 60);
             this.escButton.TabIndex = 7;
-            this.escButton.Text = "Выход";
+            this.escButton.Text = \PYGZdq{}Выход\PYGZdq{};
             this.escButton.UseVisualStyleBackColor = false;
-            this.escButton.Click += new System.EventHandler(this.EscButton_Click);
+            this.escButton.Click += new System.EventHandler(this.EscButton\PYGZus{}Click);
             // 
             // htmlCheckBox
             // 
             this.htmlCheckBox.AutoSize = true;
             this.htmlCheckBox.Checked = true;
             this.htmlCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.htmlCheckBox.Font = new System.Drawing.Font("Comic Sans MS", 9.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.htmlCheckBox.Font = new System.Drawing.Font(\PYGZdq{}Comic Sans MS\PYGZdq{}, 9.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.htmlCheckBox.Location = new System.Drawing.Point(55, 560);
-            this.htmlCheckBox.Name = "htmlCheckBox";
+            this.htmlCheckBox.Name = \PYGZdq{}htmlCheckBox\PYGZdq{};
             this.htmlCheckBox.Size = new System.Drawing.Size(215, 40);
             this.htmlCheckBox.TabIndex = 4;
-            this.htmlCheckBox.Text = "Открыть html";
+            this.htmlCheckBox.Text = \PYGZdq{}Открыть html\PYGZdq{};
             this.htmlCheckBox.UseVisualStyleBackColor = true;
-            this.htmlCheckBox.CheckedChanged += new System.EventHandler(this.HtmlCheckBox_CheckedChanged);
+            this.htmlCheckBox.CheckedChanged += new System.EventHandler(this.HtmlCheckBox\PYGZus{}CheckedChanged);
             // 
             // pdfCheckBox
             // 
             this.pdfCheckBox.AutoSize = true;
-            this.pdfCheckBox.Font = new System.Drawing.Font("Comic Sans MS", 9.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.pdfCheckBox.Font = new System.Drawing.Font(\PYGZdq{}Comic Sans MS\PYGZdq{}, 9.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.pdfCheckBox.Location = new System.Drawing.Point(594, 560);
-            this.pdfCheckBox.Name = "pdfCheckBox";
+            this.pdfCheckBox.Name = \PYGZdq{}pdfCheckBox\PYGZdq{};
             this.pdfCheckBox.Size = new System.Drawing.Size(203, 40);
             this.pdfCheckBox.TabIndex = 5;
-            this.pdfCheckBox.Text = "Открыть pdf";
+            this.pdfCheckBox.Text = \PYGZdq{}Открыть pdf\PYGZdq{};
             this.pdfCheckBox.UseVisualStyleBackColor = true;
             this.pdfCheckBox.Visible = false;
-            this.pdfCheckBox.CheckedChanged += new System.EventHandler(this.PdfCheckBox_CheckedChanged);
+            this.pdfCheckBox.CheckedChanged += new System.EventHandler(this.PdfCheckBox\PYGZus{}CheckedChanged);
             // 
             // textSizeComboBox
             // 
             this.textSizeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.textSizeComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textSizeComboBox.Font = new System.Drawing.Font(\PYGZdq{}Microsoft Sans Serif\PYGZdq{}, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textSizeComboBox.FormattingEnabled = true;
-            this.textSizeComboBox.Items.AddRange(new object[] {
-            "8",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "16",
-            "18",
-            "20"});
+            this.textSizeComboBox.Items.AddRange(new object[] \PYGZob{}
+            \PYGZdq{}8\PYGZdq{},
+            \PYGZdq{}10\PYGZdq{},
+            \PYGZdq{}11\PYGZdq{},
+            \PYGZdq{}12\PYGZdq{},
+            \PYGZdq{}13\PYGZdq{},
+            \PYGZdq{}14\PYGZdq{},
+            \PYGZdq{}16\PYGZdq{},
+            \PYGZdq{}18\PYGZdq{},
+            \PYGZdq{}20\PYGZdq{}\PYGZcb{});
             this.textSizeComboBox.Location = new System.Drawing.Point(1114, 556);
-            this.textSizeComboBox.Name = "textSizeComboBox";
+            this.textSizeComboBox.Name = \PYGZdq{}textSizeComboBox\PYGZdq{};
             this.textSizeComboBox.Size = new System.Drawing.Size(80, 39);
             this.textSizeComboBox.TabIndex = 11;
             this.textSizeComboBox.Visible = false;
-            this.textSizeComboBox.SelectedIndexChanged += new System.EventHandler(this.TextSizeComboBox_SelectedIndexChanged);
+            this.textSizeComboBox.SelectedIndexChanged += new System.EventHandler(this.TextSizeComboBox\PYGZus{}SelectedIndexChanged);
             // 
             // textSizeLabel
             // 
-            this.textSizeLabel.Font = new System.Drawing.Font("Comic Sans MS", 9.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textSizeLabel.Font = new System.Drawing.Font(\PYGZdq{}Comic Sans MS\PYGZdq{}, 9.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textSizeLabel.Location = new System.Drawing.Point(837, 560);
-            this.textSizeLabel.Name = "textSizeLabel";
+            this.textSizeLabel.Name = \PYGZdq{}textSizeLabel\PYGZdq{};
             this.textSizeLabel.Size = new System.Drawing.Size(265, 40);
             this.textSizeLabel.TabIndex = 12;
-            this.textSizeLabel.Text = "Размер текста в pdf";
+            this.textSizeLabel.Text = \PYGZdq{}Размер текста в pdf\PYGZdq{};
             this.textSizeLabel.Visible = false;
             // 
             // createPdfCheckBox
             // 
             this.createPdfCheckBox.AutoSize = true;
-            this.createPdfCheckBox.Font = new System.Drawing.Font("Comic Sans MS", 9.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.createPdfCheckBox.Font = new System.Drawing.Font(\PYGZdq{}Comic Sans MS\PYGZdq{}, 9.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.createPdfCheckBox.Location = new System.Drawing.Point(343, 560);
-            this.createPdfCheckBox.Name = "createPdfCheckBox";
+            this.createPdfCheckBox.Name = \PYGZdq{}createPdfCheckBox\PYGZdq{};
             this.createPdfCheckBox.Size = new System.Drawing.Size(192, 40);
             this.createPdfCheckBox.TabIndex = 13;
-            this.createPdfCheckBox.Text = "Создать pdf";
+            this.createPdfCheckBox.Text = \PYGZdq{}Создать pdf\PYGZdq{};
             this.createPdfCheckBox.UseVisualStyleBackColor = true;
-            this.createPdfCheckBox.CheckedChanged += new System.EventHandler(this.CreatePdfCheckBox_CheckedChanged);
+            this.createPdfCheckBox.CheckedChanged += new System.EventHandler(this.CreatePdfCheckBox\PYGZus{}CheckedChanged);
             // 
             // waitLabel
             // 
             this.waitLabel.BackColor = System.Drawing.Color.LemonChiffon;
-            this.waitLabel.Font = new System.Drawing.Font("Comic Sans MS", 13.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.waitLabel.Font = new System.Drawing.Font(\PYGZdq{}Comic Sans MS\PYGZdq{}, 13.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.waitLabel.Location = new System.Drawing.Point(395, 388);
-            this.waitLabel.Name = "waitLabel";
+            this.waitLabel.Name = \PYGZdq{}waitLabel\PYGZdq{};
             this.waitLabel.Size = new System.Drawing.Size(472, 163);
             this.waitLabel.TabIndex = 14;
-            this.waitLabel.Text = "Пожалуйста, подождите, пока создается pdf-файл...";
+            this.waitLabel.Text = \PYGZdq{}Пожалуйста, подождите, пока создается pdf\PYGZhy{}файл...\PYGZdq{};
             this.waitLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.waitLabel.Visible = false;
             // 
@@ -307,14 +308,14 @@
             this.Controls.Add(this.numTextBox);
             this.Controls.Add(this.typeComboBox);
             this.Controls.Add(this.difLabel);
-            this.Name = "Form1";
-            this.Text = "Генератор задач №26 ЕГЭ по информатике";
+            this.Name = \PYGZdq{}Form1\PYGZdq{};
+            this.Text = \PYGZdq{}Генератор задач №26 ЕГЭ по информатике\PYGZdq{};
             this.ResumeLayout(false);
             this.PerformLayout();
 
-        }
+        \PYGZcb{}
 
-        #endregion
+        \PYGZsh{}endregion
 
         private System.Windows.Forms.Label difLabel;
         private System.Windows.Forms.ComboBox typeComboBox;
@@ -335,6 +336,6 @@
         private System.Windows.Forms.Label textSizeLabel;
         private System.Windows.Forms.CheckBox createPdfCheckBox;
         private System.Windows.Forms.Label waitLabel;
-    }
-}
-
+    \PYGZcb{}
+\PYGZcb{}
+\end{Verbatim}

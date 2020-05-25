@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace Library
 {
+    /// <summary>
+    /// Класс для записи данных в pdf-файл
+    /// </summary>
     public static class PDFwriter
     {
         // Открывать ли файл сразу
@@ -41,7 +44,7 @@ namespace Library
         /// Записывает строку текста (условия задач) в pdf с заголовком
         /// </summary>
         /// <param name="text">Условия задач</param>
-        public static void WritePdf(string text)
+        static void WritePdf(string text)
         {
             // Добываем путь к файлу, в который будем записывать
             string docpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments);
@@ -84,10 +87,10 @@ namespace Library
         }
 
         /// <summary>
-        /// Определяет стили документа
+        /// Задает стили документа
         /// </summary>
         /// <param name="document">PDF-документ</param>
-        public static void DefineStyles(Document document)
+        static void DefineStyles(Document document)
         {
             // Базовый стиль
             Style style = document.Styles["Normal"];

@@ -17,7 +17,6 @@ namespace ProblemGenerator
     public partial class Form1 : Form
     {
         private static readonly Random rand = new Random();
-        //private System.Windows.Forms.Timer timer;
         public Form1()
         {
             InitializeComponent();
@@ -110,7 +109,7 @@ namespace ProblemGenerator
         private void TypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Передаем тип в класс генератора, делаем видимой кнопку запуска
-            Generator.ProblemType = typeComboBox.SelectedIndex;
+            Generator.ProblemsType = typeComboBox.SelectedIndex;
             if (seedBox.Text.Length == 0 || seedBox.Text.Length == 4)
             {
                 genButton.Visible = true;
@@ -128,8 +127,12 @@ namespace ProblemGenerator
             }
 
             string[,] problemsData;
-            if (randBox.Checked) problemsData = Generator.RandomGenerate();
-            else problemsData = Generator.Generate();
+
+            if (randBox.Checked) 
+                problemsData = Generator.RandomGenerate();
+            else 
+                problemsData = Generator.Generate();
+
             try
             {
                 HTMLWriter.WriteHTML(problemsData);
@@ -153,7 +156,7 @@ namespace ProblemGenerator
         /// <summary>
         /// Запускает отдельный тред для создания pdf-файла
         /// </summary>
-        /// <param name="data">Данные для текстов задач</param>
+        /// <param name="data">Данные для текстов задач </param>
         private void StartPdfThread(string[,] data)
         {
             void ThreadStarter()
@@ -216,6 +219,22 @@ namespace ProblemGenerator
             }
         }
 
+        private void CreatePdfCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (createPdfCheckBox.Checked)
+            {
+                pdfCheckBox.Visible = true;
+                textSizeLabel.Visible = true;
+                textSizeComboBox.Visible = true;
+            }
+            else if (!createPdfCheckBox.Checked)
+            {
+                pdfCheckBox.Visible = false;
+                textSizeLabel.Visible = false;
+                textSizeComboBox.Visible = false;
+            }
+        }
+
         private void HtmlCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (htmlCheckBox.Checked)
@@ -244,7 +263,6 @@ namespace ProblemGenerator
             Close();
         }
 
-        // Пасхалочки
         private void DifLabel_Click(object sender, EventArgs e)
         {
             difLabel.ForeColor = Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256));
@@ -258,22 +276,6 @@ namespace ProblemGenerator
         private void Form1_Closing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
-        }
-
-        private void CreatePdfCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (createPdfCheckBox.Checked)
-            {
-                pdfCheckBox.Visible = true;
-                textSizeLabel1.Visible = true;
-                textSizeComboBox.Visible = true;
-            }
-            else if (!createPdfCheckBox.Checked)
-            {
-                pdfCheckBox.Visible = false;
-                textSizeLabel1.Visible = false;
-                textSizeComboBox.Visible = false;
-            }
         }
     }
 }

@@ -10,6 +10,9 @@ using System.Windows.Forms;
 
 namespace Library
 {
+    /// <summary>
+    /// Класс для записи данных в html-файл
+    /// </summary>
     public static class HTMLWriter
     {
         // Открывать ли файл сразу
