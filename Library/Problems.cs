@@ -493,6 +493,7 @@ namespace Library
             {
                 case 0:
                     {
+                        if (plus2array.Count == 0) goto case 1;
                         indToAdd = Rand.Next(plus2array.Count);
                         quest3 = $"({string.Join(", ", plus2array[indToAdd])})";
                         ans3 = "Петя<br>";
@@ -500,6 +501,7 @@ namespace Library
                     }
                 case 1:
                     {
+                        if (minus12array.Count == 0) goto case 2;
                         indToAdd = Rand.Next(minus12array.Count);
                         quest3 = $"({string.Join(", ", minus12array[indToAdd])})";
                         ans3 = "Ваня<br>";
